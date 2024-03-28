@@ -1,0 +1,123 @@
+Metadata-Version: 2.1
+Name: fastapi-storages
+Version: 0.3.0
+Summary: FastAPI Storages
+Project-URL: Documentation, https://github.com/aminalaee/fastapi-storages#readme
+Project-URL: Issues, https://github.com/aminalaee/fastapi-storages/issues
+Project-URL: Source, https://github.com/aminalaee/fastapi-storages
+Author-email: Amin Alaee <me@aminalaee.dev>
+License-Expression: MIT
+License-File: LICENSE.txt
+Keywords: django,fastapi,orm,sqlalchemy
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Database
+Classifier: Topic :: Database :: Database Engines/Servers
+Classifier: Topic :: Internet
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Typing :: Typed
+Requires-Python: >=3.8
+Requires-Dist: boto3~=1.25
+Provides-Extra: full
+Requires-Dist: peewee>=3; extra == 'full'
+Requires-Dist: pillow~=9.4; extra == 'full'
+Requires-Dist: sqlalchemy>=1.4; extra == 'full'
+Description-Content-Type: text/markdown
+
+<p align="center">
+<a href="https://github.com/aminalaee/fastapi-storages">
+    <img width="500px" src="https://raw.githubusercontent.com/aminalaee/fastapi-storages/main/docs/assets/images/banner.png" alt"FastAPI_Storages">
+</a>
+</p>
+
+<p align="center">
+<a href="https://github.com/aminalaee/fastapi-storages/actions">
+    <img src="https://github.com/aminalaee/fastapi-storages/workflows/Tests/badge.svg" alt="Build Status">
+</a>
+<a href="https://github.com/aminalaee/fastapi-storages/actions">
+    <img src="https://github.com/aminalaee/fastapi-storages/workflows/Publish/badge.svg" alt="Publish Status">
+</a>
+<a href="https://codecov.io/gh/aminalaee/fastapi-storages">
+    <img src="https://codecov.io/gh/aminalaee/fastapi-storages/branch/main/graph/badge.svg" alt="Coverage">
+</a>
+<a href="https://pypi.org/project/fastapi-storages/">
+    <img src="https://badge.fury.io/py/fastapi-storages.svg" alt="Package version">
+</a>
+<a href="https://pypi.org/project/fastapi-storages" target="_blank">
+    <img src="https://img.shields.io/pypi/pyversions/fastapi-storages.svg?color=%2334D058" alt="Supported Python versions">
+</a>
+</p>
+
+---
+
+# FastAPI Storages
+
+A collection of backend storages and ORM extensions to simplify file management in FastAPI and Starlette projects.
+
+Similar to `django-storages` project, but aiming to work with a wider range of database ORMs and backends.
+
+---
+
+**Documentation**: [https://aminalaee.dev/fastapi-storages](https://aminalaee.dev/fastapi-storages)
+
+**Source Code**: [https://github.com/aminalaee/fastapi-storages](https://github.com/aminalaee/fastapi-storages)
+
+---
+
+## Installation
+
+```console
+pip install fastapi-storages
+pip install 'fastapi-storages[full]'
+```
+
+## Supported integrations
+
+- `SQLAlchemy`
+- `SQLModel`
+- `SQLAdmin`
+
+## Supported storage backends
+
+- `FileSystemStorage`
+- `S3Storage`
+
+## Example
+
+```python
+from fastapi import FastAPI, UploadFile
+from sqlalchemy import Column, Integer, create_engine
+from sqlalchemy.orm import Session, declarative_base
+from fastapi_storages import FileSystemStorage
+from fastapi_storages.integrations.sqlalchemy import FileType
+
+app = FastAPI()
+Base = declarative_base()
+engine = create_engine("sqlite:///test.db")
+
+
+class Example(Base):
+    __tablename__ = "example"
+
+    id = Column(Integer, primary_key=True)
+    file = Column(FileType(storage=FileSystemStorage(path="/tmp")))
+
+
+# Create database and table
+Base.metadata.create_all(engine)
+
+
+@app.post("/upload/")
+def create_upload_file(file: UploadFile):
+    example = Example(file=file)
+    with Session(engine) as session:
+        session.add(example)
+        session.commit()
+        return {"filename": example.file.name}
+```
