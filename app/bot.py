@@ -23,7 +23,7 @@ async def cmd_start(message: types.Message):
         reply_markup=types.ReplyKeyboardRemove()
     )
     kb = [
-        [types.KeyboardButton(text="Тестирование")],
+        [types.KeyboardButton(text="Анкетирование")],
         [types.KeyboardButton(text="Калории")],
         [types.KeyboardButton(text="Сон")],
         [types.KeyboardButton(text="Тренировки")]
