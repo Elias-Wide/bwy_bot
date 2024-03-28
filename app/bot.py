@@ -4,9 +4,13 @@ import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.client.bot import DefaultBotProperties
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 'не забыть создать в .env переменн окружения TOKEN своего бота'
 TOKEN = os.getenv('TOKEN')
