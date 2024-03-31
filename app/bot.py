@@ -1,27 +1,15 @@
-import asyncio
-import logging
-import os
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters.command import Command
-from aiogram.client.bot import DefaultBotProperties
-from pathlib import Path
+from aiogram import Dispatcher, Bot,  types
+from aiogram.filters import Command
 
-from dotenv import load_dotenv
 
-load_dotenv()
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-'не забыть создать в .env переменн окружения TOKEN своего бота'
-TOKEN = os.getenv('TOKEN')
-
-logging.basicConfig(level=logging.INFO)
-bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode='HTML'))
+TOKEN = '123456789:***************************'
+bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
+    print(message)
     await message.answer(
         'start',
         reply_markup=types.ReplyKeyboardRemove()
@@ -33,12 +21,4 @@ async def cmd_start(message: types.Message):
         [types.KeyboardButton(text="Тренировки")]
     ]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb)
-    await message.answer("Выберите нужное", reply_markup=keyboard)
-
-
-async def main():
-    await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    await message.answer(f'Hi, {message.from_user.full_name}, выберите нужное', reply_markup=keyboard)
