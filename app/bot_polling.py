@@ -12,8 +12,8 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-'не забыть создать в .env переменн окружения TOKEN своего бота'
-TOKEN = os.getenv('TOKEN')
+'не забыть создать в .env переменн окружения TELEGRAM_BOT_TOKEN своего бота'
+TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode='HTML'))
