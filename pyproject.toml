@@ -6,7 +6,12 @@ build-backend = "setuptools.build_meta"
 name = "begin-with-yourself-bot"
 version = "0.0.1"
 authors = [
+    {name = "Krasikoff", email = "z1r0-d@yandex.ru"},
+    {name = "AIPerova", email = "perovaai31@yandex.ru"},
+    {name = "Evgenmater", email = "hlebnev@yandex.ru"},
+    {name = "MaksimKurmazov", email = "makes86@mail.ru"},
     {name = "mign0n", email = "mign0n.git@gmail.com"},
+    {name = "RolAlek", email = "rolaleksandr75@gmail.com"},
 ]
 description = ""
 readme = "README.md"
