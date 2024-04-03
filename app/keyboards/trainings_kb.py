@@ -1,7 +1,5 @@
-from aiogram.types import (
-    InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton,
-    ReplyKeyboardMarkup
-)
+from aiogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
+                           KeyboardButton, ReplyKeyboardMarkup)
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
 from app.lexicon.lexicon import LEXICON
@@ -13,7 +11,7 @@ async def create_select_training_kb() -> ReplyKeyboardMarkup:
         KeyboardButton(text=training)
         for training in LEXICON['workout'].values()
     ]
-    kb_builder.row(*training_buttons, width=3)
+    kb_builder.row(*training_buttons, width=2)
     return kb_builder.as_markup(on_time_keyboard=True, resize_keyboard=True)
 
 

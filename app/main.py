@@ -1,34 +1,31 @@
-from fastapi import FastAPI
-from aiogram import types, Bot, Dispatcher
-from app.keyboards.main_menu import set_main_menu
-from app.handlers import trainings_router
-
 from pathlib import Path
-from app.core.logging import get_logger
-from app.core.config import settings
 
+from aiogram import Bot, Dispatcher, types
+from fastapi import FastAPI
+
+from app.core.config import settings
+from app.core.logging import get_logger
 from app.handlers import trainings_router
+from app.keyboards.main_menu import set_main_menu
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+WEBHOOK_PATH = f'/bot/{settings.telegram_bot_token}'
+WEBHOOK_URL = f'{settings.webhook_host}{WEBHOOK_PATH}'
+WEBHOOK_MODE = settings.webhook_mode
 
 app = FastAPI()
 logger = get_logger(__name__)
-logger.info('API is starting up')
+logger.info('App starting up')
 
-TOKEN = settings.telegram_bot_token
-WEBHOOK_HOST = settings.webhook_host
-WEBHOOK_PATH = f'/bot/{TOKEN}'
-WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
-WEBHOOK_MODE = True
-
-bot = Bot(token=TOKEN, parse_mode='HTML')
+bot = Bot(token=settings.telegram_bot_token, parse_mode='HTML')
 dp = Dispatcher()
 dp.include_router(trainings_router)
 
-if not WEBHOOK_MODE:
+if WEBHOOK_MODE:
     @app.on_event('startup')
     async def on_startup() -> None:
         webhook_info = await bot.get_webhook_info()
+        logger.info(WEBHOOK_MODE)
         logger.info(WEBHOOK_URL)
         if webhook_info.url != WEBHOOK_URL:
             await bot.delete_webhook()
@@ -49,6 +46,7 @@ if not WEBHOOK_MODE:
 else:
     @app.on_event('startup')
     async def on_startup() -> None:
+        logger.info(settings.webhook_mode)
         logger.info(settings.telegram_bot_token)
         await set_main_menu(bot)
         await bot.delete_webhook(drop_pending_updates=True)

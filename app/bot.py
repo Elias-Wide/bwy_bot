@@ -1,11 +1,11 @@
 import asyncio
 import logging
 import os
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters.command import Command
-from aiogram.client.bot import DefaultBotProperties
 from pathlib import Path
 
+from aiogram import Bot, Dispatcher, types
+from aiogram.client.bot import DefaultBotProperties
+from aiogram.filters.command import Command
 from dotenv import load_dotenv
 
 load_dotenv()
