@@ -3,8 +3,8 @@ from aiogram.filters import Command
 import logging
 from pathlib import Path
 from app.core.config import settings
+import sys
 
-logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -15,7 +15,7 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 
-@dp.message(Command("start"))
+@dp.message(Command('start'))
 async def cmd_start(message: types.Message) -> None:
     logging.basicConfig(
         level=logging.INFO,
@@ -23,7 +23,6 @@ async def cmd_start(message: types.Message) -> None:
                '[%(asctime)s] - %(name)s - %(message)s',
     )
     logger.info('Bot is running!')
-
     logger.info(message)
     await message.answer(
         'start',
