@@ -116,6 +116,7 @@ pydantic==2.5.3
     # via
     #   aiogram
     #   fastapi
+
     #   pydantic-settings
 pydantic-core==2.14.6
     # via pydantic
@@ -131,6 +132,7 @@ python-dotenv==1.0.1
     # via
     #   pydantic-settings
     #   uvicorn
+
 pyyaml==6.0.1
     # via
     #   application-properties

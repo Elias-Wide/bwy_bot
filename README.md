@@ -22,6 +22,7 @@ python -m venv venv && source venv/bin/activate
 make dev-deps && make install-dev-deps
 ```
 
+
  - Запуск бота в режиме  POLLING
  
  в файле .env
