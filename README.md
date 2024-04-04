@@ -28,7 +28,7 @@ make dev-deps && make install-dev-deps
 python app/bot.py
 ```
 
- - Запск бота в режиме  POLLING
+ - Запуск бота в режиме  POLLING
  
  в файле .env
 
@@ -40,15 +40,18 @@ python app/bot.py
  uvicorn app.main:app
  ```
 
- - Запск бота в режиме  WEBHOOK:
+ - Запуск бота в режиме  WEBHOOK:
 
 установка навтройка ngrok
 
 в файле .env:
 
-```shell 
- WEBHOOK_MODE = 'True'
- WEBHOOK_HOST = 'https://f8b9-109-173-73-0.ngrok-free.app' # из экрана запуска ndrok
+```text
+TELEGRAM_BOT_TOKEN = '***********:***************************' 
+WEBHOOK_MODE = 'True'
+# из экрана запуска ndrok:
+WEBHOOK_HOST = 'https://f8b9-109-173-73-0.ngrok-free.app' 
+
 ```
 
  ```shell
@@ -56,4 +59,5 @@ python app/bot.py
  ```
 
 Пример переменных окружения в .env.example
-Для смены WEBHOOK_MODE нужно перезапустить термнал в котором запускали uvicorn или обновить переменные окружения.
+Для смены WEBHOOK_MODE нужно перезапустить термнал в котором 
+запускали uvicorn или обновить переменные окружения.
