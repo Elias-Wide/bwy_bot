@@ -77,6 +77,8 @@ iniconfig==2.0.0
     # via pytest
 isort==5.13.2
     # via begin-with-yourself-bot (pyproject.toml)
+lexicon==2.0.1
+    # via begin-with-yourself-bot (pyproject.toml)
 magic-filter==1.0.12
     # via aiogram
 mako==1.3.2
@@ -114,8 +116,12 @@ pydantic==2.5.3
     # via
     #   aiogram
     #   fastapi
+
+    #   pydantic-settings
 pydantic-core==2.14.6
     # via pydantic
+pydantic-settings==2.2.1
+    # via begin-with-yourself-bot (pyproject.toml)
 pyflakes==3.2.0
     # via flake8
 pymarkdownlnt==0.9.18
@@ -123,7 +129,10 @@ pymarkdownlnt==0.9.18
 pytest==8.1.1
     # via begin-with-yourself-bot (pyproject.toml)
 python-dotenv==1.0.1
-    # via uvicorn
+    # via
+    #   pydantic-settings
+    #   uvicorn
+
 pyyaml==6.0.1
     # via
     #   application-properties
