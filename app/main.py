@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from aiogram import Bot, Dispatcher, types
 from fastapi import FastAPI
 
@@ -8,7 +6,6 @@ from app.core.logging import get_logger
 from app.handlers import trainings_router
 from app.keyboards.main_menu import set_main_menu
 
-BASE_DIR = Path(__file__).resolve().parent.parent
 WEBHOOK_PATH = f'/bot/{settings.telegram_bot_token}'
 WEBHOOK_URL = f'{settings.webhook_host}{WEBHOOK_PATH}'
 WEBHOOK_MODE = settings.webhook_mode
@@ -22,6 +19,7 @@ dp = Dispatcher()
 dp.include_router(trainings_router)
 
 if WEBHOOK_MODE:
+
     @app.on_event('startup')
     async def on_startup() -> None:
         webhook_info = await bot.get_webhook_info()
@@ -44,6 +42,7 @@ if WEBHOOK_MODE:
         await bot.session.close()
 
 else:
+
     @app.on_event('startup')
     async def on_startup() -> None:
         logger.info(settings.webhook_mode)

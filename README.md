@@ -1,6 +1,6 @@
 # begin_with_yourself_bot_2
 
-## Запуск на Linux в dev-режиме
+## Запуск на Linux, Macos в dev-режиме
 
 - Склонируйте репозиторий и перейдите в директорию проекта
 
@@ -22,12 +22,6 @@ python -m venv venv && source venv/bin/activate
 make dev-deps && make install-dev-deps
 ```
 
-- Запуск бота в режиме POLLING(устаревший)
-
-```shell
-python app/bot.py
-```
-
  - Запуск бота в режиме  POLLING
  
  в файле .env
@@ -40,9 +34,9 @@ python app/bot.py
  uvicorn app.main:app
  ```
 
- - Запуск бота в режиме  WEBHOOK:
+ - Запуск бота в режиме WEBHOOK(рекомендуемый):
 
-установка навтройка ngrok
+установка наcтройка ngrok
 
 в файле .env:
 
@@ -58,10 +52,10 @@ WEBHOOK_HOST = 'https://f8b9-109-173-73-0.ngrok-free.app'
  uvicorn app.main:app --reload
  ```
 
-Пример переменных окружения в .env.example
+Пример переменных окружения в .env.example.
 Для смены WEBHOOK_MODE нужно перезапустить терминал в котором 
 запускали uvicorn или обновить переменные окружения.
 
-Если перезапускали ngrok, проверьте WEBHOOK_HOST и здесь
-нужно перезапустить терминал в котором запускали uvicorn 
-или обновить переменные окружения.
+Если перезапускали ngrok, проверьте изменилась ли переменная 
+WEBHOOK_HOST и после изменемия ее в .env нужно перезапустить терминал
+в котором запускали uvicorn или обновить переменные окружения.

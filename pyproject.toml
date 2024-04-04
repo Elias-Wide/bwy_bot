@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "begin-with-yourself-bot"
+version = "0.0.1"
+authors = [
+    {name = "Krasikoff", email = "z1r0-d@yandex.ru"},
+    {name = "AIPerova", email = "perovaai31@yandex.ru"},
+    {name = "Evgenmater", email = "hlebnev@yandex.ru"},
+    {name = "MaksimKurmazov", email = "makes86@mail.ru"},
+    {name = "mign0n", email = "mign0n.git@gmail.com"},
+    {name = "RolAlek", email = "rolaleksandr75@gmail.com"},
+]
+description = ""
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10, <3.11"
+dependencies = [
+    "aiogram==3.4.1",
+    "alembic==1.13.1",
+    "fastapi==0.110.0",
+    "uvicorn[standard]==0.17.6",
+    "pydantic-settings==2.2.1",
+    "lexicon==2.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "Flake8-pyproject",
+    "flake8-annotations",
+    "flake8-commas",
+    "isort",
+    "mypy",
+    "mypy-extensions",
+    "pep8-naming",
+    "pymarkdownlnt",
+    "pytest",
+]
+
+[tool.black]
+extend-exclude = "alembic/*"
+line-length = 79
+skip-string-normalization = "true"
+
+[tool.flake8]
+extend-exclude = [
+    "tests/",
+    "venv/",
+    "env/"
+]
+ignore = [
+    "W503",
+    "D100",
+    "D205",
+    "D401"
+]
+max-complexity = 10
+max-line-length = 79
+per-file-ignores = ["__init__.py:F401"]
+
+[tool.isort]
+profile = "black"
+line_length = 79
+src_paths = "app"
+extend_skip = ["alembic"]
+
+[tool.mypy]
+python_version = "3.10"
+check_untyped_defs = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+ignore_errors = false
+ignore_missing_imports = true
+implicit_reexport = false
+strict_optional = true
+strict_equality = true
+no_implicit_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unreachable = true
+warn_no_return = true
+mypy_path = "app"
+
+[tool.pytest.ini_options]
+pythonpath = "app/"
+norecursedirs = ["venv/*"]
+addopts = "-vv -p no:cacheprovider"
+testpaths = ["tests/"]
+python_files = ["test_*.py"]
+
+[tool.setuptools]
+py-modules = []

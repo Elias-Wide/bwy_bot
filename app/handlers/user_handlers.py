@@ -15,7 +15,7 @@ logger = get_logger(__name__)
 
 
 @router.message(CommandStart())
-async def process_start_command(message: Message):
+async def process_start_command(message: Message) -> None:
     await message.answer(
         text=LEXICON['/start'],
         reply_markup=await create_mode_kb(),
@@ -23,7 +23,7 @@ async def process_start_command(message: Message):
 
 
 @router.message(Command(commands='die'))
-async def process_die_command(message: Message):
+async def process_die_command(message: Message) -> None:
     await message.answer(
         text=LEXICON['/die'],
         reply_markup=await create_mode_kb(),
@@ -38,7 +38,7 @@ async def process_die_command(message: Message):
 
 
 @router.message(Command(commands='help'))
-async def process_help_command(message: Message):
+async def process_help_command(message: Message) -> None:
     await message.answer(
         text=LEXICON['/help'],
         reply_markup=await create_mode_kb(),
@@ -46,7 +46,7 @@ async def process_help_command(message: Message):
 
 
 @router.message(F.text == LEXICON['mode']['trainings'])
-async def process_trainings_command(message: Message):
+async def process_trainings_command(message: Message) -> None:
     await message.answer(
         text=message.text,
         reply_markup=await create_select_training_kb(),
