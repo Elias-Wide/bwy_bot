@@ -1,7 +1,7 @@
 import logging
 
 
-def get_logger(name):
+def get_logger(name: str) -> logging.Logger:
     logger = logging.getLogger(__name__)
     logging.basicConfig(
         level=logging.INFO,
