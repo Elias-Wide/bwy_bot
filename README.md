@@ -27,7 +27,7 @@ make dev-deps && make install-dev-deps
  
  в файле .env
 
-```shell 
+```text
  WEBHOOK_MODE = 'False'
 ```
 
@@ -49,9 +49,15 @@ WEBHOOK_HOST = 'https://f8b9-109-173-73-0.ngrok-free.app'
 
 ```
 
- ```shell
- uvicorn app.main:app --reload
- ```
+Если БД локально не существует команда для создания
+
+```shell
+alembic upgrade 9f9a4c508dbe  # это цифры первой ревизии 
+```
+
+```shell
+uvicorn app.main:app --reload
+```
 
 Пример переменных окружения в .env.example.
 Для смены WEBHOOK_MODE нужно перезапустить терминал в котором 
