@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import CommandStart
 
-from handlers.menu_processor import get_menu_content
+from app.handlers.menu_processor import get_menu_content
 
 
 router = Router()
