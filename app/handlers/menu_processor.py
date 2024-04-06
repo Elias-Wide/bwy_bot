@@ -23,7 +23,10 @@ async def main_menu(
     return image, keyboard
 
 
-async def get_menu_content(level: int, menu_name: str):    # TODO: сделать анотацию по завершении функции!
+async def get_menu_content(
+    level: int,
+    menu_name: str
+) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Диспетчер меню."""
     if level == 0:
         return await main_menu(level, menu_name)
