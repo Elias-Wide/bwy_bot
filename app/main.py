@@ -1,7 +1,10 @@
 from aiogram import Bot, Dispatcher, types
 from fastapi import FastAPI
+from sqladmin import Admin
 
+from app.admin.view import FileAdmin, UserAdmin # TODO: from app.admin.auth import AdminAuth 
 from app.core.config import settings
+from app.core.db import engine
 from app.core.logging import get_logger
 from app.handlers import trainings_router
 from app.keyboards.main_menu import set_main_menu
@@ -17,6 +20,13 @@ logger.info('App starting up')
 bot = Bot(token=settings.telegram_bot_token, parse_mode='HTML')
 dp = Dispatcher()
 dp.include_router(trainings_router)
+
+admin = Admin(
+    app=app,
+    engine=engine, # TODO: authentication_backend=authentication_backend 
+)
+admin.add_view(UserAdmin)
+admin.add_view(FileAdmin)
 
 if WEBHOOK_MODE:
 
