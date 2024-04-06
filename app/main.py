@@ -19,7 +19,7 @@ logger.info('App starting up')
 
 bot = Bot(token=settings.telegram_bot_token, parse_mode='HTML')
 dp = Dispatcher()
-dp.include_router(trainings_router)
+dp.include_router(user_router)
 
 admin = Admin(
     app=app,

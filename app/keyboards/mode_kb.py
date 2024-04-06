@@ -1,13 +1,39 @@
-from aiogram.types import KeyboardButton
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.filters.callback_data import CallbackData
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.lexicon.lexicon import LEXICON
+
+class MenuCallBack(CallbackData, prefix='menu'):
+    """
+    Фабрика колбэков.
+
+    level :: атрибут указывающий на глубину(шаг) меню. Пример:
+     Главное_меню(0) -> Тренировки(1) -> Кардио(2)
+
+    menu_name :: название меню.
+    """
+
+    level: int
+    menu_name: str
 
 
-async def create_mode_kb() -> ReplyKeyboardBuilder:
-    kb_builder = ReplyKeyboardBuilder()
-    mode_buttons: list[KeyboardButton] = [
-        KeyboardButton(text=mode) for mode in LEXICON['mode'].values()
-    ]
-    kb_builder.row(*mode_buttons, width=1)
-    return kb_builder.as_markup(one_time_keyboard=True, resize_keyboard=True)
+def get_main_menu_btns(
+    *, level: int, sizes: tuple[int] = (2,)
+) -> InlineKeyboardMarkup:
+    """Генератор клавиатуры главного меню."""
+    keyboard = InlineKeyboardBuilder()
+    buttons = {
+        'Сон💤': 'sleep',
+        'Питание🥦': 'diet',
+        'Тренировки🏋‍♂️': 'workout'
+    }
+    for text, menu_name in buttons.items():
+        keyboard.add(InlineKeyboardButton(
+            text=text,
+            callback_data=MenuCallBack(
+                level=level + 1,
+                menu_name=menu_name
+            ).pack()
+        ))
+
+    return keyboard.adjust(*sizes).as_markup()
