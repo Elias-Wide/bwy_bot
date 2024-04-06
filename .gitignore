@@ -1,5 +1,4 @@
 # Byte-compiled / optimized / DLL files
-**/__pycache__
 __pycache__/
 *.py[cod]
 *$py.class
@@ -61,6 +60,9 @@ coverage.xml
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+
+#fastapi staff:
+*.db
 
 # Flask stuff:
 instance/
