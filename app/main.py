@@ -2,9 +2,7 @@ from aiogram import Bot, Dispatcher, types
 from fastapi import FastAPI
 from sqladmin import Admin
 
-from app.admin.view import FileAdmin, UserAdmin
-
-# from app.admin.auth import AdminAuth # to do
+from app.admin.view import FileAdmin, UserAdmin # TODO: from app.admin.auth import AdminAuth 
 from app.core.config import settings
 from app.core.db import engine
 from app.core.logging import get_logger
@@ -25,8 +23,7 @@ dp.include_router(trainings_router)
 
 admin = Admin(
     app=app,
-    engine=engine,
-    #    authentication_backend=authentication_backend # to do
+    engine=engine, # TODO: authentication_backend=authentication_backend 
 )
 admin.add_view(UserAdmin)
 admin.add_view(FileAdmin)
