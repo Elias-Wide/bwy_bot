@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     telegram_bot_token: str = '**********:***********************************'
     webhook_host: str = '****************.ngrok-free.app'
     webhook_mode: bool = False
-    database_url: str = 'sqlite+aiosqlite:///./fastapi.db'
+    database_url: str = 'sqlite+aiosqlite:///./bwy_bot.db'
     username: str = 'mail@mail.ru'
     password: str = '***********'
 
