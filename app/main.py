@@ -6,7 +6,7 @@ from app.admin.view import FileAdmin, UserAdmin # TODO: from app.admin.auth impo
 from app.core.config import settings
 from app.core.db import engine
 from app.core.logging import get_logger
-from app.handlers import trainings_router
+from app.handlers import user_router
 from app.keyboards.main_menu import set_main_menu
 
 WEBHOOK_PATH = f'/bot/{settings.telegram_bot_token}'
