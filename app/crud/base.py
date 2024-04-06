@@ -1,4 +1,4 @@
-from typing import Any, NoReturn, Optional, Self, Sequence
+from typing import Any, NoReturn, Optional, Self, Sequence, TypeVar
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -6,6 +6,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import User
+
+Self = TypeVar("Self", bound="CRUDBase")
 
 
 class CRUDBase:
