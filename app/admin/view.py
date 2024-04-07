@@ -5,8 +5,10 @@ from app.models.user import User
 
 
 class UserAdmin(ModelView, model=User):
-    column_list = [User.id, User.email]
-    column_details_exclude_list = [User.hashed_password]
+#    column_list = [User.id, User.email]
+    column_list = [
+        c.name for c in User.__table__.c]
+    column_details_exclude_list = [User.hashed_password, User.gender]
     can_delete = False
     icon = 'fa-solid fa-user'
 
