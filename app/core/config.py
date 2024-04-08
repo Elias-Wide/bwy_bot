@@ -1,8 +1,10 @@
 from pathlib import Path
+from typing import TypeVar
 
 from pydantic_settings import BaseSettings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+Self = TypeVar("Self", bound=None)
 
 
 class Settings(BaseSettings):

@@ -1,11 +1,9 @@
-from typing import TypeVar
+from app.core.config import Self
 
 from sqlalchemy import Column, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 
 from app.core.db import Base
-
-Self = TypeVar("Self", bound=None)
 
 
 class Question(Base):
