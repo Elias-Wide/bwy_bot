@@ -24,12 +24,13 @@ async def main_menu(
     Оборачивает FSInputfile в InputMediaPhoto, получает клавиатуру и
     возвращает в хэндлер.
     """
-    banner = InputMediaPhoto(
-        media=await _get_banner(menu_name),
-        caption='Добро пожаловать в личный помощник самосовершенствования.',
+    return (
+        InputMediaPhoto(
+            media=await _get_banner(menu_name),
+            caption='Добро пожаловать в личный помощник самосовершенствования.'
+        ),
+        get_main_menu_btns(level=level),
     )
-    keyboard = get_main_menu_btns(level=level)
-    return banner, keyboard
 
 
 async def workout_category_menu(
@@ -37,12 +38,13 @@ async def workout_category_menu(
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Генератор меню выбора группы тренировки."""
-    banner = InputMediaPhoto(
-        media=await _get_banner(menu_name),
-        caption='Какой вид тренировки предпочитаете?',
+    return (
+        InputMediaPhoto(
+            media=await _get_banner(menu_name),
+            caption='Какой вид тренировки предпочитаете?',
+        ),
+        get_workout_select_btns(level=level),
     )
-    keyboard = get_workout_select_btns(level=level)
-    return banner, keyboard
 
 
 async def workout_menu(
@@ -51,7 +53,7 @@ async def workout_menu(
 ) -> tuple[InputMediaVideo, InlineKeyboardMarkup]:
     contents = await _get_videos(menu_name)
     video = InputMediaVideo(
-        media=contents[0],
+        media=contents[0],  # TODO: пагинация.
         caption='Какое-то упражнение: описание упражнения!',
     )
     keyboard = get_workout_bts(level=level)

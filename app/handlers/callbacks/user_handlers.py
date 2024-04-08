@@ -1,7 +1,7 @@
 from aiogram import Router
-from aiogram.enums import ChatAction
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery, InputMediaVideo, Message
+from aiogram.utils.chat_action import ChatActionSender
 
 from app.handlers.menu_processor import get_menu_content
 from app.keyboards import MenuCallBack
@@ -30,9 +30,15 @@ async def user_menu(
         menu_name=callback_data.menu_name,
     )
     if isinstance(media, InputMediaVideo):
-        await callback.message.bot.send_chat_action(
+        async with ChatActionSender.upload_video(
             chat_id=callback.message.chat.id,
-            action=ChatAction.UPLOAD_VIDEO,
-        )
-    await callback.message.edit_media(media=media, reply_markup=reply_markup)
-    await callback.answer()
+            bot=callback.bot,
+        ):
+            await callback.answer(text='Загрузка...', show_alert=True)
+            await callback.message.edit_media(
+                media=media,
+                reply_markup=reply_markup
+            )
+    else:
+        await callback.message.edit_media(media=media, reply_markup=reply_markup)
+        await callback.answer()
