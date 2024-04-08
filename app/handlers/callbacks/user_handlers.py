@@ -37,8 +37,11 @@ async def user_menu(
             await callback.answer(text='Загрузка...', show_alert=True)
             await callback.message.edit_media(
                 media=media,
-                reply_markup=reply_markup
+                reply_markup=reply_markup,
             )
     else:
-        await callback.message.edit_media(media=media, reply_markup=reply_markup)
+        await callback.message.edit_media(
+            media=media,
+            reply_markup=reply_markup,
+        )
         await callback.answer()

@@ -6,8 +6,8 @@ from app.admin.view import (  # TODO: from app.admin.auth import AdminAuth
     AnswerAdmin,
     FileAdmin,
     QuestionAdmin,
-    UserAdmin,
     SleepAdmin,
+    UserAdmin,
 )
 from app.core.config import settings
 from app.core.db import engine
