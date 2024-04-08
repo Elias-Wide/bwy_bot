@@ -7,7 +7,7 @@ from sqlalchemy_utils import ChoiceType
 from app.core.constants import ACTIVITY_PURPOSE, GENDER
 from app.core.db import Base
 
-Self = TypeVar("Self", bound="User")
+Self = TypeVar("Self", bound=None)
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
