@@ -147,6 +147,5 @@ dmypy.json
 
 # папки со статикой и медиа
 static/
-posts/static/
 media/
 upload/
