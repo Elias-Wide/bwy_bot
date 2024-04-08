@@ -2,6 +2,8 @@ from aiogram.filters.callback_data import CallbackData
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+BUTTONS = {'Сон💤': 'sleep', 'Питание🥦': 'diet', 'Тренировки🏋‍♂️': 'workouts'}
+
 
 class MenuCallBack(CallbackData, prefix='menu'):
     """
@@ -24,20 +26,27 @@ def get_main_menu_btns(
 ) -> InlineKeyboardMarkup:
     """Генератор клавиатуры главного меню."""
     keyboard = InlineKeyboardBuilder()
-    buttons = {
-        'Сон💤': 'sleep',
-        'Питание🥦': 'diet',
-        'Тренировки🏋‍♂️': 'workout',
-    }
-    for text, menu_name in buttons.items():
-        keyboard.add(
-            InlineKeyboardButton(
-                text=text,
-                callback_data=MenuCallBack(
-                    level=level + 1,
-                    menu_name=menu_name,
-                ).pack(),
-            ),
-        )
+
+    for text, menu_name in BUTTONS.items():
+        if menu_name == 'workouts':
+            keyboard.add(
+                InlineKeyboardButton(
+                    text=text,
+                    callback_data=MenuCallBack(
+                        level=level + 1,
+                        menu_name=menu_name,
+                    ).pack(),
+                ),
+            )
+        else:
+            keyboard.add(
+                InlineKeyboardButton(
+                    text=text,
+                    callback_data=MenuCallBack(
+                        level=level,
+                        menu_name=menu_name,
+                    ).pack(),
+                ),
+            )
 
     return keyboard.adjust(*sizes).as_markup()
