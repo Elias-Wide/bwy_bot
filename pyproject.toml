@@ -25,9 +25,9 @@ dependencies = [
     "pydantic-settings==2.2.1",
     "lexicon==2.0.1",
     "sqladmin==0.16.1",
-    "fastapi_storages-0.3.0",
-    "aiosqlite-0.20.0",
-    'fastapi_users_db_sqlalchemy-6.0.1',
+    "fastapi_storages==0.3.0",
+    "aiosqlite==0.20.0",
+    'fastapi_users_db_sqlalchemy==6.0.1',
 ]
 
 [project.optional-dependencies]

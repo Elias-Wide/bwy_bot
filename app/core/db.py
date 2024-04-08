@@ -1,4 +1,4 @@
-from typing import TypeVar, AsyncGenerator
+from typing import AsyncGenerator, TypeVar
 
 from sqlalchemy import Column, Integer
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
