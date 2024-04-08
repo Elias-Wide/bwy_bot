@@ -1,5 +1,4 @@
 # Byte-compiled / optimized / DLL files
-**/__pycache__
 __pycache__/
 *.py[cod]
 *$py.class
@@ -147,8 +146,12 @@ dmypy.json
 .mypy_cache
 
 # папки со статикой и медиа
+<<<<<<< HEAD
 # static/
 posts/static/
+=======
+static/
+>>>>>>> feature/add-table-fields-DB
 media/
 upload/
 

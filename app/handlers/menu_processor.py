@@ -24,6 +24,7 @@ async def main_menu(
     Оборачивает FSInputfile в InputMediaPhoto, получает клавиатуру и
     возвращает в хэндлер.
     """
+<<<<<<< HEAD
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
@@ -44,6 +45,14 @@ async def workout_category_menu(
             caption='Какой вид тренировки предпочитаете?',
         ),
         get_workout_select_btns(level=level),
+=======
+    banner_path = BASE_DIR.joinpath('static', menu_name + '.jpg')
+    image = InputMediaPhoto(
+        media=FSInputFile(banner_path),
+        caption=(
+            'Добро пожаловать в Ваш личный помощник самосовершенствования.'
+        ),
+>>>>>>> feature/add-table-fields-DB
     )
 
 

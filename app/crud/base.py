@@ -1,4 +1,4 @@
-from typing import Any, NoReturn, Optional, Self, Sequence, TypeVar
+from typing import Any, NoReturn, Optional, Sequence, TypeVar
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
