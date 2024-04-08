@@ -1,8 +1,7 @@
-from app.core.config import Self
-
 from sqlalchemy import Column, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 
+from app.core.config import Self
 from app.core.db import Base
 
 

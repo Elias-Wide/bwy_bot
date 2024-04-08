@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 async def _get_videos(category: str) -> list[FSInputFile]:
     content_path = BASE_DIR.parent.joinpath('upload', category)
-    return [FSInputFile(path)for path in list(content_path.glob('*.mp4'))]
+    return [FSInputFile(path) for path in list(content_path.glob('*.mp4'))]
 
 
 # TODO: Необходима обработка exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
