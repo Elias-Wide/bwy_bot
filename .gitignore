@@ -146,6 +146,14 @@ dmypy.json
 .mypy_cache
 
 # папки со статикой и медиа
+<<<<<<< HEAD
+# static/
+posts/static/
+=======
 static/
+>>>>>>> feature/add-table-fields-DB
 media/
 upload/
+
+# database
+*.db

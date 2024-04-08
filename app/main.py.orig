@@ -3,9 +3,7 @@ from fastapi import FastAPI
 from sqladmin import Admin
 
 from app.admin.view import (  # TODO: from app.admin.auth import AdminAuth
-    AnswerAdmin,
     FileAdmin,
-    QuestionAdmin,
     UserAdmin,
 )
 from app.core.config import settings
@@ -32,8 +30,6 @@ admin = Admin(
 )
 admin.add_view(UserAdmin)
 admin.add_view(FileAdmin)
-admin.add_view(QuestionAdmin)
-admin.add_view(AnswerAdmin)
 
 if WEBHOOK_MODE:
 
