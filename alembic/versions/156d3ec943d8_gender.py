@@ -9,7 +9,7 @@ from typing import Sequence, Union
 from sqlalchemy_utils.types.choice import ChoiceType
 from alembic import op
 import sqlalchemy as sa
-from app.models.user import GENDER
+from app.core.constants import GENDER
 
 
 # revision identifiers, used by Alembic.

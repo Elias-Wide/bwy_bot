@@ -1,7 +1,13 @@
-from enum import Enum, unique
+from enum import Enum
+from sqlalchemy import Enum
 
 
-@unique
-class Gender(Enum):
-    FEMALE = "Женщина"
-    MALE = "Мужчина"
+GENDER = (
+    ('Male', 'Мужчина'),
+    ('Female', 'Женщина')
+)
+
+WORKOUT_TYPE = (
+    ('Cardio', 'Кардио'),
+    ('Legs', 'Ноги')
+)
