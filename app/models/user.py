@@ -3,6 +3,7 @@ from typing import TypeVar
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Column, Integer, String
 from sqlalchemy_utils import ChoiceType
+from sqlalchemy.orm import relationship
 
 from app.core.constants import ACTIVITY_PURPOSE, GENDER
 from app.core.db import Base
@@ -18,6 +19,8 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     weight = Column(Integer, nullable=False)
     height = Column(Integer, nullable=False)
     activity = Column(ChoiceType(ACTIVITY_PURPOSE))
+
+    sleep = relationship('Sleep', back_populates='user')
 
     def __str__(self: Self) -> str:
         return f' #{self.id}  {self.email}'
