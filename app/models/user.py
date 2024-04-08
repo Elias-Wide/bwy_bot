@@ -1,11 +1,10 @@
-from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from typing import TypeVar
-from sqlalchemy import Column, String, Integer
-from pydantic import PositiveInt
+
+from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
+from sqlalchemy import Column, Integer, String
 from sqlalchemy_utils import ChoiceType
 
-
-from app.core.constants import GENDER, ACTIVITY_PURPOSE
+from app.core.constants import ACTIVITY_PURPOSE, GENDER
 from app.core.db import Base
 
 Self = TypeVar("Self", bound="User")

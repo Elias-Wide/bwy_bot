@@ -1,8 +1,8 @@
 from sqladmin import ModelView
 
 from app.models.file import File
+from app.models.questionnaire import PossibleAnswer, Question
 from app.models.user import User
-from app.models.questionnaire import Question, PossibleAnswer
 
 
 class UserAdmin(ModelView, model=User):
@@ -19,13 +19,15 @@ class FileAdmin(ModelView, model=File):
     icon = 'fa fa-file'
 
 
-# class QuestionAdmin(ModelView, model=Question):
-#     column_list = [
-#         c.name for c in Question.__table__.c]
-#     icon = 'fa fa-book'
+class QuestionAdmin(ModelView, model=Question):
+    column_list = [c.name for c in Question.__table__.c] + [
+        Question.possibleanswer,
+    ]
+    icon = 'fa fa-book'
 
 
-# class AnswerAdmin(ModelView, model=PossibleAnswer):
-#     column_list = [
-#         c.name for c in PossibleAnswer.__table__.c]
-#     icon = 'fa fa-book'
+class AnswerAdmin(ModelView, model=PossibleAnswer):
+    column_list = [c.name for c in PossibleAnswer.__table__.c] + [
+        PossibleAnswer.question,
+    ]
+    icon = 'fa fa-book'

@@ -1,10 +1,13 @@
+from typing import TypeVar
+
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy.orm import relationship
+
 from app.core.db import Base
+
+Self = TypeVar("Self", bound="User")
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
-#    reservation = relationship('Reservation', back_populates='user')
 
-    def __str__(self):
+    def __str__(self: Self) -> str:
         return f' #{self.id}  {self.email}'

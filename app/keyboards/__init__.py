@@ -1,1 +1,1 @@
-from .mode_kb import get_main_menu_btns, MenuCallBack   # noqa
+from .mode_kb import MenuCallBack, get_main_menu_btns  # noqa

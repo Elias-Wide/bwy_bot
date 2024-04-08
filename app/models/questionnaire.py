@@ -1,20 +1,27 @@
-from sqlalchemy import Column, Text, Integer, ForeignKey
+from typing import TypeVar
+
+from sqlalchemy import Column, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 
+from app.core.db import Base
 
-class Question:
+Self = TypeVar("Self", bound=None)
+
+
+class Question(Base):
     text = Column(Text, nullable=False)
-    possible_answer_id = Column(
-        Integer,
-        ForeignKey(
-            'possible_answer.id',
-            name='fk_question_possible_answer_id_possible_answer',
-        ),
-    )
+    possibleanswer_id = Column(Integer, ForeignKey('possibleanswer.id'))
 
-    possible_answer_id = relationship(
-        'Possible_answer_id', back_populates='question')
+    possibleanswer = relationship('PossibleAnswer', back_populates='question')
+
+    def __str__(self: Self) -> str:
+        return f' #{self.text}'
 
 
-class PossibleAnswer:
+class PossibleAnswer(Base):
     text = Column(Text, nullable=False)
+
+    question = relationship('Question', back_populates='possibleanswer')
+
+    def __str__(self: Self) -> str:
+        return f' #{self.text}'

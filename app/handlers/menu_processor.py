@@ -17,7 +17,9 @@ async def main_menu(
     banner_path = BASE_DIR.joinpath('static', menu_name + '.jpg')
     image = InputMediaPhoto(
         media=FSInputFile(banner_path),
-        caption='Добро пожаловать в Ваш личный помощник самосовершенствования.'
+        caption=(
+            'Добро пожаловать в Ваш личный помощник самосовершенствования.'
+        ),
     )
     keyboard = get_main_menu_btns(level=level)
     return image, keyboard
@@ -25,7 +27,7 @@ async def main_menu(
 
 async def get_menu_content(
     level: int,
-    menu_name: str
+    menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Диспетчер меню."""
     if level == 0:

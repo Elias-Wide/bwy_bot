@@ -18,22 +18,26 @@ class MenuCallBack(CallbackData, prefix='menu'):
 
 
 def get_main_menu_btns(
-    *, level: int, sizes: tuple[int] = (2,)
+    *,
+    level: int,
+    sizes: tuple[int] = (2,),
 ) -> InlineKeyboardMarkup:
     """Генератор клавиатуры главного меню."""
     keyboard = InlineKeyboardBuilder()
     buttons = {
         'Сон💤': 'sleep',
         'Питание🥦': 'diet',
-        'Тренировки🏋‍♂️': 'workout'
+        'Тренировки🏋‍♂️': 'workout',
     }
     for text, menu_name in buttons.items():
-        keyboard.add(InlineKeyboardButton(
-            text=text,
-            callback_data=MenuCallBack(
-                level=level + 1,
-                menu_name=menu_name
-            ).pack()
-        ))
+        keyboard.add(
+            InlineKeyboardButton(
+                text=text,
+                callback_data=MenuCallBack(
+                    level=level + 1,
+                    menu_name=menu_name,
+                ).pack(),
+            ),
+        )
 
     return keyboard.adjust(*sizes).as_markup()

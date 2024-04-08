@@ -3,8 +3,8 @@ from fastapi_storages.integrations.sqlalchemy import FileType
 from sqlalchemy import Column
 from sqlalchemy_utils import ChoiceType
 
-from app.core.db import Base
 from app.core.constants import WORKOUT_TYPE
+from app.core.db import Base
 
 storage = FileSystemStorage(path='./upload')
 

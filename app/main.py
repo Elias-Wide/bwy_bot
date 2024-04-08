@@ -2,7 +2,12 @@ from aiogram import Bot, Dispatcher, types
 from fastapi import FastAPI
 from sqladmin import Admin
 
-from app.admin.view import FileAdmin, UserAdmin # TODO: from app.admin.auth import AdminAuth 
+from app.admin.view import (  # TODO: from app.admin.auth import AdminAuth
+    AnswerAdmin,
+    FileAdmin,
+    QuestionAdmin,
+    UserAdmin,
+)
 from app.core.config import settings
 from app.core.db import engine
 from app.core.logging import get_logger
@@ -23,10 +28,12 @@ dp.include_router(user_router)
 
 admin = Admin(
     app=app,
-    engine=engine, # TODO: authentication_backend=authentication_backend 
+    engine=engine,  # TODO: authentication_backend=authentication_backend
 )
 admin.add_view(UserAdmin)
 admin.add_view(FileAdmin)
+admin.add_view(QuestionAdmin)
+admin.add_view(AnswerAdmin)
 
 if WEBHOOK_MODE:
 
