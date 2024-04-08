@@ -45,6 +45,7 @@ admin.add_view(SheduleAdmin)
 admin.add_view(QuestionAdmin)
 admin.add_view(AnswerAdmin)
 admin.add_view(SleepAdmin)
+dp.include_router(survey_router)
 
 if WEBHOOK_MODE:
 
