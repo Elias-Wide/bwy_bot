@@ -26,7 +26,6 @@ def get_main_menu_btns(
 ) -> InlineKeyboardMarkup:
     """Генератор клавиатуры главного меню."""
     keyboard = InlineKeyboardBuilder()
-<<<<<<< HEAD
 
     for text, menu_name in BUTTONS.items():
         if menu_name == 'workouts':
@@ -49,22 +48,5 @@ def get_main_menu_btns(
                     ).pack(),
                 ),
             )
-=======
-    buttons = {
-        'Сон💤': 'sleep',
-        'Питание🥦': 'diet',
-        'Тренировки🏋‍♂️': 'workout',
-    }
-    for text, menu_name in buttons.items():
-        keyboard.add(
-            InlineKeyboardButton(
-                text=text,
-                callback_data=MenuCallBack(
-                    level=level + 1,
-                    menu_name=menu_name,
-                ).pack(),
-            ),
-        )
->>>>>>> feature/add-table-fields-DB
 
     return keyboard.adjust(*sizes).as_markup()

@@ -1,11 +1,8 @@
 from typing import TypeVar
 
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-<<<<<<< HEAD
-=======
 from sqlalchemy import Column, Integer, String
 from sqlalchemy_utils import ChoiceType
->>>>>>> feature/add-table-fields-DB
 
 from app.core.constants import ACTIVITY_PURPOSE, GENDER
 from app.core.db import Base

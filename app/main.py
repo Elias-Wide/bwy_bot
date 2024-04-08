@@ -11,7 +11,7 @@ from app.admin.view import (  # TODO: from app.admin.auth import AdminAuth
 from app.core.config import settings
 from app.core.db import engine
 from app.core.logging import get_logger
-from app.handlers import user_router
+from app.handlers.routers import main_router
 from app.keyboards.main_menu import set_main_menu
 
 WEBHOOK_PATH = f'/bot/{settings.telegram_bot_token}'
@@ -24,7 +24,7 @@ logger.info('App starting up')
 
 bot = Bot(token=settings.telegram_bot_token, parse_mode='HTML')
 dp = Dispatcher()
-dp.include_router(user_router)
+dp.include_router(main_router)
 
 admin = Admin(
     app=app,
