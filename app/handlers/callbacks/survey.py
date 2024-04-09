@@ -9,7 +9,7 @@ from app.data.survey import (
     PURPOSE,
     SURVEY_QUESTIONS,
 )
-from app.keyboards import create_mode_kb, create_survey_kb
+from app.keyboards import create_survey_kb, get_main_menu_btns
 
 router = Router()
 
@@ -94,6 +94,6 @@ async def finish_survey(message: types.Message, state: FSMContext) -> None:
     user_data = await state.get_data()
     await message.answer(
         text=f'Ваша анкета готова.\n\n{user_data}',
-        reply_markup=await create_mode_kb(),
+        reply_markup=await get_main_menu_btns(level=0),
     )
     await state.clear()
