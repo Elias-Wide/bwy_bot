@@ -4,8 +4,10 @@ from sqladmin import Admin
 
 from app.admin.view import (  # TODO: from app.admin.auth import AdminAuth
     AnswerAdmin,
-    FileAdmin,
+    CourseAdmin,
+    ExerciseAdmin,
     QuestionAdmin,
+    SheduleAdmin,
     SleepAdmin,
     UserAdmin,
 )
@@ -32,7 +34,9 @@ admin = Admin(
     engine=engine,  # TODO: authentication_backend=authentication_backend
 )
 admin.add_view(UserAdmin)
-admin.add_view(FileAdmin)
+admin.add_view(ExerciseAdmin)
+admin.add_view(CourseAdmin)
+admin.add_view(SheduleAdmin)
 admin.add_view(QuestionAdmin)
 admin.add_view(AnswerAdmin)
 admin.add_view(SleepAdmin)

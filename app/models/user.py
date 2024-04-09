@@ -1,5 +1,3 @@
-from typing import TypeVar
-
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
@@ -7,8 +5,6 @@ from sqlalchemy_utils import ChoiceType
 
 from app.core.constants import ACTIVITY_PURPOSE, GENDER
 from app.core.db import Base
-
-Self = TypeVar("Self", bound=None)
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
@@ -21,6 +17,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     activity = Column(ChoiceType(ACTIVITY_PURPOSE))
 
     sleep = relationship('Sleep', back_populates='user')
+    shedule = relationship('Shedule', back_populates='user')
 
-    def __str__(self: Self) -> str:
+    def __str__(self) -> str:
         return f' #{self.id}  {self.email}'

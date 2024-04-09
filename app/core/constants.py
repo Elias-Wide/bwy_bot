@@ -24,6 +24,12 @@ ACTIVITY_PURPOSE = (
     ('ADD_MASS', 'Набор массы'),
 )
 
+AM_NOON_PM = (
+    ('AM', 'утро'),
+    ('NOON', 'полдень'),
+    ('PM', 'вечер'),
+)
+
 WORKOUT_TYPE = (
     ('Cardio', 'Кардио'),
     ('Legs', 'Ноги'),
