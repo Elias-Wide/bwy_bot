@@ -6,6 +6,7 @@ from app.admin.view import (  # TODO: from app.admin.auth import AdminAuth
     AnswerAdmin,
     FileAdmin,
     QuestionAdmin,
+    SleepAdmin,
     UserAdmin,
 )
 from app.core.config import settings
@@ -34,6 +35,7 @@ admin.add_view(UserAdmin)
 admin.add_view(FileAdmin)
 admin.add_view(QuestionAdmin)
 admin.add_view(AnswerAdmin)
+admin.add_view(SleepAdmin)
 
 if WEBHOOK_MODE:
 

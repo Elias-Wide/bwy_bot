@@ -11,6 +11,6 @@ async def _get_videos(category: str) -> list[FSInputFile]:
     return [FSInputFile(path) for path in list(content_path.glob('*.mp4'))]
 
 
-# TODO: Необходима обработка exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
+# TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
 async def _get_banner(menu_name: str) -> FSInputFile:
     return FSInputFile(BASE_DIR.joinpath('static', menu_name + '.jpg'))
