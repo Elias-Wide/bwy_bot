@@ -3,7 +3,6 @@ from typing import TypeVar
 from sqlalchemy import Column, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 
-from app.core.config import Self
 from app.core.db import Base
 
 Self = TypeVar("Self", bound=None)
