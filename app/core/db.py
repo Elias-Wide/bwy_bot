@@ -1,4 +1,4 @@
-from typing import AsyncGenerator, TypeVar
+from typing import AsyncGenerator
 
 from sqlalchemy import Column, Integer
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -6,14 +6,12 @@ from sqlalchemy.orm import declarative_base, declared_attr, sessionmaker
 
 from app.core.config import settings
 
-Self = TypeVar("Self", bound="PreBase")
-
 
 class PreBase:
 
-    @declared_attr
-    def __tablename__(self: Self) -> str:
-        return self.__name__.lower()
+    @declared_attr  # type: ignore
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower()
 
     id = Column(Integer, primary_key=True)
 
