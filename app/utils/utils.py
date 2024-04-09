@@ -14,3 +14,8 @@ async def _get_videos(category: str) -> list[FSInputFile]:
 # TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
 async def _get_banner(menu_name: str) -> FSInputFile:
     return FSInputFile(BASE_DIR.joinpath('static', menu_name + '.jpg'))
+
+
+# TODO: продумать момент хранения графиков каллоража/ директория/ названия
+async def _get_calorie_plot() -> FSInputFile:
+    return FSInputFile(BASE_DIR.joinpath('static/calorie_plots', 'plot01.jpg'))
