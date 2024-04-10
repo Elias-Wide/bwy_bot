@@ -1,11 +1,7 @@
-from typing import TypeVar
-
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 from app.core.db import Base
-
-Self = TypeVar("Self", bound=None)
 
 
 class Sleep(Base):
@@ -18,5 +14,5 @@ class Sleep(Base):
 
     user = relationship('User', back_populates='sleep')
 
-    def __str__(self: Self) -> str:
+    def __str__(self) -> str:
         return f'#{self.id}: {self.sleep_duration}'

@@ -12,7 +12,7 @@ Self = TypeVar("Self", bound="CRUDBase")
 
 class CRUDBase:
 
-    def __init__(self: Self, model: BaseModel) -> NoReturn:
+    def __init__(self, model: BaseModel) -> NoReturn:
         self.model = model
 
     async def get(
