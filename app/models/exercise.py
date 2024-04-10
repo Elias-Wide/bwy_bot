@@ -4,6 +4,7 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import ChoiceType
 
+from app.core.config import UPLOAD_DIR
 from app.core.constants import (
     ACTIVITY_PURPOSE,
     AM_NOON_PM,
@@ -12,7 +13,7 @@ from app.core.constants import (
 )
 from app.core.db import Base
 
-storage = FileSystemStorage(path='./upload')
+storage = FileSystemStorage(path=UPLOAD_DIR)
 
 
 class Exercise(Base):
