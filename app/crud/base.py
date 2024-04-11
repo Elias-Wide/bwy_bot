@@ -1,4 +1,4 @@
-from typing import Any, NoReturn, Optional, Sequence, TypeVar
+from typing import Any, Optional, Sequence
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -7,16 +7,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import User
 
-Self = TypeVar("Self", bound="CRUDBase")
-
 
 class CRUDBase:
 
-    def __init__(self, model: BaseModel) -> NoReturn:
+    def __init__(self, model: BaseModel) -> None:
         self.model = model
 
     async def get(
-        self: Self,
+        self,
         obj_id: int,
         session: AsyncSession,
     ) -> Any | None:
@@ -25,12 +23,12 @@ class CRUDBase:
         )
         return db_obj.scalars().first()
 
-    async def get_multi(self: Self, session: AsyncSession) -> Sequence:
+    async def get_multi(self, session: AsyncSession) -> Sequence:
         db_objs = await session.execute(select(self.model))
         return db_objs.scalars().all()
 
     async def create(
-        self: Self,
+        self,
         obj_in: object,
         session: AsyncSession,
         user: Optional[User] = None,
@@ -45,7 +43,7 @@ class CRUDBase:
         return db_obj
 
     async def update(
-        self: Self,
+        self,
         db_obj: object,
         obj_in: object,
         session: AsyncSession,
@@ -62,7 +60,7 @@ class CRUDBase:
         return db_obj
 
     async def remove(
-        self: Self,
+        self,
         db_obj: object,
         session: AsyncSession,
     ) -> object:
@@ -71,7 +69,7 @@ class CRUDBase:
         return db_obj
 
     async def get_by_attribute(
-        self: Self,
+        self,
         attr_name: str,
         attr_value: str,
         session: AsyncSession,
