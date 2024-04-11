@@ -11,7 +11,11 @@ from app.keyboards import (
     get_workout_select_btns,
     get_calories_btns,
 )
-from app.utils.utils import _get_banner, _get_videos, _get_calorie_plot
+from app.utils.utils import (
+    _get_banner,
+    _get_videos,
+    _get_calorie_plot,
+    _calculation_of_calories)
 
 logger = get_logger(__name__)
 
@@ -66,12 +70,7 @@ async def calorie_counter(
     menu_name: str,
 ) -> tuple[InputMediaPhoto]:
     """Ответ по каллоражу на день."""
-    res = 1200
-    '''group =
-    match group:
-        case 0:
-            res =
-        case 2:'''
+    res = await _calculation_of_calories()
     return (
         InputMediaPhoto(
             media=await _get_calorie_plot(),
