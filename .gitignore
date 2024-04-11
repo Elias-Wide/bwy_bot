@@ -150,7 +150,6 @@ dmypy.json
 # static/
 posts/static/
 =======
-static/
 >>>>>>> feature/add-table-fields-DB
 media/
 upload/
