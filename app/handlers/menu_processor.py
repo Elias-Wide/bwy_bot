@@ -6,16 +6,17 @@ from aiogram.types import (
 
 from app.core.logging import get_logger
 from app.keyboards import (
+    get_calories_btns,
     get_main_menu_btns,
     get_workout_bts,
     get_workout_select_btns,
-    get_calories_btns,
 )
 from app.utils.utils import (
+    _calculation_of_calories,
     _get_banner,
     _get_videos,
     _get_calorie_plot,
-    _calculation_of_calories)
+)
 
 logger = get_logger(__name__)
 
