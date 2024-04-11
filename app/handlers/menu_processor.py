@@ -6,11 +6,17 @@ from aiogram.types import (
 
 from app.core.logging import get_logger
 from app.keyboards import (
+    get_calories_btns,
     get_main_menu_btns,
     get_workout_bts,
     get_workout_select_btns,
 )
-from app.utils.utils import _get_banner, _get_videos
+from app.utils.utils import (
+    _calculation_of_calories,
+    _get_banner,
+    _get_videos,
+    _get_calorie_plot,
+)
 
 logger = get_logger(__name__)
 
@@ -60,6 +66,21 @@ async def workout_menu(
     return video, keyboard
 
 
+async def calorie_counter(
+    level: int,
+    menu_name: str,
+) -> tuple[InputMediaPhoto]:
+    """Ответ по каллоражу на день."""
+    res = await _calculation_of_calories()
+    return (
+        InputMediaPhoto(
+            media=await _get_calorie_plot(),
+            caption=f'Ваша норма калорий на день {res} Ккал',
+        ),
+        get_calories_btns(level=level),
+    )
+
+
 async def get_menu_content(
     level: int,
     menu_name: str,
@@ -67,6 +88,8 @@ async def get_menu_content(
     """Диспетчер меню."""
     match level:
         case 0:
+            if menu_name == 'diet':
+                return await calorie_counter(level, menu_name)
             return await main_menu(level, menu_name)
         case 1:
             return await workout_category_menu(level, menu_name)
