@@ -25,9 +25,9 @@ dependencies = [
     "pydantic-settings==2.2.1",
     "lexicon==2.0.1",
     "sqladmin==0.16.1",
-    "fastapi_storages==0.3.0",
+    "fastapi-storages==0.3.0",
     "aiosqlite==0.20.0",
-    "fastapi_users_db_sqlalchemy==6.0.1",
+    "fastapi-users-db-sqlalchemy==6.0.1",
     "SQLAlchemy-Utils==0.41.2",
 ]
 
@@ -38,6 +38,7 @@ dev = [
     "Flake8-pyproject",
     "flake8-annotations",
     "flake8-commas",
+    "flake8-docstrings",
     "isort",
     "mypy",
     "mypy-extensions",
@@ -58,14 +59,24 @@ extend-exclude = [
     "env/"
 ]
 ignore = [
-    "W503",
-    "D100",
-    "D205",
-    "D401"
+    "ANN101",  # missing type annotation for self in method
+    "ANN102",  # missing type annotation for cls in classmethod
+    "D100",  # missing docstring in public module
+    "D101",  # missing docstring in public class
+    "D102",  # missing docstring in public method
+    "D103",  # missing docstring in public function
+    "D104",  # missing docstring in public package
+    "D105",  # missing docstring in magic method
+    "D106",  # missing docstring in public nested class
+    "D107",  # missing docstring in __init__
+    "W503",  # line break before binary operator
 ]
 max-complexity = 10
 max-line-length = 79
-per-file-ignores = ["__init__.py:F401"]
+per-file-ignores = [
+    "__init__.py:F401",  # %r imported but unused
+    "db.py:N805",  # first argument of a method should be named 'self'
+]
 
 [tool.isort]
 profile = "black"
@@ -89,7 +100,11 @@ warn_redundant_casts = true
 warn_unused_configs = true
 warn_unreachable = true
 warn_no_return = true
-mypy_path = "app"
+disable_error_code = [
+    "attr-defined",
+    "call-overload",
+    "var-annotated",
+]
 
 [tool.pytest.ini_options]
 pythonpath = "app/"

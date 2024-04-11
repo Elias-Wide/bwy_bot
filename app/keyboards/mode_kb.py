@@ -1,6 +1,15 @@
+from typing import TypeAlias
+
 from aiogram.filters.callback_data import CallbackData
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    ReplyKeyboardMarkup,
+)
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+
+
+KeyboardMarkup: TypeAlias = InlineKeyboardMarkup | ReplyKeyboardMarkup
 
 
 BUTTONS = {'Сон💤': 'sleep', 'Питание🥦': 'diet', 'Тренировки🏋‍♂️': 'workouts'}
@@ -24,7 +33,7 @@ def get_main_menu_btns(
     *,
     level: int,
     sizes: tuple[int] = (2,),
-) -> InlineKeyboardMarkup:
+) -> KeyboardMarkup:
     """Генератор клавиатуры главного меню."""
     keyboard = InlineKeyboardBuilder()
 

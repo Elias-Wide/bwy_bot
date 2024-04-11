@@ -1,19 +1,23 @@
 from aiogram import Bot, Dispatcher, types
+from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 from fastapi import FastAPI
 from sqladmin import Admin
 
 from app.admin.view import (  # TODO: from app.admin.auth import AdminAuth
     AnswerAdmin,
-    FileAdmin,
+    CourseAdmin,
+    ExerciseAdmin,
     QuestionAdmin,
+    SheduleAdmin,
     SleepAdmin,
     UserAdmin,
 )
 from app.core.config import settings
-from app.core.db import engine
+from app.core.db import AsyncSessionLocal, engine, get_async_session
 from app.core.logging import get_logger
 from app.handlers.routers import main_router
 from app.keyboards.main_menu import set_main_menu
+from app.middlewares import DbSessionMiddleware
 
 WEBHOOK_PATH = f'/bot/{settings.telegram_bot_token}'
 WEBHOOK_URL = f'{settings.webhook_host}{WEBHOOK_PATH}'
@@ -25,6 +29,9 @@ logger.info('App starting up')
 
 bot = Bot(token=settings.telegram_bot_token, parse_mode='HTML')
 dp = Dispatcher()
+async_session = get_async_session()
+dp.update.middleware(DbSessionMiddleware(session_pool=AsyncSessionLocal))
+dp.callback_query.middleware(CallbackAnswerMiddleware())
 dp.include_router(main_router)
 
 admin = Admin(
@@ -32,7 +39,9 @@ admin = Admin(
     engine=engine,  # TODO: authentication_backend=authentication_backend
 )
 admin.add_view(UserAdmin)
-admin.add_view(FileAdmin)
+admin.add_view(ExerciseAdmin)
+admin.add_view(CourseAdmin)
+admin.add_view(SheduleAdmin)
 admin.add_view(QuestionAdmin)
 admin.add_view(AnswerAdmin)
 admin.add_view(SleepAdmin)

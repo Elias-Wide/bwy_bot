@@ -1,11 +1,7 @@
-from typing import TypeVar
-
 from sqlalchemy import Column, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 
 from app.core.db import Base
-
-Self = TypeVar("Self", bound=None)
 
 
 class Question(Base):
@@ -14,7 +10,7 @@ class Question(Base):
 
     possibleanswer = relationship('PossibleAnswer', back_populates='question')
 
-    def __str__(self: Self) -> str:
+    def __str__(self) -> str:
         return f' #{self.text}'
 
 
@@ -23,5 +19,5 @@ class PossibleAnswer(Base):
 
     question = relationship('Question', back_populates='possibleanswer')
 
-    def __str__(self: Self) -> str:
+    def __str__(self) -> str:
         return f' #{self.text}'

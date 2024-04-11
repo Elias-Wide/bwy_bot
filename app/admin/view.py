@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from app.models.file import File
+from app.models.exercise import Course, Exercise, Shedule
 from app.models.questionnaire import PossibleAnswer, Question
 from app.models.sleep import Sleep
 from app.models.user import User
@@ -17,8 +17,23 @@ class UserAdmin(ModelView, model=User):
     icon = 'fa-solid fa-user'
 
 
-class FileAdmin(ModelView, model=File):
-    column_list = [File.id, File.workout_type, File.file]
+class ExerciseAdmin(ModelView, model=Exercise):
+    column_list = [c.name for c in Exercise.__table__.c]
+    icon = 'fa fa-file'
+
+
+class CourseAdmin(ModelView, model=Course):
+    column_list = [c.name for c in Course.__table__.c] + [
+        Course.exercise,
+    ]
+
+    icon = 'fa fa-file'
+
+
+class SheduleAdmin(ModelView, model=Shedule):
+    column_list = [c.name for c in Shedule.__table__.c] + [
+        Shedule.user,
+    ]
     icon = 'fa fa-file'
 
 
