@@ -1,3 +1,3 @@
 from .db import DbSessionMiddleware
 
-__all__ = ["DbSessionMiddleware"]
+__all__ = ['DbSessionMiddleware']
