@@ -1,9 +1,6 @@
 from aiogram.types import FSInputFile
 
 from app.core.config import BASE_DIR
-from app.core.logging import get_logger
-
-logger = get_logger(__name__)
 
 
 async def _get_videos(category: str) -> list[FSInputFile]:
@@ -18,8 +15,9 @@ async def _get_banner(menu_name: str) -> FSInputFile:
 
 # TODO: продумать момент хранения графиков каллоража/ директория/ названия
 async def _get_calorie_plot() -> FSInputFile:
-    return FSInputFile(BASE_DIR.joinpath(
-        'static/calorie_plots', 'plot' + '01' + '.jpg'))
+    return FSInputFile(
+        BASE_DIR.joinpath('static/calorie_plots', 'plot' + '01' + '.jpg'),
+    )
 
 
 async def _calculation_of_calories() -> int:
