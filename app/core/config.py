@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     database_url: str = 'sqlite+aiosqlite:///./fastapi.db'
     username: str = 'mail@mail.ru'
     password: str = '***********'
+    admin_auth_secret: str = '*********************'
 
     class Config:
         env_file = '.env'
