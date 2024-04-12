@@ -45,31 +45,18 @@ def get_workout_select_btns(
 def get_workout_bts(
     *,
     level: int,
-    sizes: tuple[int] = (2, 1),
+    menu_name: str,
+    sizes: tuple[int] = (1,),
 ) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
 
-    for text, menu_name in BUTTONS['pagination'].items():
-        if menu_name == 'backward':
-            keyboard.add(
-                InlineKeyboardButton(
-                    text=text,
-                    callback_data=MenuCallBack(
-                        level=level,
-                        menu_name=menu_name,
-                    ).pack(),
-                ),
-            )
-        elif menu_name == 'forward':
-            keyboard.add(
-                InlineKeyboardButton(
-                    text=text,
-                    callback_data=MenuCallBack(
-                        level=level,
-                        menu_name=menu_name,
-                    ).pack(),
-                ),
-            )
+    keyboard.add(InlineKeyboardButton(
+         text='След. ➡️',
+         callback_data=MenuCallBack(
+              level=level,
+              menu_name=menu_name 
+         ).pack(),
+    ))
     keyboard.add(
         InlineKeyboardButton(
             text='Завершить⛔️',

@@ -1,14 +1,16 @@
 from aiogram.types import FSInputFile
 
-from app.core.config import BASE_DIR
+from app.core.config import BASE_DIR, UPLOAD_DIR
 from app.core.logging import get_logger
 
 logger = get_logger(__name__)
 
 
-async def _get_videos(category: str) -> list[FSInputFile]:
-    content_path = BASE_DIR.parent.joinpath('upload', category)
-    return [FSInputFile(path) for path in list(content_path.glob('*.mp4'))]
+async def _get_videos() -> list[FSInputFile]:
+    return [
+        FSInputFile(path)
+        for path in list(UPLOAD_DIR.glob('*.mp4'))
+    ]
 
 
 # TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
