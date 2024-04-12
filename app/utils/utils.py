@@ -1,9 +1,6 @@
 from aiogram.types import FSInputFile
 
 from app.core.config import BASE_DIR
-from app.core.logging import get_logger
-
-logger = get_logger(__name__)
 
 
 async def _get_videos(category: str) -> list[FSInputFile]:
