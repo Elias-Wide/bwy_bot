@@ -13,8 +13,8 @@ class Settings(BaseSettings):
     webhook_mode: bool = False
     database_url: str = 'sqlite+aiosqlite:///./fastapi.db'
     username: str = 'mail@mail.ru'
-    password: str = '***********'
-    admin_auth_secret: str = '*********************'
+    password: str = 'секрет_world'
+    admin_auth_secret: str = 'Какая-то_Секret_Sting!'
 
     class Config:
         env_file = '.env'
