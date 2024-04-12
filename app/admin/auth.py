@@ -9,10 +9,10 @@ from app.models.user import User
 class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         form = await request.form()
-        username, password = form["username"], form["password"]
+        username, password = form['username'], form['password']
         print(settings.username, ' ', settings.password)
         if username == settings.username and password == settings.password:
-            request.session.update({"token": settings.admin_auth_secret})
+            request.session.update({'token': settings.admin_auth_secret})
         return True
 
     async def logout(self, request: Request) -> bool:
@@ -20,7 +20,7 @@ class AdminAuth(AuthenticationBackend):
         return True
 
     async def authenticate(self, request: Request) -> bool:
-        token = request.session.get("token")
+        token = request.session.get('token')
 
         if not token:
             return False
