@@ -10,7 +10,6 @@ class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         form = await request.form()
         username, password = form['username'], form['password']
-        print(settings.username, ' ', settings.password)
         if username == settings.username and password == settings.password:
             request.session.update({'token': settings.admin_auth_secret})
         return True
