@@ -1,6 +1,6 @@
 from aiogram.types import FSInputFile
 
-from app.core.config import BASE_DIR
+from app.core.config import BASE_DIR, UPLOAD_DIR
 
 
 async def _get_videos() -> list[FSInputFile]:
