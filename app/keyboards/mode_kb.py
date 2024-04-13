@@ -36,7 +36,7 @@ def get_main_menu_btns(
 ) -> KeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
     for text, menu_name in BUTTONS.items():
-        if menu_name == WORKOUTS:
+        if menu_name == WORKOUTS or menu_name == 'sleep':
             keyboard.add(
                 InlineKeyboardButton(
                     text=text,

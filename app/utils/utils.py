@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from aiogram.types import FSInputFile, InputMediaPhoto
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,6 +24,8 @@ from app.core.constants import (
     WEIGHT_COEF_WOMAN,
 )
 from app.models import Calorie, User
+
+from .const import USER_DATE_FORMAT
 
 
 # TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
@@ -73,3 +77,23 @@ async def calculation_of_calories(user: User) -> float:
             res * PHYS_ACTIV_KOEF[user.activity] * COEF_ADD_MASS,
             COEF_ROUND,
         )
+
+
+async def _get_sleep_banner(menu_name: str) -> FSInputFile:
+    return FSInputFile(
+        BASE_DIR.joinpath('static/sleep_banners', menu_name + '.jpg'),
+    )
+
+
+async def _go_to_bed_time() -> str:
+    return f'Ваше время отхода ко сну: {dt.now().strftime(USER_DATE_FORMAT)}'
+
+
+async def _wake_up_time() -> str:
+    return f'Вы проснулись в: {dt.now().strftime(USER_DATE_FORMAT)}'
+
+
+# async def _sleep_duration(message: Message) -> str:
+#     await message.answer("Введите количество часов (от 1 до 24):")
+#     sleep_duration = float(message.text)
+#     return f'Вы проспали: {sleep_duration} ч.'
