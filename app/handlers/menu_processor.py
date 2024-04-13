@@ -15,7 +15,7 @@ from app.utils.utils import (
     _calculation_of_calories,
     _get_banner,
     _get_calorie_plot,
-    _get_videos
+    _get_videos,
 )
 
 logger = get_logger(__name__)
@@ -27,6 +27,7 @@ async def main_menu(
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """
     Генератор главного меню.
+
     Оборачивает FSInputfile в InputMediaPhoto, получает клавиатуру и
     возвращает в хэндлер.
     """

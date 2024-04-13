@@ -3,7 +3,8 @@ from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 from fastapi import FastAPI
 from sqladmin import Admin
 
-from app.admin.view import (  # TODO: from app.admin.auth import AdminAuth
+from app.admin.auth import AdminAuth
+from app.admin.view import (
     AnswerAdmin,
     CourseAdmin,
     ExerciseAdmin,
@@ -23,7 +24,7 @@ WEBHOOK_PATH = f'/bot/{settings.telegram_bot_token}'
 WEBHOOK_URL = f'{settings.webhook_host}{WEBHOOK_PATH}'
 WEBHOOK_MODE = settings.webhook_mode
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 logger = get_logger(__name__)
 logger.info('App starting up')
 
@@ -34,9 +35,11 @@ dp.update.middleware(DbSessionMiddleware(session_pool=AsyncSessionLocal))
 dp.callback_query.middleware(CallbackAnswerMiddleware())
 dp.include_router(main_router)
 
+authentication_backend = AdminAuth(secret_key=settings.admin_auth_secret)
 admin = Admin(
     app=app,
-    engine=engine,  # TODO: authentication_backend=authentication_backend
+    engine=engine,
+    authentication_backend=authentication_backend,
 )
 admin.add_view(UserAdmin)
 admin.add_view(ExerciseAdmin)

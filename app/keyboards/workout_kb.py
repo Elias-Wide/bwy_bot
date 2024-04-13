@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.keyboards import MenuCallBack
+from app.keyboards.mode_kb import MenuCallBack
 
 BUTTONS = {
     'category': {
