@@ -34,7 +34,8 @@ async def main_menu(
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
-            caption='Wellcome в личный помощник самосовершенствования.',
+            caption='Добро пожаловать в Ваш личный помощник'
+                    ' самосовершенствования.',
         ),
         get_main_menu_btns(level=level),
     )
@@ -58,12 +59,12 @@ async def workout_menu(
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaVideo, InlineKeyboardMarkup]:
-    contents = await _get_videos(menu_name)
+    content = await _get_videos()
     video = InputMediaVideo(
-        media=contents[0],  # TODO: пагинация.
+        media=content[0],
         caption='Какое-то упражнение: описание упражнения!',
     )
-    keyboard = get_workout_bts(level=level)
+    keyboard = get_workout_bts(level=level, menu_name=menu_name)
     return video, keyboard
 
 
