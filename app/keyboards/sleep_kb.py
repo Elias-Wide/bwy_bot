@@ -54,7 +54,7 @@ def get_sleep_back_btns(
             text='ОК👍',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name=SLEEP,
+                menu_name=SleepMode.SLEEP,
             ).pack(),
         ),
     )
@@ -63,7 +63,7 @@ def get_sleep_back_btns(
             text='Назад👈',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name=SLEEP,
+                menu_name=SleepMode.SLEEP,
             ).pack(),
         ),
     )
@@ -91,7 +91,7 @@ def get_sleep_back_btns_duration(
             text='Нет👎',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name=SLEEP,
+                menu_name=SleepMode.SLEEP,
             ).pack(),
         ),
     )
@@ -100,7 +100,7 @@ def get_sleep_back_btns_duration(
             text='Назад👈',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name=SLEEP,
+                menu_name=SleepMode.SLEEP,
             ).pack(),
         ),
     )

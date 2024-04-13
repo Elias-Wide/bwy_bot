@@ -7,6 +7,10 @@ from app.keyboards import (
     get_sleep_back_btns,
     get_sleep_back_btns_duration,
     get_sleep_select_btns,
+    get_calories_btns,
+    get_main_menu_btns,
+    get_workout_bts,
+    get_workout_select_btns,
 )
 from app.handlers.callbacks import calorie_counter, select_workout, workouts
 from app.keyboards import get_main_menu_btns
@@ -105,6 +109,50 @@ async def sleep_statistic_menu(
         InputMediaPhoto(
             media=await _get_banner(menu_name),
             caption=await get_sleep_statistic(),
+        ),
+        get_sleep_back_btns(level=level),
+    )
+
+
+async def sleep_mode_menu(
+    level: int,
+    menu_name: str,
+) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
+    """Генератор меню выбора ввода данных сна."""
+    return (
+        InputMediaPhoto(
+            media=await _get_sleep_banner(menu_name),
+            caption='Выберите режим ввода данных сна?',
+        ),
+        get_sleep_select_btns(level=level),
+    )
+
+
+async def go_to_bed(
+    level: int,
+    menu_name: str,
+) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
+    """Ответ времени отхода ко сну."""
+    res = await _go_to_bed_time()
+    return (
+        InputMediaPhoto(
+            media=await _get_sleep_banner(menu_name),
+            caption=res,
+        ),
+        get_sleep_back_btns(level=level),
+    )
+
+
+async def wake_up(
+    level: int,
+    menu_name: str,
+) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
+    """Ответ времени пробуждения."""
+    res = await _wake_up_time()
+    return (
+        InputMediaPhoto(
+            media=await _get_sleep_banner(menu_name),
+            caption=res,
         ),
         get_sleep_back_btns(level=level),
     )

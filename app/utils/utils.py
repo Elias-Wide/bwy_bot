@@ -126,3 +126,9 @@ async def get_sleep_statistic() -> str:
         '12.04.2024 не менее 8 часов \n\n'
     )
     return STATISTIC_TITLE_TEXT.format(sleep_week_duration)
+
+
+async def _get_sleep_banner(menu_name: str) -> FSInputFile:
+    return FSInputFile(
+        BASE_DIR.joinpath('static/sleep_banners', menu_name + '.jpg'),
+    )
