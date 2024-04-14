@@ -17,8 +17,7 @@ from app.keyboards import create_survey_kb, get_main_menu_btns
 ACTIVITY_KEYBOARD_SIZE = (1,)
 START_URL = 't.me/{bot_username}?start=survey-canceled'
 SURVEY_COMMAND = 'survey'
-SURVEY_CANCELED = 'NO'
-SURVEY_CONFIRMED = 'YES'
+SURVEY_CONFIRMED, SURVEY_CANCELED = dict(CONFIRM).keys()
 SURVEY_RESULT = '<b>Ваша анкета готова.</b>\n🎉\n{user_data}'
 
 router = Router()
@@ -32,6 +31,7 @@ class SurveyOrder(StatesGroup):
     height_question = State()
     weight_question = State()
     age_question = State()
+    email_question = State()
 
 
 @router.message(default_state, Command(SURVEY_COMMAND))
@@ -145,8 +145,15 @@ async def ask_age(message: Message, state: FSMContext) -> None:
 
 
 @router.message(SurveyOrder.age_question)
-async def finish_survey(message: Message, state: FSMContext) -> None:
+async def ask_email(message: Message, state: FSMContext) -> None:
     await state.update_data(age=message.text.lower())
+    await message.answer(text=SURVEY_QUESTIONS[7])
+    await state.set_state(SurveyOrder.email_question)
+
+
+@router.message(SurveyOrder.email_question)
+async def finish_survey(message: Message, state: FSMContext) -> None:
+    await state.update_data(email=message.text.lower())
     await message.answer(
         text=SURVEY_RESULT.format(user_data=await state.get_data()),
         reply_markup=get_main_menu_btns(level=0),
