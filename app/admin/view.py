@@ -1,6 +1,12 @@
 from sqladmin import ModelView
 
-from app.models.exercise import Course, Exercise, Shedule
+from app.models.exercise import (
+    Course,
+    Exercise,
+    ExerciseWorkout,
+    Shedule,
+    Workout,
+)
 from app.models.questionnaire import PossibleAnswer, Question
 from app.models.sleep import Sleep
 from app.models.user import User
@@ -22,10 +28,24 @@ class ExerciseAdmin(ModelView, model=Exercise):
     icon = 'fa fa-file'
 
 
-class CourseAdmin(ModelView, model=Course):
-    column_list = [c.name for c in Course.__table__.c] + [
-        Course.exercise,
+class ExerciseWorkoutAdmin(ModelView, model=ExerciseWorkout):
+    column_list = [c.name for c in ExerciseWorkout.__table__.c] + [
+        ExerciseWorkout.workout,
+        ExerciseWorkout.exercise,
     ]
+    icon = 'fa fa-file'
+
+
+class WorkoutAdmin(ModelView, model=Workout):
+    column_list = [c.name for c in Workout.__table__.c]
+    icon = 'fa fa-file'
+
+
+class CourseAdmin(ModelView, model=Course):
+    column_list = [c.name for c in Course.__table__.c]
+    # + [
+    #     Course.set,
+    # ]
 
     icon = 'fa fa-file'
 
