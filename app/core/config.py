@@ -9,7 +9,7 @@ UPLOAD_DIR = BASE_DIR.parent / 'upload'
 class Settings(BaseSettings):
 
     telegram_bot_token: str = '**********:***********************************'
-    webhook_host: str = '****************.ngrok-free.app'
+    webhook_host: str = None
     webhook_mode: bool = False
     database_url: str = 'sqlite+aiosqlite:///./fastapi.db'
     username: str = 'mail@mail.ru'

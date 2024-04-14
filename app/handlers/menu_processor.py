@@ -35,7 +35,7 @@ async def main_menu(
         InputMediaPhoto(
             media=await _get_banner(menu_name),
             caption='Добро пожаловать в Ваш личный помощник'
-                    ' самосовершенствования.',
+            ' самосовершенствования.',
         ),
         get_main_menu_btns(level=level),
     )
