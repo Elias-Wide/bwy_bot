@@ -6,3 +6,4 @@ from app.models import Question  # noqa
 from app.models import Shedule  # noqa
 from app.models import User  # noqa;
 from app.models import Workout  # noqa
+from app.models import WorkoutCourse  # noqa

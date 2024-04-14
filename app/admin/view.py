@@ -6,6 +6,7 @@ from app.models.exercise import (
     ExerciseWorkout,
     Shedule,
     Workout,
+    WorkoutCourse,
 )
 from app.models.questionnaire import PossibleAnswer, Question
 from app.models.sleep import Sleep
@@ -20,33 +21,68 @@ class UserAdmin(ModelView, model=User):
         User.sleep,
     ]
     can_delete = False
+    column_searchable_list = [User.email, User.telegram_id, User.name]
     icon = 'fa-solid fa-user'
 
 
 class ExerciseAdmin(ModelView, model=Exercise):
-    column_list = [c.name for c in Exercise.__table__.c]
+    column_list = [Exercise.name, Exercise.descriptin, Exercise.video]
+    column_details_list = [Exercise.name, Exercise.descriptin, Exercise.video]
+    column_searchable_list = [Exercise.name, Exercise.video]
     icon = 'fa fa-file'
 
 
 class ExerciseWorkoutAdmin(ModelView, model=ExerciseWorkout):
-    column_list = [c.name for c in ExerciseWorkout.__table__.c] + [
+    name_plural = 'Exercise in  workout'
+    column_list = [ExerciseWorkout.workout_id] + [
         ExerciseWorkout.workout,
         ExerciseWorkout.exercise,
     ]
+    column_default_sort = 'workout_id'
+    column_sortable_list = [
+        ExerciseWorkout.workout_id,
+        ExerciseWorkout.id,
+    ]
+    column_searchable_list = [WorkoutCourse.workout_id]
     icon = 'fa fa-file'
 
 
 class WorkoutAdmin(ModelView, model=Workout):
-    column_list = [c.name for c in Workout.__table__.c]
+    column_list = [Workout.name, Workout.descriptin, Workout.workout_type]
+    icon = 'fa fa-file'
+    column_default_sort = 'workout_type'
+    column_searchable_list = [Workout.name, Workout.workout_type]
+    icon = 'fa fa-file'
+
+
+class WorkoutCourseAdmin(ModelView, model=WorkoutCourse):
+    name_plural = 'Workout in course'
+    column_list = [
+        WorkoutCourse.course_id,
+        WorkoutCourse.course_day,
+        WorkoutCourse.am_noon_pm,
+    ] + [
+        WorkoutCourse.workout,
+        WorkoutCourse.course,
+    ]
+    column_default_sort = 'course_day'
+    column_sortable_list = [
+        WorkoutCourse.course_id,
+        WorkoutCourse.course_day,
+    ]
+    column_searchable_list = [
+        WorkoutCourse.course_id,
+    ]
     icon = 'fa fa-file'
 
 
 class CourseAdmin(ModelView, model=Course):
-    column_list = [c.name for c in Course.__table__.c]
-    # + [
-    #     Course.set,
-    # ]
-
+    column_exclude_list = [Course.id, Course.workout_course]
+    column_searchable_list = [
+        Course.name,
+        Course.activity,
+        Course.gender,
+    ]
     icon = 'fa fa-file'
 
 

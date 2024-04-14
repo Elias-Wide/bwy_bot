@@ -75,7 +75,7 @@ def upgrade() -> None:
     sa.Column('am_noon_pm', ChoiceType(AM_NOON_PM), nullable=True),
     sa.Column('workout_id', sa.Integer(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['workout_id'], ['workout.id'], ),
+    sa.ForeignKeyConstraint(['workout_id'], ['workout.id'], name='workout_id'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )

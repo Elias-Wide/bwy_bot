@@ -19,56 +19,73 @@ storage = FileSystemStorage(path=UPLOAD_DIR)
 class Exercise(Base):
     __tablename__ = 'exercise'
     name = Column(String(255), unique=True, nullable=False)
-    descriptin = Column(Text, nullable=False)
+    descriptin = Column(Text)
     video = Column(FileType(storage=storage))
     exercise_workout = relationship(
-        "ExerciseWorkout", back_populates='exercise'
+        "ExerciseWorkout",
+        back_populates='exercise',
     )
 
     def __str__(self) -> str:
-        return f' #{self.name}'
+        return f'{self.name}'
 
 
 class Workout(Base):
     __tablename__ = 'workout'
     name = Column(String(255), unique=True, nullable=False)
-    descriptin = Column(Text, nullable=False)
+    descriptin = Column(Text)
     workout_type = Column(ChoiceType(WORKOUT_TYPE))
 
     exercise_workout = relationship(
-        'ExerciseWorkout', back_populates='workout'
+        'ExerciseWorkout',
+        back_populates='workout',
     )
-    course = relationship('Course', back_populates='workout')
+    workout_course = relationship('WorkoutCourse', back_populates='workout')
 
     def __str__(self) -> str:
-        return f' #{self.name}'
+        return f'{self.name}'
 
 
 class ExerciseWorkout(Base):
     __tablename__ = 'exercise_workout'
     exercise_id = Column(Integer(), ForeignKey("exercise.id"))
     workout_id = Column(Integer(), ForeignKey("workout.id"))
-    extra_data = Column(String(100))
+    sequence_number = Column(String(100))
+    descriptin = Column(Text)
     workout = relationship("Workout", back_populates='exercise_workout')
     exercise = relationship("Exercise", back_populates='exercise_workout')
 
     def __str__(self) -> str:
-        return f' #{self.extra_data}'
+        return f'''{self.sequence_number} -
+                workout:{self.workout_id} -
+                exercise:{self.exercise_id}'''
 
 
 class Course(Base):
     name = Column(String(255), unique=True, nullable=False)
-    descriptin = Column(Text, nullable=False)
+    descriptin = Column(Text)
     gender = Column(ChoiceType(GENDER))
     activity = Column(ChoiceType(ACTIVITY_PURPOSE))
-    corse_day = Column(Integer)
-    am_noon_pm = Column(ChoiceType(AM_NOON_PM))
-    workout_id = Column(Integer, ForeignKey('workout.id'))
-
-    workout = relationship('Workout', back_populates='course')
+    workout_course = relationship('WorkoutCourse', back_populates='course')
 
     def __str__(self) -> str:
-        return f' #{self.gender} + {self.activity}'
+        return f'{self.gender} + {self.activity}'
+
+
+class WorkoutCourse(Base):
+    __tablename__ = 'workout_course'
+    course_id = Column(Integer(), ForeignKey("course.id"))
+    workout_id = Column(Integer(), ForeignKey("workout.id"))
+    course_day = Column(Integer())
+    am_noon_pm = Column(ChoiceType(AM_NOON_PM))
+    descriptin = Column(Text)
+    workout = relationship("Workout", back_populates='workout_course')
+    course = relationship("Course", back_populates='workout_course')
+
+    def __str__(self) -> str:
+        return f'''{self.course_day} -
+                course:{self.course_id} -
+                workout:{self.workout_id}'''
 
 
 class Shedule(Base):
@@ -78,4 +95,4 @@ class Shedule(Base):
     user = relationship('User', back_populates='shedule')
 
     def __str__(self) -> str:
-        return f' #{self.user_id.name} {self.start_course }'
+        return f'{self.user_id.name} {self.start_course }'
