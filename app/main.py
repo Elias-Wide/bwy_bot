@@ -14,6 +14,7 @@ from app.admin.view import (
     SleepAdmin,
     UserAdmin,
     WorkoutAdmin,
+    WorkoutCourseAdmin,
 )
 from app.core.config import settings
 from app.core.db import AsyncSessionLocal, engine, get_async_session
@@ -47,6 +48,7 @@ admin.add_view(UserAdmin)
 admin.add_view(ExerciseAdmin)
 admin.add_view(ExerciseWorkoutAdmin)
 admin.add_view(WorkoutAdmin)
+admin.add_view(WorkoutCourseAdmin)
 admin.add_view(CourseAdmin)
 admin.add_view(SheduleAdmin)
 admin.add_view(QuestionAdmin)
