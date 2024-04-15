@@ -1,6 +1,6 @@
 from fastapi_storages import FileSystemStorage
 from fastapi_storages.integrations.sqlalchemy import FileType
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import ChoiceType
 
@@ -86,13 +86,3 @@ class WorkoutCourse(Base):
         return f'''{self.course_day} -
                 course:{self.course_id} -
                 workout:{self.workout_id}'''
-
-
-class Shedule(Base):
-    user_id = Column(Integer, ForeignKey('user.id'))
-    start_course = Column(DateTime, default=None)
-
-    user = relationship('User', back_populates='shedule')
-
-    def __str__(self) -> str:
-        return f'{self.user_id.name} {self.start_course }'

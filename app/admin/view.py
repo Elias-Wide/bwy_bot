@@ -1,20 +1,20 @@
 from sqladmin import ModelView
 
-from app.models.exercise import (
+from app.models import (
     Course,
     Exercise,
     ExerciseWorkout,
-    Shedule,
+    Schedule,
+    Sleep,
+    User,
     Workout,
     WorkoutCourse,
 )
-from app.models.questionnaire import PossibleAnswer, Question
-from app.models.sleep import Sleep
-from app.models.user import User
 
 
 class UserAdmin(ModelView, model=User):
-    column_list = [User.id, User.email, User.gender]
+    name_plural = 'Пользователи'
+    column_list = [User.id, User.email, User.gender] + [User.schedule]
     column_details_exclude_list = [
         User.hashed_password,
         User.gender,
@@ -26,6 +26,7 @@ class UserAdmin(ModelView, model=User):
 
 
 class ExerciseAdmin(ModelView, model=Exercise):
+    name_plural = 'Упражнения'
     column_list = [Exercise.name, Exercise.descriptin, Exercise.video]
     column_details_list = [Exercise.name, Exercise.descriptin, Exercise.video]
     column_searchable_list = [Exercise.name, Exercise.video]
@@ -33,7 +34,7 @@ class ExerciseAdmin(ModelView, model=Exercise):
 
 
 class ExerciseWorkoutAdmin(ModelView, model=ExerciseWorkout):
-    name_plural = 'Exercise in  workout'
+    name_plural = 'Упражнения в сете'
     column_list = [ExerciseWorkout.workout_id] + [
         ExerciseWorkout.workout,
         ExerciseWorkout.exercise,
@@ -48,6 +49,7 @@ class ExerciseWorkoutAdmin(ModelView, model=ExerciseWorkout):
 
 
 class WorkoutAdmin(ModelView, model=Workout):
+    name_plural = 'Сеты'
     column_list = [Workout.name, Workout.descriptin, Workout.workout_type]
     icon = 'fa fa-file'
     column_default_sort = 'workout_type'
@@ -56,6 +58,7 @@ class WorkoutAdmin(ModelView, model=Workout):
 
 
 class WorkoutCourseAdmin(ModelView, model=WorkoutCourse):
+    name_plural = 'Сеты в курсе тренировок'
     name_plural = 'Workout in course'
     column_list = [
         WorkoutCourse.course_id,
@@ -77,6 +80,7 @@ class WorkoutCourseAdmin(ModelView, model=WorkoutCourse):
 
 
 class CourseAdmin(ModelView, model=Course):
+    name_plural = 'Курс тренировок'
     column_exclude_list = [Course.id, Course.workout_course]
     column_searchable_list = [
         Course.name,
@@ -86,28 +90,16 @@ class CourseAdmin(ModelView, model=Course):
     icon = 'fa fa-file'
 
 
-class SheduleAdmin(ModelView, model=Shedule):
-    column_list = [c.name for c in Shedule.__table__.c] + [
-        Shedule.user,
+class ScheduleAdmin(ModelView, model=Schedule):
+    name_plural = 'Напоминания'
+    column_list = [c.name for c in Schedule.__table__.c] + [
+        Schedule.user,
     ]
     icon = 'fa fa-file'
 
 
-class QuestionAdmin(ModelView, model=Question):
-    column_list = [c.name for c in Question.__table__.c] + [
-        Question.possibleanswer,
-    ]
-    icon = 'fa fa-book'
-
-
-class AnswerAdmin(ModelView, model=PossibleAnswer):
-    column_list = [c.name for c in PossibleAnswer.__table__.c] + [
-        PossibleAnswer.question,
-    ]
-    icon = 'fa fa-book'
-
-
 class SleepAdmin(ModelView, model=Sleep):
+    name_plural = 'Сон'
     column_list = [c.name for c in Sleep.__table__.c] + [
         Sleep.user,
     ]
