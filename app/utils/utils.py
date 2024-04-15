@@ -1,6 +1,8 @@
 from aiogram.types import FSInputFile
 
 from app.core.config import BASE_DIR, UPLOAD_DIR
+from app.core.constants import PHYS_ACTIV_KOEF
+from app.models.user import User
 
 
 async def _get_videos() -> list[FSInputFile]:
@@ -19,5 +21,11 @@ async def _get_calorie_plot() -> FSInputFile:
     )
 
 
-async def _calculation_of_calories() -> int:
-    return 1200
+async def _calculation_of_calories(user: User) -> int:
+    if user.gender == 'MALE':
+        res = (88.36 + (13.4 * user.weight)
+               + (4.8 * user.height) - (5.7 * user.age))
+    else:
+        res = (447.6 + (9.2 * user.weight)
+               + (3.1 * user.height) - (4.3 * user.age))
+    return round(res * PHYS_ACTIV_KOEF[user.activity], 2)

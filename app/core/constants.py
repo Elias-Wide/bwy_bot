@@ -43,3 +43,11 @@ WORKOUT_TYPE = (
 )
 
 INTRO_SURVEY_TEXT = '<b>Здесь будет мотивирующие введение.</b>\n😜\n'
+
+PHYS_ACTIV_KOEF = {
+    'ABSENT': 1.2,
+    'INFREQUENT': 1.375,
+    'MODERATE': 1.55,
+    'INTENSE': 1.725,
+    'PROFESSIONAL': 1.9,
+}

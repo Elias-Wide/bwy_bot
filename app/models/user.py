@@ -3,7 +3,9 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import ChoiceType
 
-from app.core.constants import ACTIVITY_PURPOSE, GENDER
+from app.core.constants import (ACTIVITY_PURPOSE,
+                                GENDER,
+                                PHYSICAL_ACTIVITY)
 from app.core.db import Base
 
 
@@ -14,7 +16,8 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     age = Column(Integer, nullable=False)
     weight = Column(Integer, nullable=False)
     height = Column(Integer, nullable=False)
-    activity = Column(ChoiceType(ACTIVITY_PURPOSE))
+    activity = Column(ChoiceType(PHYSICAL_ACTIVITY))
+    purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
 
     sleep = relationship('Sleep', back_populates='user')
     schedule = relationship('Schedule', back_populates='user')

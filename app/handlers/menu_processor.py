@@ -11,6 +11,7 @@ from app.keyboards import (
     get_workout_bts,
     get_workout_select_btns,
 )
+from app.models.user import User
 from app.utils.utils import (
     _calculation_of_calories,
     _get_banner,
@@ -71,9 +72,10 @@ async def workout_menu(
 async def calorie_counter(
     level: int,
     menu_name: str,
+    user: User,
 ) -> tuple[InputMediaPhoto]:
     """Ответ по каллоражу на день."""
-    res = await _calculation_of_calories()
+    res = await _calculation_of_calories(user)
     return (
         InputMediaPhoto(
             media=await _get_calorie_plot(),
@@ -86,12 +88,13 @@ async def calorie_counter(
 async def get_menu_content(
     level: int,
     menu_name: str,
+    user: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Диспетчер меню."""
     match level:
         case 0:
             if menu_name == 'diet':
-                return await calorie_counter(level, menu_name)
+                return await calorie_counter(level, menu_name, user)
             return await main_menu(level, menu_name)
         case 1:
             return await workout_category_menu(level, menu_name)
