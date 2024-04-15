@@ -13,6 +13,7 @@ from fastapi_storages import FileSystemStorage
 from fastapi_storages.integrations.sqlalchemy import FileType
 from sqlalchemy_utils.types.choice import ChoiceType
 from app.core.constants import ACTIVITY_PURPOSE, WORKOUT_TYPE, GENDER, AM_NOON_PM
+from app.core.config import UPLOAD_DIR
 
 
 # revision identifiers, used by Alembic.
@@ -27,7 +28,7 @@ def upgrade() -> None:
     op.create_table('exercise',
     sa.Column('name', sa.String(length=255), nullable=False),
     sa.Column('descriptin', sa.Text(), nullable=False),
-    sa.Column('video', FileType(storage = FileSystemStorage(path="./upload")), nullable=True),
+    sa.Column('video', FileType(storage = FileSystemStorage(path=UPLOAD_DIR)), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
