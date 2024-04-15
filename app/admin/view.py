@@ -1,6 +1,7 @@
 from sqladmin import ModelView
 
 from app.models import (
+    Calorie,
     Course,
     Exercise,
     ExerciseWorkout,
@@ -14,7 +15,7 @@ from app.models import (
 
 class UserAdmin(ModelView, model=User):
     name_plural = 'Пользователи'
-    column_list = [User.id, User.email, User.gender] + [User.schedule]
+    column_list = [User.id, User.email, User.gender, User.schedule]
     column_details_exclude_list = [
         User.hashed_password,
         User.gender,
@@ -35,7 +36,8 @@ class ExerciseAdmin(ModelView, model=Exercise):
 
 class ExerciseWorkoutAdmin(ModelView, model=ExerciseWorkout):
     name_plural = 'Упражнения в сете'
-    column_list = [ExerciseWorkout.workout_id] + [
+    column_list = [
+        ExerciseWorkout.workout_id,
         ExerciseWorkout.workout,
         ExerciseWorkout.exercise,
     ]
@@ -64,7 +66,6 @@ class WorkoutCourseAdmin(ModelView, model=WorkoutCourse):
         WorkoutCourse.course_id,
         WorkoutCourse.course_day,
         WorkoutCourse.am_noon_pm,
-    ] + [
         WorkoutCourse.workout,
         WorkoutCourse.course,
     ]
@@ -104,3 +105,9 @@ class SleepAdmin(ModelView, model=Sleep):
         Sleep.user,
     ]
     icon = 'fa fa-book'
+
+
+class CalorieAdmin(ModelView, model=Calorie):
+    name_plural = 'Калории(картинки в static)'
+    column_list = [c.name for c in Calorie.__table__.c]
+    icon = 'fa fa-file'

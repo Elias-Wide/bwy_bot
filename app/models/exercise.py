@@ -22,7 +22,7 @@ class Exercise(Base):
     descriptin = Column(Text)
     video = Column(FileType(storage=storage))
     exercise_workout = relationship(
-        "ExerciseWorkout",
+        'ExerciseWorkout',
         back_populates='exercise',
     )
 
@@ -48,12 +48,12 @@ class Workout(Base):
 
 class ExerciseWorkout(Base):
     __tablename__ = 'exercise_workout'
-    exercise_id = Column(Integer(), ForeignKey("exercise.id"))
-    workout_id = Column(Integer(), ForeignKey("workout.id"))
+    exercise_id = Column(Integer(), ForeignKey('exercise.id'))
+    workout_id = Column(Integer(), ForeignKey('workout.id'))
     sequence_number = Column(String(100))
     descriptin = Column(Text)
-    workout = relationship("Workout", back_populates='exercise_workout')
-    exercise = relationship("Exercise", back_populates='exercise_workout')
+    workout = relationship('Workout', back_populates='exercise_workout')
+    exercise = relationship('Exercise', back_populates='exercise_workout')
 
     def __str__(self) -> str:
         return f'''{self.sequence_number} -
@@ -74,13 +74,13 @@ class Course(Base):
 
 class WorkoutCourse(Base):
     __tablename__ = 'workout_course'
-    course_id = Column(Integer(), ForeignKey("course.id"))
-    workout_id = Column(Integer(), ForeignKey("workout.id"))
+    course_id = Column(Integer(), ForeignKey('course.id'))
+    workout_id = Column(Integer(), ForeignKey('workout.id'))
     course_day = Column(Integer())
     am_noon_pm = Column(ChoiceType(AM_NOON_PM))
     descriptin = Column(Text)
-    workout = relationship("Workout", back_populates='workout_course')
-    course = relationship("Course", back_populates='workout_course')
+    workout = relationship('Workout', back_populates='workout_course')
+    course = relationship('Course', back_populates='workout_course')
 
     def __str__(self) -> str:
         return f'''{self.course_day} -
