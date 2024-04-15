@@ -84,7 +84,7 @@ def upgrade() -> None:
     sa.Column('workout_id', sa.Integer(), nullable=True),
     sa.Column('extra_data', sa.String(length=100), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['exercise_id'], ['exercise.id'], ),
+    sa.ForeignKeyConstraint(['exercise_id'], ['exercise.id'], name='exercise_id'),
     sa.ForeignKeyConstraint(['workout_id'], ['workout.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -92,14 +92,14 @@ def upgrade() -> None:
     sa.Column('text', sa.Text(), nullable=False),
     sa.Column('possibleanswer_id', sa.Integer(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['possibleanswer_id'], ['possibleanswer.id'], ),
+    sa.ForeignKeyConstraint(['possibleanswer_id'], ['possibleanswer.id'], name='possibleanswer_id'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('shedule',
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('start_course', sa.DateTime(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], name='user_id'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('sleep',
@@ -108,7 +108,7 @@ def upgrade() -> None:
     sa.Column('wake_up_time', sa.DateTime(), nullable=True),
     sa.Column('sleep_duration', sa.Float(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], name='user_id'),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

@@ -5,12 +5,10 @@ from sqladmin import Admin
 
 from app.admin.auth import AdminAuth
 from app.admin.view import (
-    AnswerAdmin,
     CourseAdmin,
     ExerciseAdmin,
     ExerciseWorkoutAdmin,
-    QuestionAdmin,
-    SheduleAdmin,
+    ScheduleAdmin,
     SleepAdmin,
     UserAdmin,
     WorkoutAdmin,
@@ -50,9 +48,7 @@ admin.add_view(ExerciseWorkoutAdmin)
 admin.add_view(WorkoutAdmin)
 admin.add_view(WorkoutCourseAdmin)
 admin.add_view(CourseAdmin)
-admin.add_view(SheduleAdmin)
-admin.add_view(QuestionAdmin)
-admin.add_view(AnswerAdmin)
+admin.add_view(ScheduleAdmin)
 admin.add_view(SleepAdmin)
 
 if WEBHOOK_MODE:

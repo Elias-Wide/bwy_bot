@@ -28,8 +28,8 @@ def upgrade() -> None:
     sa.Column('workout_id', sa.Integer(), nullable=True),
     sa.Column('course_day', sa.Integer(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['course_id'], ['course.id'], ),
-    sa.ForeignKeyConstraint(['workout_id'], ['workout.id'], ),
+    sa.ForeignKeyConstraint(['course_id'], ['course.id'], name='course_id'),
+    sa.ForeignKeyConstraint(['workout_id'], ['workout.id'], name='workout_id' ),
     sa.PrimaryKeyConstraint('id')
     )
     with op.batch_alter_table('course', schema=None) as batch_op:
@@ -48,7 +48,6 @@ def upgrade() -> None:
 
     with op.batch_alter_table('exercise_workout', schema=None) as batch_op:
         batch_op.add_column(sa.Column('sequence_number', sa.String(length=100), nullable=True))
-#        batch_op.add_column(sa.Column('am_noon_pm', sqlalchemy_utils.types.choice.ChoiceType(length=255), nullable=True))
         batch_op.add_column(sa.Column('am_noon_pm', ChoiceType(AM_NOON_PM), nullable=True))
         batch_op.drop_column('extra_data')
 
