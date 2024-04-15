@@ -5,13 +5,15 @@ from sqladmin import Admin
 
 from app.admin.auth import AdminAuth
 from app.admin.view import (
-    AnswerAdmin,
+    CalorieAdmin,
     CourseAdmin,
     ExerciseAdmin,
-    QuestionAdmin,
-    SheduleAdmin,
+    ExerciseWorkoutAdmin,
+    ScheduleAdmin,
     SleepAdmin,
     UserAdmin,
+    WorkoutAdmin,
+    WorkoutCourseAdmin,
 )
 from app.core.config import settings
 from app.core.db import AsyncSessionLocal, engine, get_async_session
@@ -43,41 +45,49 @@ admin = Admin(
 )
 admin.add_view(UserAdmin)
 admin.add_view(ExerciseAdmin)
+admin.add_view(ExerciseWorkoutAdmin)
+admin.add_view(WorkoutAdmin)
+admin.add_view(WorkoutCourseAdmin)
 admin.add_view(CourseAdmin)
-admin.add_view(SheduleAdmin)
-admin.add_view(QuestionAdmin)
-admin.add_view(AnswerAdmin)
+admin.add_view(ScheduleAdmin)
 admin.add_view(SleepAdmin)
+admin.add_view(CalorieAdmin)
+
 
 if WEBHOOK_MODE:
 
-    @app.on_event('startup')
-    async def on_startup() -> None:
-        webhook_info = await bot.get_webhook_info()
-        logger.info(WEBHOOK_MODE)
-        logger.info(WEBHOOK_URL)
-        if webhook_info.url != WEBHOOK_URL:
-            await bot.delete_webhook()
-            logger.info(WEBHOOK_URL)
-            await bot.set_webhook(
-                url=WEBHOOK_URL,
-            )
+    if settings.webhook_host:
 
-    @app.post(WEBHOOK_PATH)
-    async def bot_webhook(update: dict) -> None:
-        telegram_update = types.Update(**update)
-        await dp.feed_update(bot=bot, update=telegram_update)
+        @app.on_event('startup')
+        async def on_startup() -> None:
+            webhook_info = await bot.get_webhook_info()
+            logger.info(f'MODE = {WEBHOOK_MODE}')
+            logger.info(f'URL = {WEBHOOK_URL}')
+            if webhook_info.url != WEBHOOK_URL:
+                await bot.delete_webhook()
+                logger.info(f'URL = {WEBHOOK_URL}')
+                await bot.set_webhook(
+                    url=WEBHOOK_URL,
+                )
 
-    @app.on_event('shutdown')
-    async def on_shutdown() -> None:
-        await bot.session.close()
+        @app.post(WEBHOOK_PATH)
+        async def bot_webhook(update: dict) -> None:
+            telegram_update = types.Update(**update)
+            await dp.feed_update(bot=bot, update=telegram_update)
+
+        @app.on_event('shutdown')
+        async def on_shutdown() -> None:
+            await bot.session.close()
+
+    else:
+        pass
 
 else:
 
     @app.on_event('startup')
     async def on_startup() -> None:
-        logger.info(settings.webhook_mode)
-        logger.info(settings.telegram_bot_token)
+        logger.info(f'MODE = {WEBHOOK_MODE}')
+        logger.info(f'TOKEN = {settings.telegram_bot_token}')
         await set_main_menu(bot)
         await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot)

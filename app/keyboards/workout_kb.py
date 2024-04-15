@@ -50,13 +50,15 @@ def get_workout_bts(
 ) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
 
-    keyboard.add(InlineKeyboardButton(
-         text='След. ➡️',
-         callback_data=MenuCallBack(
-              level=level,
-              menu_name=menu_name 
-         ).pack(),
-    ))
+    keyboard.add(
+        InlineKeyboardButton(
+            text='След. ➡️',
+            callback_data=MenuCallBack(
+                level=level,
+                menu_name=menu_name,
+            ).pack(),
+        ),
+    )
     keyboard.add(
         InlineKeyboardButton(
             text='Завершить⛔️',

@@ -17,7 +17,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     activity = Column(ChoiceType(ACTIVITY_PURPOSE))
 
     sleep = relationship('Sleep', back_populates='user')
-    shedule = relationship('Shedule', back_populates='user')
+    schedule = relationship('Schedule', back_populates='user')
 
     def __str__(self) -> str:
-        return f' #{self.id}  {self.email}'
+        return f'{self.id}  {self.email}'

@@ -30,9 +30,9 @@ ACTIVITY_PURPOSE = (
 )
 
 AM_NOON_PM = (
-    ('AM', 'утро'),
-    ('NOON', 'полдень'),
-    ('PM', 'вечер'),
+    ('AM', '11:00'),
+    ('NOON', '14:00'),
+    ('PM', '19:00'),
 )
 
 WORKOUT_TYPE = (

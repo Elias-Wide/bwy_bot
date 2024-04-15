@@ -12,7 +12,5 @@ class Sleep(Base):
 
     user = relationship('User', back_populates='sleep')
 
-    user = relationship('User', back_populates='sleep')
-
     def __str__(self) -> str:
-        return f'#{self.id}: {self.sleep_duration}'
+        return f'{self.id}: {self.sleep_duration}'

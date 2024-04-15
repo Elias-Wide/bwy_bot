@@ -4,10 +4,7 @@ from app.core.config import BASE_DIR, UPLOAD_DIR
 
 
 async def _get_videos() -> list[FSInputFile]:
-    return [
-        FSInputFile(path)
-        for path in list(UPLOAD_DIR.glob('*.mp4'))
-    ]
+    return [FSInputFile(path) for path in list(UPLOAD_DIR.glob('*.mp4'))]
 
 
 # TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
