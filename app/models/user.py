@@ -30,6 +30,8 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     height = Column(Integer, nullable=False)
     activity = Column(ChoiceType(PHYSICAL_ACTIVITY))
     purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
+    activity = Column(ChoiceType(PHYSICAL_ACTIVITY))
+    purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
 
     sleep = relationship('Sleep', back_populates='user')
     schedule = relationship('Schedule', back_populates='user')
