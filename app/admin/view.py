@@ -28,8 +28,8 @@ class UserAdmin(ModelView, model=User):
 
 class ExerciseAdmin(ModelView, model=Exercise):
     name_plural = 'Упражнения'
-    column_list = [Exercise.name, Exercise.descriptin, Exercise.video]
-    column_details_list = [Exercise.name, Exercise.descriptin, Exercise.video]
+    column_list = [Exercise.name, Exercise.description, Exercise.video]
+    column_details_list = [Exercise.name, Exercise.description, Exercise.video]
     column_searchable_list = [Exercise.name, Exercise.video]
     icon = 'fa fa-file'
 
@@ -52,7 +52,7 @@ class ExerciseWorkoutAdmin(ModelView, model=ExerciseWorkout):
 
 class WorkoutAdmin(ModelView, model=Workout):
     name_plural = 'Сеты'
-    column_list = [Workout.name, Workout.descriptin, Workout.workout_type]
+    column_list = [Workout.name, Workout.description, Workout.workout_type]
     icon = 'fa fa-file'
     column_default_sort = 'workout_type'
     column_searchable_list = [Workout.name, Workout.workout_type]
@@ -61,7 +61,6 @@ class WorkoutAdmin(ModelView, model=Workout):
 
 class WorkoutCourseAdmin(ModelView, model=WorkoutCourse):
     name_plural = 'Сеты в курсе тренировок'
-    name_plural = 'Workout in course'
     column_list = [
         WorkoutCourse.course_id,
         WorkoutCourse.course_day,
@@ -85,7 +84,7 @@ class CourseAdmin(ModelView, model=Course):
     column_exclude_list = [Course.id, Course.workout_course]
     column_searchable_list = [
         Course.name,
-        Course.activity,
+        Course.purpose,
         Course.gender,
     ]
     icon = 'fa fa-file'

@@ -19,7 +19,7 @@ storage = FileSystemStorage(path=UPLOAD_DIR)
 class Exercise(Base):
     __tablename__ = 'exercise'
     name = Column(String(255), unique=True, nullable=False)
-    descriptin = Column(Text)
+    description = Column(Text)
     video = Column(FileType(storage=storage))
     exercise_workout = relationship(
         'ExerciseWorkout',
@@ -33,7 +33,7 @@ class Exercise(Base):
 class Workout(Base):
     __tablename__ = 'workout'
     name = Column(String(255), unique=True, nullable=False)
-    descriptin = Column(Text)
+    description = Column(Text)
     workout_type = Column(ChoiceType(WORKOUT_TYPE))
 
     exercise_workout = relationship(
@@ -51,7 +51,7 @@ class ExerciseWorkout(Base):
     exercise_id = Column(Integer(), ForeignKey('exercise.id'))
     workout_id = Column(Integer(), ForeignKey('workout.id'))
     sequence_number = Column(String(100))
-    descriptin = Column(Text)
+    description = Column(Text)
     workout = relationship('Workout', back_populates='exercise_workout')
     exercise = relationship('Exercise', back_populates='exercise_workout')
 
@@ -63,13 +63,13 @@ class ExerciseWorkout(Base):
 
 class Course(Base):
     name = Column(String(255), unique=True, nullable=False)
-    descriptin = Column(Text)
+    description = Column(Text)
     gender = Column(ChoiceType(GENDER))
-    activity = Column(ChoiceType(ACTIVITY_PURPOSE))
+    purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
     workout_course = relationship('WorkoutCourse', back_populates='course')
 
     def __str__(self) -> str:
-        return f'{self.gender} + {self.activity}'
+        return f'{self.gender} + {self.purpose}'
 
 
 class WorkoutCourse(Base):
@@ -78,7 +78,7 @@ class WorkoutCourse(Base):
     workout_id = Column(Integer(), ForeignKey('workout.id'))
     course_day = Column(Integer())
     am_noon_pm = Column(ChoiceType(AM_NOON_PM))
-    descriptin = Column(Text)
+    description = Column(Text)
     workout = relationship('Workout', back_populates='workout_course')
     course = relationship('Course', back_populates='workout_course')
 
