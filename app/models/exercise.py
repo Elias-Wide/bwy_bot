@@ -65,11 +65,11 @@ class Course(Base):
     name = Column(String(255), unique=True, nullable=False)
     description = Column(Text)
     gender = Column(ChoiceType(GENDER))
-    activity_purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
+    purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
     workout_course = relationship('WorkoutCourse', back_populates='course')
 
     def __str__(self) -> str:
-        return f'{self.gender} + {self.activity_purpose}'
+        return f'{self.gender} + {self.purpose}'
 
 
 class WorkoutCourse(Base):

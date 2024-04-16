@@ -61,7 +61,6 @@ class WorkoutAdmin(ModelView, model=Workout):
 
 class WorkoutCourseAdmin(ModelView, model=WorkoutCourse):
     name_plural = 'Сеты в курсе тренировок'
-    name_plural = 'Workout in course'
     column_list = [
         WorkoutCourse.course_id,
         WorkoutCourse.course_day,
@@ -85,7 +84,7 @@ class CourseAdmin(ModelView, model=Course):
     column_exclude_list = [Course.id, Course.workout_course]
     column_searchable_list = [
         Course.name,
-        Course.activity_purpose,
+        Course.purpose,
         Course.gender,
     ]
     icon = 'fa fa-file'
