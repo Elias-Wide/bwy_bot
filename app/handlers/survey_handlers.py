@@ -16,10 +16,8 @@ from app.core.constants import (
     SURVEY_QUESTIONS,
 )
 from app.filters.survey_filters import (
-    filter_invalid_age,
+    HumanParameterFilter,
     filter_invalid_email,
-    filter_invalid_height,
-    filter_invalid_weight,
 )
 from app.keyboards import create_survey_kb, get_main_menu_btns
 
@@ -143,23 +141,32 @@ async def ask_height(
     await state.set_state(SurveyOrder.height_question)
 
 
-@router.message(SurveyOrder.height_question, filter_invalid_height)
-async def ask_weight(message: Message, state: FSMContext) -> None:
-    await state.update_data(height=int(message.text))
+@router.message(
+    SurveyOrder.height_question,
+    HumanParameterFilter(ALLOWED_HEIGHT_RANGE),
+)
+async def ask_weight(message: Message, state: FSMContext, value: int) -> None:
+    await state.update_data(height=value)
     await message.answer(text=SURVEY_QUESTIONS[5])
     await state.set_state(SurveyOrder.weight_question)
 
 
-@router.message(SurveyOrder.weight_question, filter_invalid_weight)
-async def ask_age(message: Message, state: FSMContext) -> None:
-    await state.update_data(weight=int(message.text))
+@router.message(
+    SurveyOrder.weight_question,
+    HumanParameterFilter(ALLOWED_WEIGHT_RANGE),
+)
+async def ask_age(message: Message, state: FSMContext, value: int) -> None:
+    await state.update_data(weight=value)
     await message.answer(text=SURVEY_QUESTIONS[6])
     await state.set_state(SurveyOrder.age_question)
 
 
-@router.message(SurveyOrder.age_question, filter_invalid_age)
-async def ask_email(message: Message, state: FSMContext) -> None:
-    await state.update_data(age=int(message.text))
+@router.message(
+    SurveyOrder.age_question,
+    HumanParameterFilter(ALLOWED_AGE_RANGE),
+)
+async def ask_email(message: Message, state: FSMContext, value: int) -> None:
+    await state.update_data(age=value)
     await message.answer(text=SURVEY_QUESTIONS[7])
     await state.set_state(SurveyOrder.email_question)
 

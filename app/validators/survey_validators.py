@@ -13,14 +13,13 @@ def validate_number_value(
     valid_range: tuple[int, int],
 ) -> int | None:
     try:
-        value = int(value)
+        number_value = int(value)
     except ValueError:
         raise DisallowedHumanParameterError(
             INVALID_LITERAL_ERROR.format(value),
         )
-    min_value, max_value = valid_range
-    if min_value > value or value > max_value:
+    if number_value not in range(*valid_range):
         raise DisallowedHumanParameterError(
-            OUT_OF_ALLOWED_RANGE_ERROR.format(value, min_value, max_value),
+            OUT_OF_ALLOWED_RANGE_ERROR.format(number_value, *valid_range),
         )
-    return value
+    return number_value
