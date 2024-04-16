@@ -17,11 +17,14 @@ logger = get_logger(__name__)
 @router.message(CommandStart(), SurveyOrder.finished)
 async def process_start_command(message: Message, state: FSMContext) -> None:
     """Хэндлер команды '/start'."""
-    user = await session.get(User, 1)
+    user = await session.execute(select(User).where(
+        User.telegram_id == message.chat.id))
+    user = user.scalars().first()
     media, reply_markup = await get_menu_content(
         level=0,
         menu_name='main',
-        user=user)
+        user=user,
+        session=session)
     await message.answer_photo(
         photo=media.media,
         caption=media.caption,
@@ -37,11 +40,14 @@ async def user_menu(
     callback_data: MenuCallBack,
     session: AsyncSession,
 ) -> None:
-    user = await session.get(User, 1)
+    user = await session.execute(select(User).where(
+        User.telegram_id == callback.from_user.id))
+    user = user.scalars().first()
     media, reply_markup = await get_menu_content(
         level=callback_data.level,
         menu_name=callback_data.menu_name,
         user=user,
+        session=session,
     )
     if isinstance(media, InputMediaVideo):
         async with ChatActionSender.upload_video(
