@@ -81,7 +81,7 @@ async def calculation_of_calories(user: User) -> float:
 
 async def _get_sleep_banner(menu_name: str) -> FSInputFile:
     return FSInputFile(
-        BASE_DIR.joinpath('static/sleep_banners', menu_name + '.jpg'),
+        BASE_DIR.joinpath('static/', menu_name + '.jpg'),
     )
 
 
