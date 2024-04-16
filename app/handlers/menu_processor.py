@@ -1,8 +1,4 @@
-from aiogram.types import (
-    InlineKeyboardMarkup,
-    InputMediaPhoto,
-    InputMediaVideo,
-)
+from aiogram.types import InlineKeyboardMarkup, InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import DIET
@@ -10,16 +6,13 @@ from app.core.logging import get_logger
 from app.keyboards import (
     get_calories_btns,
     get_main_menu_btns,
-    get_workout_bts,
-    get_workout_select_btns,
 )
 from app.models.user import User
 from app.utils.utils import (
     _get_banner,
-    _get_videos,
-    calculation_of_calories,
     get_calorie_plot,
 )
+from app.handlers.callbacks.workout import workout_category_menu, workouts
 
 logger = get_logger(__name__)
 
@@ -44,33 +37,6 @@ async def main_menu(
     )
 
 
-async def workout_category_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Генератор меню выбора группы тренировки."""
-    return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption='Какой вид тренировки предпочитаете?',
-        ),
-        get_workout_select_btns(level=level),
-    )
-
-
-async def workout_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaVideo, InlineKeyboardMarkup]:
-    content = await _get_videos()
-    video = InputMediaVideo(
-        media=content[0],
-        caption='Какое-то упражнение: описание упражнения!',
-    )
-    keyboard = get_workout_bts(level=level, menu_name=menu_name)
-    return video, keyboard
-
-
 async def calorie_counter(
     level: int,
     user: User,
@@ -88,10 +54,12 @@ async def calorie_counter(
 
 
 async def get_menu_content(
+    session: AsyncSession,
     level: int,
     menu_name: str,
     user: User,
-    session: AsyncSession,
+    workout_group: int | None = None,
+    page: int | None = None,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Диспетчер меню."""
     match level:
@@ -100,6 +68,6 @@ async def get_menu_content(
                 return await calorie_counter(level, user, session)
             return await main_menu(level, menu_name)
         case 1:
-            return await workout_category_menu(level, menu_name)
+            return await workout_category_menu(session, level, menu_name)
         case 2:
-            return await workout_menu(level, menu_name)
+            return await workouts(session, level, workout_group, page)

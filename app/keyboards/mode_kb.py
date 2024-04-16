@@ -24,6 +24,8 @@ class MenuCallBack(CallbackData, prefix='menu'):
 
     level: int
     menu_name: str
+    workout_group: int | None = None
+    page: int = 1
 
 
 def get_main_menu_btns(

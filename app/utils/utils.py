@@ -2,7 +2,7 @@ from aiogram.types import FSInputFile
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import BASE_DIR, UPLOAD_DIR
+from app.core.config import BASE_DIR
 from app.core.constants import (
     ACTIVITY_PURPOSE,
     AGE_COEF_MAN,
@@ -20,10 +20,6 @@ from app.core.constants import (
     WEIGHT_COEF_WOMAN,
 )
 from app.models import Calorie, User
-
-
-async def _get_videos() -> list[FSInputFile]:
-    return [FSInputFile(path) for path in list(UPLOAD_DIR.glob('*.mp4'))]
 
 
 # TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
