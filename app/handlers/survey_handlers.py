@@ -6,19 +6,29 @@ from aiogram.types import CallbackQuery, Message
 
 from app.core.constants import (
     ACTIVITY_PURPOSE,
+    ALLOWED_AGE_RANGE,
+    ALLOWED_HEIGHT_RANGE,
+    ALLOWED_WEIGHT_RANGE,
     CONFIRM,
     GENDER,
     INTRO_SURVEY_TEXT,
     PHYSICAL_ACTIVITY,
     SURVEY_QUESTIONS,
 )
+from app.filters.survey_filters import (
+    HumanParameterFilter,
+    filter_invalid_email,
+)
 from app.keyboards import create_survey_kb, get_main_menu_btns
 
 ACTIVITY_KEYBOARD_SIZE = (1,)
+INVALID_NUM_MESSAGE = (
+    'Введите целое число в диапазоне от {} до {} включительно'
+)
+INVALID_EMAIL_MESSAGE = 'Ошибка при вводе email. Попробуйте снова.'
 START_URL = 't.me/{bot_username}?start=survey-canceled'
 SURVEY_COMMAND = 'survey'
-SURVEY_CANCELED = 'NO'
-SURVEY_CONFIRMED = 'YES'
+SURVEY_CONFIRMED, SURVEY_CANCELED = dict(CONFIRM).keys()
 SURVEY_RESULT = '<b>Ваша анкета готова.</b>\n🎉\n{user_data}'
 
 router = Router()
@@ -32,6 +42,7 @@ class SurveyOrder(StatesGroup):
     height_question = State()
     weight_question = State()
     age_question = State()
+    email_question = State()
 
 
 @router.message(default_state, Command(SURVEY_COMMAND))
@@ -130,25 +141,71 @@ async def ask_height(
     await state.set_state(SurveyOrder.height_question)
 
 
-@router.message(SurveyOrder.height_question)
-async def ask_weight(message: Message, state: FSMContext) -> None:
-    await state.update_data(height=message.text.lower())
+@router.message(
+    SurveyOrder.height_question,
+    HumanParameterFilter(ALLOWED_HEIGHT_RANGE),
+)
+async def ask_weight(message: Message, state: FSMContext, value: int) -> None:
+    await state.update_data(height=value)
     await message.answer(text=SURVEY_QUESTIONS[5])
     await state.set_state(SurveyOrder.weight_question)
 
 
-@router.message(SurveyOrder.weight_question)
-async def ask_age(message: Message, state: FSMContext) -> None:
-    await state.update_data(weight=message.text.lower())
+@router.message(
+    SurveyOrder.weight_question,
+    HumanParameterFilter(ALLOWED_WEIGHT_RANGE),
+)
+async def ask_age(message: Message, state: FSMContext, value: int) -> None:
+    await state.update_data(weight=value)
     await message.answer(text=SURVEY_QUESTIONS[6])
     await state.set_state(SurveyOrder.age_question)
 
 
-@router.message(SurveyOrder.age_question)
+@router.message(
+    SurveyOrder.age_question,
+    HumanParameterFilter(ALLOWED_AGE_RANGE),
+)
+async def ask_email(message: Message, state: FSMContext, value: int) -> None:
+    await state.update_data(age=value)
+    await message.answer(text=SURVEY_QUESTIONS[7])
+    await state.set_state(SurveyOrder.email_question)
+
+
+@router.message(SurveyOrder.email_question, filter_invalid_email)
 async def finish_survey(message: Message, state: FSMContext) -> None:
-    await state.update_data(age=message.text.lower())
+    await state.update_data(
+        email=message.text,
+        telegram_id=message.from_user.id,
+        name=message.from_user.first_name,
+    )
     await message.answer(
         text=SURVEY_RESULT.format(user_data=await state.get_data()),
         reply_markup=get_main_menu_btns(level=0),
     )
     await state.clear()
+
+
+@router.message(SurveyOrder.height_question)
+async def handle_invalid_height_message(message: Message) -> None:
+    await message.answer(
+        text=INVALID_NUM_MESSAGE.format(*ALLOWED_HEIGHT_RANGE),
+    )
+
+
+@router.message(SurveyOrder.weight_question)
+async def handle_invalid_weight_message(message: Message) -> None:
+    await message.answer(
+        text=INVALID_NUM_MESSAGE.format(*ALLOWED_WEIGHT_RANGE),
+    )
+
+
+@router.message(SurveyOrder.age_question)
+async def handle_invalid_age_message(message: Message) -> None:
+    await message.answer(
+        text=INVALID_NUM_MESSAGE.format(*ALLOWED_AGE_RANGE),
+    )
+
+
+@router.message(SurveyOrder.email_question)
+async def handle_invalid_email_message(message: Message) -> None:
+    await message.answer(text=INVALID_EMAIL_MESSAGE)
