@@ -12,7 +12,7 @@ storage = FileSystemStorage(path=STATIC_DIR)
 
 class Calorie(Base):
     gender = Column(ChoiceType(GENDER))
-    activity = Column(ChoiceType(ACTIVITY_PURPOSE))
+    activity_purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
     picture = Column(FileType(storage=storage))
 
     def __str__(self) -> str:
