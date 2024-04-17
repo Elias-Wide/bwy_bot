@@ -94,7 +94,7 @@ async def _wake_up_time() -> str:
 
 
 async def _sleep_duration() -> str:
-    sleep_duration = 8.5  # вычислять
+    sleep_duration = 8.5  # TODO вычислять
     if not sleep_duration:
         sleep_duration = 8
         return (
@@ -113,3 +113,17 @@ async def _sleep_duration() -> str:
         'Мы запишем Ваши даннын о сне. '
         'Напоминаем, рекомендуется спать не менее 8.'
     )
+
+
+async def _sleep_mode_menu() -> str:
+    sleep_week_duration = (  # TODO вычислять
+        'Коротко о Вашем сне:\n'
+        'вчера не менее 8 часов, \n'
+        'позавчера не менее 8 часов, \n'
+        '16.04.2024 не менее 8 часов, \n'
+        '15.04.2024 МЕНЕЕ 8 часов, \n'
+        '14.04.2024 МЕНЕЕ 8 часов, \n'
+        '13.04.2024 не менее 8 часов, \n'
+        '12.04.2024 не менее 8 часов \n\n'
+    )
+    return sleep_week_duration
