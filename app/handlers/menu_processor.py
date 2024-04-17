@@ -68,6 +68,6 @@ async def get_menu_content(
                 return await calorie_counter(level, user, session)
             return await main_menu(level, menu_name)
         case 1:
-            return await workout_category_menu(session, level, menu_name)
+            return await workout_category_menu(session, user, level, menu_name)
         case 2:
             return await workouts(session, level, workout_group, page)

@@ -38,10 +38,10 @@ def get_workout_select_btns(
     for group in groups:
         keyboard.add(
             InlineKeyboardButton(
-                text=group.name,
+                text=group.group.value,
                 callback_data=MenuCallBack(
                     level=level + 1,
-                    menu_name=group.slug,
+                    menu_name=group.group.code,
                     workout_group=group.id
                 ).pack()
             )

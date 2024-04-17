@@ -14,11 +14,12 @@ from app.utils.utils import _get_banner
 
 async def workout_category_menu(
     session: AsyncSession,
+    user_id: int,
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Генератор меню выбора группы тренировки."""
-    groups = await workout_crud.get_multi(session)
+    groups = await workout_crud.get_groups(session, user_id)
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
