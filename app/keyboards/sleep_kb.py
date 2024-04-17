@@ -48,6 +48,51 @@ def get_sleep_back_btns(
     keyboard = InlineKeyboardBuilder()
     keyboard.add(
         InlineKeyboardButton(
+            text='ОК👈',
+            callback_data=MenuCallBack(
+                level=level - 1,
+                menu_name='sleep',
+            ).pack(),
+        ),
+    )
+    keyboard.add(
+        InlineKeyboardButton(
+            text='Назад👈',
+            callback_data=MenuCallBack(
+                level=level - 1,
+                menu_name='sleep',
+            ).pack(),
+        ),
+    )
+    return keyboard.adjust(*sizes).as_markup()
+
+
+def get_sleep_back_btns_duration(
+    *,
+    level: int,
+    sizes: tuple[int] = (2,),
+) -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardBuilder()
+    keyboard.add(
+        InlineKeyboardButton(
+            text='Да👍',
+            callback_data=MenuCallBack(
+                level=level - 1,
+                menu_name='sleep',
+            ).pack(),
+        ),
+    )
+    keyboard.add(
+        InlineKeyboardButton(
+            text='Нет👎',
+            callback_data=MenuCallBack(
+                level=level - 1,
+                menu_name='sleep',
+            ).pack(),
+        ),
+    )
+    keyboard.add(
+        InlineKeyboardButton(
             text='Назад👈',
             callback_data=MenuCallBack(
                 level=level - 1,

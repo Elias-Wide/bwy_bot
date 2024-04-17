@@ -93,7 +93,23 @@ async def _wake_up_time() -> str:
     return f'Вы проснулись в: {dt.now().strftime(USER_DATE_FORMAT)}'
 
 
-# async def _sleep_duration(message: Message) -> str:
-#     await message.answer("Введите количество часов (от 1 до 24):")
-#     sleep_duration = float(message.text)
-#     return f'Вы проспали: {sleep_duration} ч.'
+async def _sleep_duration() -> str:
+    sleep_duration = 8.5  # вычислять
+    if not sleep_duration:
+        sleep_duration = 8
+        return (
+            f'Сагодня ночью спали: {sleep_duration} часов? '
+            'Ответьте Да или Нет. Мы запишем Ваши данные о сне '
+        )
+    if sleep_duration >= 8:
+        return (
+            f'Сагодня ночью спали: {sleep_duration} часов? '
+            'Зоровый образ жизни прежде всего. '
+            'Нажмите Да. Мы запишем Ваши данные о сне '
+        )
+    return (
+        f'Сагодня ночью спали: {sleep_duration} часов? '
+        'Нажмите Нет. Это не достаточное количество сна.'
+        'Мы запишем Ваши даннын о сне. '
+        'Напоминаем, рекомендуется спать не менее 8.'
+    )
