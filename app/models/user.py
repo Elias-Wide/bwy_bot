@@ -1,5 +1,5 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import CheckConstraint, Column, Integer, String, CheckConstraint
+from sqlalchemy import CheckConstraint, Column, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import ChoiceType
 
@@ -20,6 +20,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
         CheckConstraint('height between (%s, %s)' % ALLOWED_HEIGHT_RANGE),
         CheckConstraint('weight between (%s, %s)' % ALLOWED_WEIGHT_RANGE),
     )
+
     telegram_id = Column(Integer, unique=True, nullable=False)
     name = Column(String(100), unique=True, nullable=False)
     gender = Column(ChoiceType(GENDER))
