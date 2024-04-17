@@ -24,6 +24,7 @@ from app.utils.utils import (
     get_sleep_statistic,
     go_to_bed_time,
     wake_up_time,
+    _sleep_mode_menu,
 )
 
 logger = get_logger(__name__)
@@ -119,10 +120,11 @@ async def sleep_mode_menu(
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Генератор меню выбора ввода данных сна."""
+    res = await _sleep_mode_menu()
     return (
         InputMediaPhoto(
             media=await _get_sleep_banner(menu_name),
-            caption='Выберите режим ввода данных сна?',
+            caption=f'{res} Выберите режим ввода данных сна?',
         ),
         get_sleep_select_btns(level=level),
     )
