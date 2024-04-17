@@ -1,23 +1,27 @@
-from typing import Any, Optional, Sequence
+from typing import Any, Generic, Sequence, Type, TypeVar
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import User
+from app.core.db import Base
+
+ModelType = TypeVar('ModelType', bound=Base)
+CreateSchemaType = TypeVar('CreateSchemaType', bound=BaseModel)
+UpdateSchemaType = TypeVar('UpdateSchemaType', bound=BaseModel)
 
 
-class CRUDBase:
+class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
-    def __init__(self, model: BaseModel) -> None:
+    def __init__(self, model: Type[ModelType]) -> None:
         self.model = model
 
     async def get(
         self,
         obj_id: int,
         session: AsyncSession,
-    ) -> Any | None:
+    ) -> ModelType | None:
         db_obj = await session.execute(
             select(self.model).where(self.model.id == obj_id),
         )
@@ -27,29 +31,24 @@ class CRUDBase:
         db_objs = await session.execute(select(self.model))
         return db_objs.scalars().all()
 
+    @staticmethod
     async def create(
-        self,
-        obj_in: object,
+        obj: ModelType,
         session: AsyncSession,
-        user: Optional[User] = None,
-    ) -> object:
-        obj_in_data = obj_in.dict()
-        if user is not None:
-            obj_in_data['user_id'] = user.id
-        db_obj = self.model(**obj_in_data)
-        session.add(db_obj)
+    ) -> ModelType:
+        session.add(obj)
         await session.commit()
-        await session.refresh(db_obj)
-        return db_obj
+        await session.refresh(obj)
+        return obj
 
+    @staticmethod
     async def update(
-        self,
-        db_obj: object,
-        obj_in: object,
+        db_obj: ModelType,
+        obj_in: UpdateSchemaType,
         session: AsyncSession,
-    ) -> object:
+    ) -> ModelType:
         obj_data = jsonable_encoder(db_obj)
-        update_data = obj_in.dict(exclude_unset=True)
+        update_data = obj_in.model_dump(exclude_unset=True)
 
         for field in obj_data:
             if field in update_data:
@@ -59,11 +58,11 @@ class CRUDBase:
         await session.refresh(db_obj)
         return db_obj
 
+    @staticmethod
     async def remove(
-        self,
-        db_obj: object,
+        db_obj: ModelType,
         session: AsyncSession,
-    ) -> object:
+    ) -> ModelType:
         await session.delete(db_obj)
         await session.commit()
         return db_obj
