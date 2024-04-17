@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup, default_state
 from aiogram.types import CallbackQuery, Message
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import (
     ACTIVITY_PURPOSE,
@@ -15,11 +18,15 @@ from app.core.constants import (
     PHYSICAL_ACTIVITY,
     SURVEY_QUESTIONS,
 )
+from app.core.logging import get_logger
+from app.crud.user import user_crud
 from app.filters.survey_filters import (
+    ExistingUserFilter,
     HumanParameterFilter,
     filter_invalid_email,
 )
 from app.keyboards import create_survey_kb, get_main_menu_btns
+from app.models import Schedule, User
 
 ACTIVITY_KEYBOARD_SIZE = (1,)
 INVALID_NUM_MESSAGE = (
@@ -32,6 +39,7 @@ SURVEY_CONFIRMED, SURVEY_CANCELED = dict(CONFIRM).keys()
 SURVEY_RESULT = '<b>Ваша анкета готова.</b>\n🎉\n{user_data}'
 
 router = Router()
+logger = get_logger(__name__)
 
 
 class SurveyOrder(StatesGroup):
@@ -45,8 +53,16 @@ class SurveyOrder(StatesGroup):
     email_question = State()
 
 
-@router.message(default_state, Command(SURVEY_COMMAND))
-async def begin_survey(message: Message, state: FSMContext) -> None:
+@router.message(default_state, Command(SURVEY_COMMAND), ExistingUserFilter())
+async def begin_survey(
+    message: Message,
+    state: FSMContext,
+    telegram_id: int,
+) -> None:
+    await state.update_data(
+        telegram_id=telegram_id,
+        name=message.from_user.first_name,
+    )
     await message.answer(
         text=INTRO_SURVEY_TEXT + SURVEY_QUESTIONS[0],
         reply_markup=await create_survey_kb(
@@ -75,7 +91,6 @@ async def ask_gender(
     callback_query: CallbackQuery,
     state: FSMContext,
 ) -> None:
-    await state.update_data(survey_confirmed=callback_query.data)
     await callback_query.message.edit_text(
         text=SURVEY_QUESTIONS[1],
         reply_markup=await create_survey_kb(
@@ -114,7 +129,7 @@ async def ask_purpose(
     callback_query: CallbackQuery,
     state: FSMContext,
 ) -> None:
-    await state.update_data(physical_activity=callback_query.data)
+    await state.update_data(activity=callback_query.data)
     await callback_query.message.edit_text(
         text=SURVEY_QUESTIONS[3],
         reply_markup=await create_survey_kb(
@@ -133,7 +148,7 @@ async def ask_height(
     callback_query: CallbackQuery,
     state: FSMContext,
 ) -> None:
-    await state.update_data(activity_purpose=callback_query.data)
+    await state.update_data(purpose=callback_query.data)
     await callback_query.message.edit_text(
         text=SURVEY_QUESTIONS[4],
         reply_markup=None,
@@ -172,16 +187,30 @@ async def ask_email(message: Message, state: FSMContext, value: int) -> None:
 
 
 @router.message(SurveyOrder.email_question, filter_invalid_email)
-async def finish_survey(message: Message, state: FSMContext) -> None:
+async def finish_survey(
+    message: Message,
+    state: FSMContext,
+    session: AsyncSession,
+) -> None:
     await state.update_data(
         email=message.text,
-        telegram_id=message.from_user.id,
-        name=message.from_user.first_name,
+        hashed_password='nkajipfncu89288)*&^guyb',
     )
+    survey_result = await state.get_data()
     await message.answer(
-        text=SURVEY_RESULT.format(user_data=await state.get_data()),
+        text=SURVEY_RESULT.format(user_data=survey_result),
         reply_markup=get_main_menu_btns(level=0),
     )
+
+    user = await user_crud.create(
+        User(
+            **survey_result,
+            schedule=[Schedule(start_course=datetime.now())],
+        ),
+        session,
+    )
+    logger.info(user)
+
     await state.clear()
 
 
