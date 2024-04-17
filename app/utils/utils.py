@@ -21,7 +21,8 @@ async def _get_banner(menu_name: str) -> FSInputFile:
 async def _get_calorie_plot(user: User, session: AsyncSession) -> FSInputFile:
     plot = await session.execute(select(Calorie.picture).where(
         Calorie.gender == user.gender,
-        Calorie.activity == user.purpose))
+        Calorie.purpose == user.purpose,
+        Calorie.activity == user.activity))
     path = plot.scalars().first()
     return FSInputFile(path)
 

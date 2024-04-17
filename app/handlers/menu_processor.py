@@ -73,7 +73,6 @@ async def workout_menu(
 
 async def calorie_counter(
     level: int,
-    menu_name: str,
     user: User,
     session: AsyncSession,
 ) -> tuple[InputMediaPhoto]:
@@ -91,14 +90,14 @@ async def calorie_counter(
 async def get_menu_content(
     level: int,
     menu_name: str,
-    user: str,
+    user: User,
     session: AsyncSession,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Диспетчер меню."""
     match level:
         case 0:
             if menu_name == 'diet':
-                return await calorie_counter(level, menu_name, user, session)
+                return await calorie_counter(level, user, session)
             return await main_menu(level, menu_name)
         case 1:
             return await workout_category_menu(level, menu_name)
