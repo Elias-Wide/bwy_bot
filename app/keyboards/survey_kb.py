@@ -6,8 +6,12 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 from app.core.constants import DEFAULT_KEYBOARD_SIZE
+
 
 
 async def create_survey_kb(
@@ -20,4 +24,5 @@ async def create_survey_kb(
         builder.add(
             InlineKeyboardButton(text=item, callback_data=callback_data),
         )
+        logger.info(f'{item}  -- {callback_data}')
     return builder.adjust(*size).as_markup()
