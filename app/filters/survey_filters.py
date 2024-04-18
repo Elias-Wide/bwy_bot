@@ -41,13 +41,10 @@ class ExistingUserFilter(BaseFilter):
         session: AsyncSession,
     ) -> bool | dict[str, int]:
         telegram_id = message.from_user.id
-        if (
-            await user_crud.get_by_attribute(
-                'telegram_id',
-                telegram_id,
-                session,
-            )
-            is None
+        if not await user_crud.get_by_attribute(
+            'telegram_id',
+            telegram_id,
+            session,
         ):
             return {'telegram_id': telegram_id}
         return False

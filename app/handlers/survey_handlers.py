@@ -1,7 +1,5 @@
-from datetime import datetime
-
 from aiogram import F, Router
-from aiogram.filters import Command, CommandStart
+from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import default_state
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
@@ -36,7 +34,6 @@ INVALID_NUM_MESSAGE = (
 )
 INVALID_EMAIL_MESSAGE = 'Ошибка при вводе email. Попробуйте снова.'
 START_URL = 't.me/{bot_username}?start=survey-canceled'
-SURVEY_COMMAND = 'survey'
 SURVEY_CONFIRMED, SURVEY_CANCELED = dict(CONFIRM).keys()
 SURVEY_RESULT = (
     '<b>Ваша анкета готова.</b>🎉\n\n'
@@ -195,7 +192,7 @@ async def finish_survey(
         await user_crud.create(
             User(
                 **survey_result,
-                schedule=[Schedule(start_course=datetime.now())],
+                schedule=[Schedule()],
             ),
             session,
         ),

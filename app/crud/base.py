@@ -1,4 +1,4 @@
-from typing import Any, Generic, Sequence, Type, TypeVar
+from typing import Generic, Sequence, Type, TypeVar
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -72,9 +72,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         attr_name: str,
         attr_value: str,
         session: AsyncSession,
-    ) -> Any | None:
-        attr = getattr(self.model, attr_name)
+    ) -> ModelType | None:
         db_obj = await session.execute(
-            select(self.model).where(attr == attr_value),
+            select(self.model).where(
+                getattr(self.model, attr_name) == attr_value,
+            ),
         )
         return db_obj.scalars().first()
