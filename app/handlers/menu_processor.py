@@ -10,6 +10,7 @@ from app.handlers.callbacks.sleep import (
     sleep_mode_menu,
     sleep_statistic_menu,
     wake_up_menu,
+    get_settings_btns,
 )
 from app.keyboards import get_main_menu_btns
 from app.models.user import User
@@ -28,6 +29,22 @@ async def main_menu(
     )
 
 
+async def settings_menu(
+        level: int,
+        menu_name: str,
+        user: User,
+        session: AsyncSession,
+) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
+    """Генератор меню выбора группы тренировки."""
+    return (
+        InputMediaPhoto(
+            media=await get_banner(menu_name),
+            caption='Здесь вы можете отключить напоминания',
+        ),
+        get_settings_btns(level=level)
+    )
+
+
 async def get_menu_content(
     level: int,
     menu_name: str,
@@ -40,6 +57,8 @@ async def get_menu_content(
         case 0:
             if menu_name == DIET:
                 return await calorie_counter(level, menu_name, user, session)
+            if menu_name == 'settings':
+                return await settings_menu(level, menu_name, user, session)
             return await main_menu(level, menu_name)
         case 1:
             if menu_name == SleepMode.SLEEP:

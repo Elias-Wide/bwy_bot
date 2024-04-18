@@ -2,6 +2,7 @@ from aiogram import Router
 
 from app.handlers import (
     echo_router,
+    settings_router,
     shedule_router,
     sleep_router,
     survey_router,
@@ -15,5 +16,6 @@ main_router.include_routers(
     survey_router,
     user_router,
     sleep_router,
+    settings_router,
     echo_router,
 )
