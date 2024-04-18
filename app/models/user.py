@@ -42,3 +42,4 @@ class User(SQLAlchemyBaseUserTable[int], Base):
             f' name={self.name}, email={self.email}'
         )
 
+
