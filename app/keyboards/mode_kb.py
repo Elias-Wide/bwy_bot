@@ -33,7 +33,6 @@ def get_main_menu_btns(
     level: int,
     sizes: tuple[int] = DEFAULT_KEYBOARD_SIZE,
 ) -> KeyboardMarkup:
-    """Генератор клавиатуры главного меню."""
     keyboard = InlineKeyboardBuilder()
     for text, menu_name in BUTTONS.items():
         if menu_name == WORKOUTS:

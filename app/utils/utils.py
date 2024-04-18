@@ -1,4 +1,4 @@
-from aiogram.types import FSInputFile
+from aiogram.types import FSInputFile, InputMediaPhoto
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,6 +9,7 @@ from app.core.constants import (
     AGE_COEF_WOMAN,
     CAL_COEF_MAN,
     CAL_KOEF_WOMAN,
+    CAPTIONS,
     COEF_ADD_MASS,
     COEF_ROUND,
     COEF_TO_SLIM,
@@ -22,9 +23,14 @@ from app.core.constants import (
 from app.models import Calorie, User
 
 
-# TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
-async def _get_banner(menu_name: str) -> FSInputFile:
-    return FSInputFile(BASE_DIR.joinpath('static', menu_name + '.jpg'))
+async def _get_banner(
+    menu_name: str,
+    level: int | None = None,
+) -> InputMediaPhoto:
+    return InputMediaPhoto(
+        media=FSInputFile(BASE_DIR.joinpath('static', menu_name + '.jpg')),
+        caption=CAPTIONS[menu_name][level] if level else CAPTIONS[menu_name]
+    )
 
 
 async def get_calorie_plot(user: User, session: AsyncSession) -> FSInputFile:

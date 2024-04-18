@@ -28,11 +28,7 @@ async def main_menu(
     возвращает в хэндлер.
     """
     return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption='Добро пожаловать в Ваш личный помощник'
-            ' самосовершенствования.',
-        ),
+        await _get_banner(menu_name),
         get_main_menu_btns(level=level),
     )
 
@@ -68,6 +64,17 @@ async def get_menu_content(
                 return await calorie_counter(level, user, session)
             return await main_menu(level, menu_name)
         case 1:
-            return await workout_category_menu(session, user, level, menu_name)
+            return await workout_category_menu(
+                session,
+                user,
+                level,
+                menu_name,
+            )
         case 2:
-            return await workouts(session, level, workout_group, page)
+            return await workouts(
+                session,
+                level,
+                menu_name,
+                workout_group,
+                page,
+            )
