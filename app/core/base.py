@@ -7,6 +7,7 @@ from app.models import (  # noqa
     Schedule,
     Sleep,
     User,
+    Sleep,
     Workout,
     WorkoutCourse,
 )

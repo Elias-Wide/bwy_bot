@@ -11,6 +11,7 @@ from app.core.constants import (
     GENDER,
     PHYSICAL_ACTIVITY,
 )
+
 from app.core.db import Base
 
 
