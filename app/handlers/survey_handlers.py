@@ -78,9 +78,10 @@ async def begin_survey(
 async def handle_survey_cancel(
     callback_query: CallbackQuery,
     state: FSMContext,
+    session: AsyncSession,
 ) -> None:
     await state.set_state(SurveyOrder.finished)
-    await return_to_main_menu(callback_query.message, state)
+    await return_to_main_menu(callback_query.message, state, session)
 
 
 @router.callback_query(SurveyOrder.consent_confirm, F.data == SURVEY_CONFIRMED)
@@ -89,7 +90,7 @@ async def ask_gender(
     state: FSMContext,
 ) -> None:
     await callback_query.message.edit_text(
-        text=SurveyQuestions.age,
+        text=SurveyQuestions.gender,
         reply_markup=await create_survey_kb(
             dict(GENDER).values(),
             dict(GENDER).keys(),
@@ -208,7 +209,7 @@ async def finish_survey(
         reply_markup=ReplyKeyboardRemove(),
     )
     await state.set_state(SurveyOrder.finished)
-    await process_start_command(message, state)
+    await process_start_command(message, state, session)
 
 
 @router.message(SurveyOrder.height_question)
