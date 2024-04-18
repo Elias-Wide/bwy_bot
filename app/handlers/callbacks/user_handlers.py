@@ -1,11 +1,13 @@
 from aiogram import Router
 from aiogram.filters import CommandStart
+from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, InputMediaVideo, Message
 from aiogram.utils.chat_action import ChatActionSender
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.logging import get_logger
 from app.handlers.menu_processor import get_menu_content
+from app.handlers.states import SurveyOrder
 from app.keyboards import MenuCallBack
 from app.models.user import User
 
@@ -14,9 +16,10 @@ router = Router()
 logger = get_logger(__name__)
 
 
-@router.message(CommandStart())
+@router.message(CommandStart(), SurveyOrder.finished)
 async def process_start_command(
     message: Message,
+    state: FSMContext,
     session: AsyncSession,
 ) -> None:
     """Хэндлер команды '/start'."""
@@ -26,6 +29,7 @@ async def process_start_command(
         caption=media.caption,
         reply_markup=reply_markup,
     )
+    await state.clear()
     user = await session.get(User, 1)
     logger.info(user)
 

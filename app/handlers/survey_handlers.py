@@ -1,9 +1,9 @@
 from datetime import datetime
 
 from aiogram import F, Router
-from aiogram.filters import Command
+from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup, default_state
+from aiogram.fsm.state import default_state
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,13 +19,14 @@ from app.core.constants import (
     SurveyQuestions,
 )
 from app.core.logging import get_logger
-from app.crud.user import user_crud
+from app.crud import user_crud
 from app.filters.survey_filters import (
     ExistingUserFilter,
     HumanParameterFilter,
     filter_invalid_email,
 )
 from app.handlers.callbacks.user_handlers import process_start_command
+from app.handlers.states import SurveyOrder
 from app.keyboards import create_survey_kb
 from app.models import Schedule, User
 
@@ -49,18 +50,7 @@ router = Router()
 logger = get_logger(__name__)
 
 
-class SurveyOrder(StatesGroup):
-    consent_confirm = State()
-    gender_question = State()
-    physical_activity_question = State()
-    purpose_question = State()
-    height_question = State()
-    weight_question = State()
-    age_question = State()
-    email_question = State()
-
-
-@router.message(default_state, Command(SURVEY_COMMAND), ExistingUserFilter())
+@router.message(default_state, CommandStart(), ExistingUserFilter())
 async def begin_survey(
     message: Message,
     state: FSMContext,
@@ -80,14 +70,14 @@ async def begin_survey(
     await state.set_state(SurveyOrder.consent_confirm)
 
 
-@router.callback_query(F.data == SURVEY_CANCELED)
+@router.message(F.data == SURVEY_CANCELED)
 async def return_to_main_menu(
-    callback_query: CallbackQuery,
+    message: Message,
     state: FSMContext,
     session: AsyncSession,
 ) -> None:
-    await state.clear()
-    await process_start_command(callback_query.message, session)
+    await state.set_state(SurveyOrder.finished)
+    await process_start_command(message, state, session)
 
 
 @router.callback_query(SurveyOrder.consent_confirm, F.data == SURVEY_CONFIRMED)
@@ -214,8 +204,8 @@ async def finish_survey(
         text=SURVEY_RESULT.format(**survey_result),
         reply_markup=ReplyKeyboardRemove(),
     )
-    await process_start_command(message, session)
-    await state.clear()
+    await state.set_state(SurveyOrder.finished)
+    await process_start_command(message, state, session)
 
 
 @router.message(SurveyOrder.height_question)
@@ -244,10 +234,11 @@ async def handle_invalid_email_message(message: Message) -> None:
     await message.answer(text=INVALID_EMAIL_MESSAGE)
 
 
-@router.message(Command(SURVEY_COMMAND), ~ExistingUserFilter())
+@router.message(CommandStart(), ~ExistingUserFilter())
 async def handle_existing_user(
-    callback_query: CallbackQuery,
+    message: Message,
     state: FSMContext,
     session: AsyncSession,
 ) -> None:
-    await return_to_main_menu(callback_query, state, session)
+    await state.set_state(SurveyOrder.finished)
+    await return_to_main_menu(message, state, session)
