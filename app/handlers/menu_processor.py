@@ -175,6 +175,21 @@ async def sleep_duration(
     )
 
 
+async def sleep_statistic(
+    level: int,
+    menu_name: str,
+) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
+    """Ввод продолжительности сна."""
+    res = await _sleep_statistic()
+    return (
+        InputMediaPhoto(
+            media=await _get_sleep_banner(menu_name),
+            caption=res,
+        ),
+        get_sleep_back_btns(level=level),
+    )
+
+
 async def get_menu_content(
     level: int,
     menu_name: str,
