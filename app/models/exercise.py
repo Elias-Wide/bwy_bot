@@ -51,7 +51,7 @@ class ExerciseWorkout(Base):
     exercise_id = Column(Integer(), ForeignKey('exercise.id'))
     workout_id = Column(Integer(), ForeignKey('workout.id'))
     sequence_number = Column(String(100))
-    description = Column(Text)
+    descriptin = Column(Text)
     workout = relationship('Workout', back_populates='exercise_workout')
     exercise = relationship('Exercise', back_populates='exercise_workout')
 
@@ -63,7 +63,7 @@ class ExerciseWorkout(Base):
 
 class Course(Base):
     name = Column(String(255), unique=True, nullable=False)
-    description = Column(Text)
+    descriptin = Column(Text)
     gender = Column(ChoiceType(GENDER))
     purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
     workout_course = relationship('WorkoutCourse', back_populates='course')
@@ -78,7 +78,7 @@ class WorkoutCourse(Base):
     workout_id = Column(Integer(), ForeignKey('workout.id'))
     course_day = Column(Integer())
     am_noon_pm = Column(ChoiceType(AM_NOON_PM))
-    description = Column(Text)
+    descriptin = Column(Text)
     workout = relationship('Workout', back_populates='workout_course')
     course = relationship('Course', back_populates='workout_course')
 

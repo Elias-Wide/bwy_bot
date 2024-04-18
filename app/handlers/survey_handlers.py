@@ -47,9 +47,11 @@ router = Router()
 logger = get_logger(__name__)
 
 
-async def return_to_main_menu(message: Message,
-                              state: FSMContext,
-                              session: AsyncSession) -> None:
+async def return_to_main_menu(
+    message: Message,
+    state: FSMContext,
+    session: AsyncSession,
+) -> None:
     await state.set_state(SurveyOrder.finished)
     await process_start_command(message, state, session)
 
@@ -239,8 +241,10 @@ async def handle_invalid_email_message(message: Message) -> None:
 
 
 @router.message(CommandStart(), ~ExistingUserFilter())
-async def handle_existing_user(message: Message,
-                               state: FSMContext,
-                               session: AsyncSession) -> None:
+async def handle_existing_user(
+    message: Message,
+    state: FSMContext,
+    session: AsyncSession,
+) -> None:
     await state.set_state(SurveyOrder.finished)
     await return_to_main_menu(message, state, session)

@@ -3,7 +3,6 @@ from aiogram.types import (
     InputMediaPhoto,
     InputMediaVideo,
 )
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.logging import get_logger
@@ -15,10 +14,10 @@ from app.keyboards import (
 )
 from app.models.user import User
 from app.utils.utils import (
-    calculation_of_calories,
     _get_banner,
-    get_calorie_plot,
     _get_videos,
+    calculation_of_calories,
+    get_calorie_plot,
 )
 
 logger = get_logger(__name__)
