@@ -1,12 +1,10 @@
 from aiogram.types import FSInputFile
-
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import BASE_DIR, UPLOAD_DIR
 from app.core.constants import PHYS_ACTIV_KOEF
-from app.models.user import User
-from app.models.calorie import Calorie
+from app.models import User, Calorie
 
 
 async def _get_videos() -> list[FSInputFile]:
@@ -19,11 +17,10 @@ async def _get_banner(menu_name: str) -> FSInputFile:
 
 
 async def _get_calorie_plot(user: User, session: AsyncSession) -> FSInputFile:
-    plot = await session.execute(select(Calorie.picture).where(
+    path = await session.scalar(select(Calorie.picture).where(
         Calorie.gender == user.gender,
         Calorie.purpose == user.purpose,
         Calorie.activity == user.activity))
-    path = plot.scalars().first()
     return FSInputFile(path)
 
 
