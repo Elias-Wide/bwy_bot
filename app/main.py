@@ -8,14 +8,12 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from app.admin.auth import AdminAuth
 from app.admin.view import (
     CalorieAdmin,
-    CourseAdmin,
     ExerciseAdmin,
-    ExerciseWorkoutAdmin,
     ScheduleAdmin,
     SleepAdmin,
     UserAdmin,
     WorkoutAdmin,
-    WorkoutCourseAdmin,
+    WorkoutExerciseAdmin,
 )
 from app.core.config import settings
 from app.core.constants import (
@@ -60,10 +58,8 @@ admin = Admin(
 )
 admin.add_view(UserAdmin)
 admin.add_view(ExerciseAdmin)
-admin.add_view(ExerciseWorkoutAdmin)
+admin.add_view(WorkoutExerciseAdmin)
 admin.add_view(WorkoutAdmin)
-admin.add_view(WorkoutCourseAdmin)
-admin.add_view(CourseAdmin)
 admin.add_view(ScheduleAdmin)
 admin.add_view(SleepAdmin)
 admin.add_view(CalorieAdmin)
