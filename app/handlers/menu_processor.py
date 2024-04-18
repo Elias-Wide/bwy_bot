@@ -17,7 +17,7 @@ from app.utils.utils import (
     _go_to_bed_time,
     _sleep_duration,
     _wake_up_time,
-    _sleep_mode_menu,
+    _sleep_statistic,
 )
 
 logger = get_logger(__name__)
@@ -38,10 +38,21 @@ async def sleep_mode_menu(
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     res = await _sleep_mode_menu()
+    """
+    Генератор меню выбора ввода данных сна.
+
+    Вывод даных о сне за последние 7 дней.
+    """
     return (
         InputMediaPhoto(
             media=await _get_sleep_banner(menu_name),
-            caption=f'{res} Выберите режим ввода данных сна?',
+            caption=(
+                'Если Вы ложитесь спать или только что проснулись, нажмите '
+                'соответствующие кнопки? Мы запишем текущее время как '
+                'время начала сна или пробуждения. '
+                'Или можете ввести сразу количество часов сегодняшнего '
+                'ночного сна.'
+            ),
         ),
         get_sleep_select_btns(level=level),
     )
@@ -92,6 +103,21 @@ async def sleep_duration(
     )
 
 
+async def sleep_statistic(
+    level: int,
+    menu_name: str,
+) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
+    """Ввод продолжительности сна."""
+    res = await _sleep_statistic()
+    return (
+        InputMediaPhoto(
+            media=await _get_sleep_banner(menu_name),
+            caption=res,
+        ),
+        get_sleep_back_btns(level=level),
+    )
+
+
 async def get_menu_content(
     level: int,
     menu_name: str,
@@ -121,6 +147,8 @@ async def get_menu_content(
                 return await wake_up(level, menu_name)
             if menu_name == 'sleep_duration':
                 return await sleep_duration(level, menu_name)
+            if menu_name == 'sleep_statistic':
+                return await sleep_statistic(level, menu_name)
             return await workouts(
                 session,
                 level,

@@ -8,6 +8,7 @@ BUTTONS = {
         'Ложусь спать': 'go_to_bed',
         'Проснулся': 'wake_up',
         'Продолжительность сна': 'sleep_duration',
+        'Статистика': 'sleep_statistic',
     },
 }
 
