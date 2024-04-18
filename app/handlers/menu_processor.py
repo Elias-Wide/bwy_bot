@@ -12,6 +12,7 @@ from app.keyboards import (
     get_main_menu_btns,
     get_workout_bts,
     get_workout_select_btns,
+    get_settings_btns,
 )
 from app.models.user import User
 from app.utils.utils import (
@@ -20,6 +21,7 @@ from app.utils.utils import (
     get_calorie_plot,
     _get_videos,
 )
+
 
 logger = get_logger(__name__)
 
@@ -49,6 +51,7 @@ async def workout_category_menu(
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Генератор меню выбора группы тренировки."""
+    logger.info(f'{level} = { menu_name}')
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
@@ -87,6 +90,22 @@ async def calorie_counter(
     )
 
 
+async def settings_menu(
+    level: int,
+    menu_name: str,
+    user: User,
+    session: AsyncSession,
+) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
+    """Генератор меню выбора группы тренировки."""
+    return (
+        InputMediaPhoto(
+            media=await _get_banner(menu_name),
+            caption='Здесь вы можете отключить напоминания',
+        ),
+        get_settings_btns(level=level)
+    )
+
+
 async def get_menu_content(
     level: int,
     menu_name: str,
@@ -96,6 +115,8 @@ async def get_menu_content(
     """Диспетчер меню."""
     match level:
         case 0:
+            if menu_name == 'settings':
+                return await settings_menu(level, menu_name, user, session)
             if menu_name == 'diet':
                 return await calorie_counter(level, user, session)
             return await main_menu(level, menu_name)
