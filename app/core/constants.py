@@ -52,6 +52,10 @@ WORKOUT_TYPE = (
 
 INTRO_SURVEY_TEXT = '<b>Здесь будет мотивирующие введение.</b>\n😜\n'
 
+ALLOWED_AGE_RANGE = (14, 55)
+ALLOWED_HEIGHT_RANGE = (100, 250)
+ALLOWED_WEIGHT_RANGE = (20, 500)
+
 PHYS_ACTIV_KOEF = {
     'ABSENT': 1.2,
     'INFREQUENT': 1.375,
