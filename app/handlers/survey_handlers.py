@@ -1,8 +1,9 @@
 from aiogram import F, Router
-from aiogram.filters import Command
+from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup, default_state
-from aiogram.types import CallbackQuery, Message
+from aiogram.fsm.state import default_state
+from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import (
     ACTIVITY_PURPOSE,
@@ -13,13 +14,19 @@ from app.core.constants import (
     GENDER,
     INTRO_SURVEY_TEXT,
     PHYSICAL_ACTIVITY,
-    SURVEY_QUESTIONS,
+    SurveyQuestions,
 )
+from app.core.logging import get_logger
+from app.crud import user_crud
 from app.filters.survey_filters import (
+    ExistingUserFilter,
     HumanParameterFilter,
     filter_invalid_email,
 )
-from app.keyboards import create_survey_kb, get_main_menu_btns
+from app.handlers.callbacks.user_handlers import process_start_command
+from app.handlers.states import SurveyOrder
+from app.keyboards import create_survey_kb
+from app.models import Schedule, User
 
 ACTIVITY_KEYBOARD_SIZE = (1,)
 INVALID_NUM_MESSAGE = (
@@ -27,28 +34,36 @@ INVALID_NUM_MESSAGE = (
 )
 INVALID_EMAIL_MESSAGE = 'Ошибка при вводе email. Попробуйте снова.'
 START_URL = 't.me/{bot_username}?start=survey-canceled'
-SURVEY_COMMAND = 'survey'
 SURVEY_CONFIRMED, SURVEY_CANCELED = dict(CONFIRM).keys()
-SURVEY_RESULT = '<b>Ваша анкета готова.</b>\n🎉\n{user_data}'
+SURVEY_RESULT = (
+    '<b>Ваша анкета готова.</b>🎉\n\n'
+    'Имя: {name}\nПол: {gender}\nВозраст: {age}\nРост:{height}\n'
+    'Вес:{weight}\nE-mail: {email}\n'
+    'Текущая физическая активность: {activity}\n'
+    'Преследуемая цель: {purpose}\n'
+)
 
 router = Router()
+logger = get_logger(__name__)
 
 
-class SurveyOrder(StatesGroup):
-    consent_confirm = State()
-    gender_question = State()
-    physical_activity_question = State()
-    purpose_question = State()
-    height_question = State()
-    weight_question = State()
-    age_question = State()
-    email_question = State()
+async def return_to_main_menu(message: Message, state: FSMContext) -> None:
+    await state.set_state(SurveyOrder.finished)
+    await process_start_command(message, state)
 
 
-@router.message(default_state, Command(SURVEY_COMMAND))
-async def begin_survey(message: Message, state: FSMContext) -> None:
+@router.message(default_state, CommandStart(), ExistingUserFilter())
+async def begin_survey(
+    message: Message,
+    state: FSMContext,
+    telegram_id: int,
+) -> None:
+    await state.update_data(
+        telegram_id=telegram_id,
+        name=message.from_user.first_name,
+    )
     await message.answer(
-        text=INTRO_SURVEY_TEXT + SURVEY_QUESTIONS[0],
+        text=f'{INTRO_SURVEY_TEXT}{SurveyQuestions.consent}',
         reply_markup=await create_survey_kb(
             dict(CONFIRM).values(),
             dict(CONFIRM).keys(),
@@ -58,16 +73,12 @@ async def begin_survey(message: Message, state: FSMContext) -> None:
 
 
 @router.callback_query(F.data == SURVEY_CANCELED)
-async def return_to_main_menu(
+async def handle_survey_cancel(
     callback_query: CallbackQuery,
     state: FSMContext,
 ) -> None:
-    await state.clear()
-    await callback_query.answer(
-        url=START_URL.format(
-            bot_username=(await callback_query.bot.me()).username,
-        ),
-    )
+    await state.set_state(SurveyOrder.finished)
+    await return_to_main_menu(callback_query.message, state)
 
 
 @router.callback_query(SurveyOrder.consent_confirm, F.data == SURVEY_CONFIRMED)
@@ -75,9 +86,8 @@ async def ask_gender(
     callback_query: CallbackQuery,
     state: FSMContext,
 ) -> None:
-    await state.update_data(survey_confirmed=callback_query.data)
     await callback_query.message.edit_text(
-        text=SURVEY_QUESTIONS[1],
+        text=SurveyQuestions.age,
         reply_markup=await create_survey_kb(
             dict(GENDER).values(),
             dict(GENDER).keys(),
@@ -96,7 +106,7 @@ async def ask_activity(
 ) -> None:
     await state.update_data(gender=callback_query.data)
     await callback_query.message.edit_text(
-        text=SURVEY_QUESTIONS[2],
+        text=SurveyQuestions.physical_activity,
         reply_markup=await create_survey_kb(
             dict(PHYSICAL_ACTIVITY).values(),
             dict(PHYSICAL_ACTIVITY).keys(),
@@ -114,9 +124,9 @@ async def ask_purpose(
     callback_query: CallbackQuery,
     state: FSMContext,
 ) -> None:
-    await state.update_data(physical_activity=callback_query.data)
+    await state.update_data(activity=callback_query.data)
     await callback_query.message.edit_text(
-        text=SURVEY_QUESTIONS[3],
+        text=SurveyQuestions.purpose,
         reply_markup=await create_survey_kb(
             dict(ACTIVITY_PURPOSE).values(),
             dict(ACTIVITY_PURPOSE).keys(),
@@ -133,9 +143,9 @@ async def ask_height(
     callback_query: CallbackQuery,
     state: FSMContext,
 ) -> None:
-    await state.update_data(activity_purpose=callback_query.data)
+    await state.update_data(purpose=callback_query.data)
     await callback_query.message.edit_text(
-        text=SURVEY_QUESTIONS[4],
+        text=SurveyQuestions.height,
         reply_markup=None,
     )
     await state.set_state(SurveyOrder.height_question)
@@ -147,7 +157,7 @@ async def ask_height(
 )
 async def ask_weight(message: Message, state: FSMContext, value: int) -> None:
     await state.update_data(height=value)
-    await message.answer(text=SURVEY_QUESTIONS[5])
+    await message.answer(text=SurveyQuestions.weight)
     await state.set_state(SurveyOrder.weight_question)
 
 
@@ -157,7 +167,7 @@ async def ask_weight(message: Message, state: FSMContext, value: int) -> None:
 )
 async def ask_age(message: Message, state: FSMContext, value: int) -> None:
     await state.update_data(weight=value)
-    await message.answer(text=SURVEY_QUESTIONS[6])
+    await message.answer(text=SurveyQuestions.age)
     await state.set_state(SurveyOrder.age_question)
 
 
@@ -167,22 +177,36 @@ async def ask_age(message: Message, state: FSMContext, value: int) -> None:
 )
 async def ask_email(message: Message, state: FSMContext, value: int) -> None:
     await state.update_data(age=value)
-    await message.answer(text=SURVEY_QUESTIONS[7])
+    await message.answer(text=SurveyQuestions.email)
     await state.set_state(SurveyOrder.email_question)
 
 
 @router.message(SurveyOrder.email_question, filter_invalid_email)
-async def finish_survey(message: Message, state: FSMContext) -> None:
+async def finish_survey(
+    message: Message,
+    state: FSMContext,
+    session: AsyncSession,
+) -> None:
     await state.update_data(
         email=message.text,
-        telegram_id=message.from_user.id,
-        name=message.from_user.first_name,
+        hashed_password='nkajipfncu89288)*&^guyb',
+    )
+    survey_result = await state.get_data()
+    logger.info(
+        await user_crud.create(
+            User(
+                **survey_result,
+                schedule=[Schedule()],
+            ),
+            session,
+        ),
     )
     await message.answer(
-        text=SURVEY_RESULT.format(user_data=await state.get_data()),
-        reply_markup=get_main_menu_btns(level=0),
+        text=SURVEY_RESULT.format(**survey_result),
+        reply_markup=ReplyKeyboardRemove(),
     )
-    await state.clear()
+    await state.set_state(SurveyOrder.finished)
+    await process_start_command(message, state)
 
 
 @router.message(SurveyOrder.height_question)
@@ -209,3 +233,9 @@ async def handle_invalid_age_message(message: Message) -> None:
 @router.message(SurveyOrder.email_question)
 async def handle_invalid_email_message(message: Message) -> None:
     await message.answer(text=INVALID_EMAIL_MESSAGE)
+
+
+@router.message(CommandStart(), ~ExistingUserFilter())
+async def handle_existing_user(message: Message, state: FSMContext) -> None:
+    await state.set_state(SurveyOrder.finished)
+    await return_to_main_menu(message, state)
