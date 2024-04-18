@@ -9,7 +9,8 @@ from app.keyboards import (
 )
 from app.models.user import User
 from app.utils.utils import (
-    _get_banner,
+    calculation_of_calories,
+    get_banner,
     get_calorie_plot,
 )
 from app.handlers.callbacks.workout import workout_category_menu, workouts
@@ -28,7 +29,7 @@ async def main_menu(
     возвращает в хэндлер.
     """
     return (
-        await _get_banner(menu_name),
+        await get_banner(menu_name),
         get_main_menu_btns(level=level),
     )
 
@@ -50,10 +51,11 @@ async def calorie_counter(
 
 
 async def get_menu_content(
-    session: AsyncSession,
     level: int,
     menu_name: str,
     user: User,
+    session: AsyncSession | None = None,
+    user_id: int | None = None,
     workout_group: int | None = None,
     page: int | None = None,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
@@ -66,7 +68,7 @@ async def get_menu_content(
         case 1:
             return await workout_category_menu(
                 session,
-                user,
+                user_id,
                 level,
                 menu_name,
             )

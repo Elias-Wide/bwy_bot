@@ -46,12 +46,15 @@ BUTTONS_FOR_TRAINING = {
 
 CAL_COEF_MAN = 88.36
 CAL_KOEF_WOMAN = 447.6
+COEF_TO_SLIM = 0.85
+COEF_ADD_MASS = 1.2
+COEF_ROUND = 2
 CAPTIONS = {
     'main': 'Добро пожаловать в Ваш личный помощник самосовершенствования.',
-    'workouts': 'Какой вид тренировки предпочитаете?',
+    'workouts': '<b>Какой вид тренировки предпочитаете?</b>',
     'oops': {
         1: 'В данный момент для Вас нет тренировки...',
-        2: 'В данный момент для Вас нет упражнений к этой тренировке...'
+        2: 'В данный момент для Вас нет упражнений к этой тренировке...',
     },
 }
 COEF_TO_SLIM = 0.85
@@ -68,6 +71,8 @@ DIET = 'diet'
 
 EXERCISE = 'exercise'
 EXERCISE_WORKOUT = 'exercise_workout'
+
+FMT_JPG = '.jpg'
 
 GENDER = (
     ('MALE', 'Мужчина'),
@@ -97,9 +102,11 @@ OUT_OF_ALLOWED_RANGE_ERROR = (
 )
 
 
-KB_TEXT_FOR_DIET = 'Контроль Каллорий!'
+KB_TEXT_FOR_DIET = 'Контроль Калорий!'
 KB_TEXT_FOR_TRAINING = 'К тренировкам!'
 KB_TEXT_FOR_SLEEPING = 'Контроль сна!'
+
+OOPS = 'oops'
 
 PHYSICAL_ACTIVITY = (
     ('ABSENT', 'Отсутствует'),

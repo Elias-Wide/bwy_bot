@@ -42,9 +42,9 @@ def get_workout_select_btns(
                 callback_data=MenuCallBack(
                     level=level + 1,
                     menu_name=group.group.code,
-                    workout_group=group.id
-                ).pack()
-            )
+                    workout_group=group.id,
+                ).pack(),
+            ),
         )
     return keyboard.adjust(*sizes).as_markup()
 
@@ -73,24 +73,28 @@ def get_exercise_btns(
     row = []
     for text, menu_name in pagination_btns.items():
         if menu_name == 'forward':
-            row.append(InlineKeyboardButton(
-                text=text,
-                callback_data=MenuCallBack(
-                    level=level,
-                    menu_name=menu_name,
-                    workout_group=workout_group,
-                    page=page + 1
-                ).pack()
-            ))
+            row.append(
+                InlineKeyboardButton(
+                    text=text,
+                    callback_data=MenuCallBack(
+                        level=level,
+                        menu_name=menu_name,
+                        workout_group=workout_group,
+                        page=page + 1,
+                    ).pack(),
+                ),
+            )
         elif menu_name == 'backward':
-            row.append(InlineKeyboardButton(
-                text=text,
-                callback_data=MenuCallBack(
-                    level=level,
-                    menu_name=menu_name,
-                    workout_group=workout_group,
-                    page=page - 1
-                ).pack()
-            ))
+            row.append(
+                InlineKeyboardButton(
+                    text=text,
+                    callback_data=MenuCallBack(
+                        level=level,
+                        menu_name=menu_name,
+                        workout_group=workout_group,
+                        page=page - 1,
+                    ).pack(),
+                ),
+            )
 
     return keyboard.row(*row).as_markup()

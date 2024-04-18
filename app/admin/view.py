@@ -8,7 +8,6 @@ from app.models import (
     User,
     Workout,
     WorkoutExercise,
-
 )
 
 

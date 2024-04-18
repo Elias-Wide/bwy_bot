@@ -1,4 +1,4 @@
-from sqlalchemy import select, and_
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -16,51 +16,45 @@ class ExerciseCRUD(CRUDBase):
     async def get_groups(session: AsyncSession, user_id: int) -> list[Workout]:
         print(user_id)
         user = await session.scalars(
-            select(User)
-            .where(User.telegram_id == str(user_id))
+            select(User).where(User.telegram_id == str(user_id)),
         )
         user = user.first()
         groups = await session.scalars(
             select(Workout).where(
                 and_(
                     Workout.gender == user.gender,
-                    Workout.purpose == user.activity    #TODO: вроде добавили purpose - замени на ПР
-                )
-            )
+                    Workout.purpose == user.purpose,
+                ),
+            ),
         )
         groups = groups.all()
         if not groups:
-            error_message = (
-                f'В базе для "{user.gender}" и "{user.activity}" нет'
-                 ' тренировок.'
+            logger.error(
+                'В базе для %s и %s нет тренировок.', user.gender, user.purpose
             )
-            logger.error(error_message)
-            raise NoWorkoutsException(error_message)
+            raise NoWorkoutsException()
 
         return groups
 
     @staticmethod
     async def get_exercises(
         session: AsyncSession,
-        workout_id: int
+        workout_id: int,
     ) -> list[WorkoutExercise]:
         workout = await session.scalars(
             select(Workout)
             .where(Workout.id == workout_id)
             .options(
-                selectinload(Workout.exercises)
-                .joinedload(WorkoutExercise.exercise)
-            )
+                selectinload(Workout.exercises).joinedload(
+                    WorkoutExercise.exercise,
+                ),
+            ),
         )
         workout = workout.first()
         exercises = list(workout.exercises)
         if not exercises:
-            error_message = (
-                f'В WorkoutExercise для {workout.name} не назначены'
-                 ' упражнения.'
-            )
-            logger.error(error_message)
-            raise NoExerciseException(error_message)
+            logger.error('Нет упражнений для %s.', workout.name)
+            raise NoExerciseException()
         return exercises
 
 
