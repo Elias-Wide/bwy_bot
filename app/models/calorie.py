@@ -18,3 +18,5 @@ class Calorie(Base):
 
     def __str__(self) -> str:
         return f' Калории для {self.gender} - {self.activity }'
+
+

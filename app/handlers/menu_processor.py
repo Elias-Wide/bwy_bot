@@ -4,6 +4,8 @@ from aiogram.types import (
     InputMediaVideo,
 )
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.logging import get_logger
 from app.keyboards import (
     get_calories_btns,
@@ -11,10 +13,11 @@ from app.keyboards import (
     get_workout_bts,
     get_workout_select_btns,
 )
+from app.models.user import User
 from app.utils.utils import (
-    _calculation_of_calories,
+    calculation_of_calories,
     _get_banner,
-    _get_calorie_plot,
+    get_calorie_plot,
     _get_videos,
 )
 
@@ -70,13 +73,14 @@ async def workout_menu(
 
 async def calorie_counter(
     level: int,
-    menu_name: str,
+    user: User,
+    session: AsyncSession,
 ) -> tuple[InputMediaPhoto]:
     """Ответ по каллоражу на день."""
-    res = await _calculation_of_calories()
+    res = await calculation_of_calories(user)
     return (
         InputMediaPhoto(
-            media=await _get_calorie_plot(),
+            media=await get_calorie_plot(user, session),
             caption=f'Ваша норма калорий на день {res} Ккал',
         ),
         get_calories_btns(level=level),
@@ -86,12 +90,14 @@ async def calorie_counter(
 async def get_menu_content(
     level: int,
     menu_name: str,
+    user: User,
+    session: AsyncSession,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Диспетчер меню."""
     match level:
         case 0:
             if menu_name == 'diet':
-                return await calorie_counter(level, menu_name)
+                return await calorie_counter(level, user, session)
             return await main_menu(level, menu_name)
         case 1:
             return await workout_category_menu(level, menu_name)
