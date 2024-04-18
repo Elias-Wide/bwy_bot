@@ -11,7 +11,12 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 KeyboardMarkup: TypeAlias = InlineKeyboardMarkup | ReplyKeyboardMarkup
 
 
-BUTTONS = {'Сон💤': 'sleep', 'Питание🥦': 'diet', 'Тренировки🏋‍♂️': 'workouts'}
+BUTTONS = {
+    'Сон💤': 'sleep',
+    'Питание🥦': 'diet',
+    'Тренировки🏋‍♂️': 'workouts',
+    'Настрайки🛠': 'settings',
+}
 
 
 class MenuCallBack(CallbackData, prefix='menu'):

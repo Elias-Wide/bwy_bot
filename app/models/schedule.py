@@ -6,10 +6,10 @@ from app.core.db import Base
 
 class Schedule(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
-    start_course = Column(DateTime, default=None)
-    stop_reminder_train = Column(Boolean, default=True)
-    stop_reminder_sleep = Column(Boolean, default=True)
-    stop_reminder_calories = Column(Boolean, default=True)
+    start_course = Column(DateTime, default=DateTime())
+    stop_reminder_train = Column(Boolean, default=False)
+    stop_reminder_sleep = Column(Boolean, default=False)
+    stop_reminder_calories = Column(Boolean, default=False)
 
     user = relationship('User', back_populates='schedule', uselist=False)
 
