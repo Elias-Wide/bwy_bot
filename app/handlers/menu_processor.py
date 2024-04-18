@@ -15,9 +15,9 @@ from app.keyboards import (
 )
 from app.models.user import User
 from app.utils.utils import (
-    _calculation_of_calories,
+    calculation_of_calories,
     _get_banner,
-    _get_calorie_plot,
+    get_calorie_plot,
     _get_videos,
 )
 
@@ -77,10 +77,10 @@ async def calorie_counter(
     session: AsyncSession,
 ) -> tuple[InputMediaPhoto]:
     """Ответ по каллоражу на день."""
-    res = await _calculation_of_calories(user)
+    res = await calculation_of_calories(user)
     return (
         InputMediaPhoto(
-            media=await _get_calorie_plot(user, session),
+            media=await get_calorie_plot(user, session),
             caption=f'Ваша норма калорий на день {res} Ккал',
         ),
         get_calories_btns(level=level),

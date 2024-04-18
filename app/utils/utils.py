@@ -3,7 +3,21 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import BASE_DIR, UPLOAD_DIR
-from app.core.constants import PHYS_ACTIV_KOEF
+from app.core.constants import (ACTIVITY_PURPOSE,
+                                PHYS_ACTIV_KOEF,
+                                AGE_COEF_MAN,
+                                AGE_COEF_WOMAN,
+                                HEIGHT_COEF_MAN,
+                                HEIGHT_COEF_WOMAN,
+                                WEIGHT_COEF_MAN,
+                                WEIGHT_COEF_WOMAN,
+                                CAL_COEF_MAN,
+                                CAL_KOEF_WOMAN,
+                                COEF_ADD_MASS,
+                                COEF_ROUND,
+                                COEF_TO_SLIM, 
+                                GENDER, 
+                                )
 from app.models import User, Calorie
 
 
@@ -16,7 +30,7 @@ async def _get_banner(menu_name: str) -> FSInputFile:
     return FSInputFile(BASE_DIR.joinpath('static', menu_name + '.jpg'))
 
 
-async def _get_calorie_plot(user: User, session: AsyncSession) -> FSInputFile:
+async def get_calorie_plot(user: User, session: AsyncSession) -> FSInputFile:
     path = await session.scalar(select(Calorie.picture).where(
         Calorie.gender == user.gender,
         Calorie.purpose == user.purpose,
@@ -24,16 +38,21 @@ async def _get_calorie_plot(user: User, session: AsyncSession) -> FSInputFile:
     return FSInputFile(path)
 
 
-async def _calculation_of_calories(user: User) -> float:
-    if user.gender == 'MALE':
-        res = (88.36 + (13.4 * user.weight)
-               + (4.8 * user.height) - (5.7 * user.age))
+async def calculation_of_calories(user: User) -> float:
+    if user.gender == GENDER[0][0]:
+        res = (CAL_COEF_MAN + (WEIGHT_COEF_MAN * user.weight)
+               + (HEIGHT_COEF_MAN * user.height)
+               - (AGE_COEF_MAN * user.age))
     else:
-        res = (447.6 + (9.2 * user.weight)
-               + (3.1 * user.height) - (4.3 * user.age))
-    if user.purpose == 'GO_SLIM':
-        return round(res * PHYS_ACTIV_KOEF[user.activity] * 0.85, 2)
-    elif user.purpose == 'KEEP_LEVEL':
-        return round(res * PHYS_ACTIV_KOEF[user.activity], 2)
+        res = (CAL_KOEF_WOMAN + (WEIGHT_COEF_WOMAN * user.weight)
+               + (HEIGHT_COEF_WOMAN * user.height)
+               - (AGE_COEF_WOMAN * user.age))
+    if user.purpose == ACTIVITY_PURPOSE[0][0]:
+        return round(
+            res * PHYS_ACTIV_KOEF[user.activity] * COEF_TO_SLIM, COEF_ROUND)
+    elif user.purpose == ACTIVITY_PURPOSE[1][0]:
+        return round(
+            res * PHYS_ACTIV_KOEF[user.activity], COEF_ROUND)
     else:
-        return round(res * PHYS_ACTIV_KOEF[user.activity] * 1.2, 2)
+        return round(
+            res * PHYS_ACTIV_KOEF[user.activity] * COEF_ADD_MASS, COEF_ROUND)
