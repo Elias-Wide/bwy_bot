@@ -1,104 +1,28 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from typing import Iterable
+
+from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    ReplyKeyboardMarkup,
+)
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from app.core.logging import get_logger
 
-from app.keyboards.mode_kb import MenuCallBack
+logger = get_logger(__name__)
 
-BUTTONS = {
-    'category': {
-        'Ложусь спать': 'go_to_bed',
-        'Проснулся': 'wake_up',
-        'Продолжительность сна': 'sleep_duration',
-        'Статистика': 'sleep_statistic',
-    },
-}
+DEFAULT_KEYBOARD_SIZE = (2,)
 
 
-def get_sleep_select_btns(
-    *,
-    level: int,
-    sizes: tuple[int] = (2,),
-) -> InlineKeyboardMarkup:
-    keyboard = InlineKeyboardBuilder()
-    for text, menu_name in BUTTONS['category'].items():
-        keyboard.add(
-            InlineKeyboardButton(
-                text=text,
-                callback_data=MenuCallBack(
-                    level=level + 1,
-                    menu_name=menu_name,
-                ).pack(),
-            ),
+
+async def create_sleep_kb(
+    items: Iterable[str],
+    callback_datas: Iterable[str | None] = (None,),
+    size: tuple[int] = DEFAULT_KEYBOARD_SIZE,
+) -> InlineKeyboardMarkup | ReplyKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    for item, callback_data in zip(items, callback_datas):
+        builder.add(
+            InlineKeyboardButton(text=item, callback_data=callback_data),
         )
-    keyboard.add(
-        InlineKeyboardButton(
-            text='Назад👈',
-            callback_data=MenuCallBack(
-                level=level - 1,
-                menu_name='main',
-            ).pack(),
-        ),
-    )
-    return keyboard.adjust(*sizes).as_markup()
-
-
-def get_sleep_back_btns(
-    *,
-    level: int,
-    sizes: tuple[int] = (2,),
-) -> InlineKeyboardMarkup:
-    keyboard = InlineKeyboardBuilder()
-    keyboard.add(
-        InlineKeyboardButton(
-            text='ОК👈',
-            callback_data=MenuCallBack(
-                level=level - 1,
-                menu_name='sleep',
-            ).pack(),
-        ),
-    )
-    keyboard.add(
-        InlineKeyboardButton(
-            text='Назад👈',
-            callback_data=MenuCallBack(
-                level=level - 1,
-                menu_name='sleep',
-            ).pack(),
-        ),
-    )
-    return keyboard.adjust(*sizes).as_markup()
-
-
-def get_sleep_back_btns_duration(
-    *,
-    level: int,
-    sizes: tuple[int] = (2,),
-) -> InlineKeyboardMarkup:
-    keyboard = InlineKeyboardBuilder()
-    keyboard.add(
-        InlineKeyboardButton(
-            text='Да👍',
-            callback_data=MenuCallBack(
-                level=level - 1,
-                menu_name='sleep',
-            ).pack(),
-        ),
-    )
-    keyboard.add(
-        InlineKeyboardButton(
-            text='Нет👎',
-            callback_data=MenuCallBack(
-                level=level - 1,
-                menu_name='sleep',
-            ).pack(),
-        ),
-    )
-    keyboard.add(
-        InlineKeyboardButton(
-            text='Назад👈',
-            callback_data=MenuCallBack(
-                level=level - 1,
-                menu_name='sleep',
-            ).pack(),
-        ),
-    )
-    return keyboard.adjust(*sizes).as_markup()
+        logger.info(f'{item}  -- {callback_data}')
+    return builder.adjust(*size).as_markup()

@@ -2,6 +2,7 @@ from aiogram.types import InlineKeyboardMarkup, InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import DIET
+from app.handlers.sleep_handlers import sleep_main_menu
 from app.core.logging import get_logger
 from app.keyboards import (
     get_sleep_back_btns,
@@ -45,7 +46,7 @@ async def sleep_mode_menu(
     """
     return (
         InputMediaPhoto(
-            media=await _get_sleep_banner(menu_name),
+            media=await _get_banner(menu_name),
             caption=(
                 'Если Вы ложитесь спать или только что проснулись, нажмите '
                 'соответствующие кнопки? Мы запишем текущее время как '
@@ -66,7 +67,7 @@ async def go_to_bed(
     res = await _go_to_bed_time()
     return (
         InputMediaPhoto(
-            media=await _get_sleep_banner(menu_name),
+            media=await _get_banner(menu_name),
             caption=res,
         ),
         get_sleep_back_btns(level=level),
@@ -81,7 +82,7 @@ async def wake_up(
     res = await _wake_up_time()
     return (
         InputMediaPhoto(
-            media=await _get_sleep_banner(menu_name),
+            media=await _get_banner(menu_name),
             caption=res,
         ),
         get_sleep_back_btns(level=level),
@@ -96,7 +97,7 @@ async def sleep_duration(
     res = await _sleep_duration()
     return (
         InputMediaPhoto(
-            media=await _get_sleep_banner(menu_name),
+            media=await _get_banner(menu_name),
             caption=res,
         ),
         get_sleep_back_btns_duration(level=level),
@@ -111,11 +112,13 @@ async def sleep_statistic(
     res = await _sleep_statistic()
     return (
         InputMediaPhoto(
-            media=await _get_sleep_banner(menu_name),
+            media=await _get_banner(menu_name),
             caption=res,
         ),
         get_sleep_back_btns(level=level),
     )
+
+
 
 
 async def get_menu_content(

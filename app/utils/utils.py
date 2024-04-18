@@ -79,12 +79,6 @@ async def calculation_of_calories(user: User) -> float:
         )
 
 
-async def _get_sleep_banner(menu_name: str) -> FSInputFile:
-    return FSInputFile(
-        BASE_DIR.joinpath('static/', menu_name + '.jpg'),
-    )
-
-
 async def _go_to_bed_time() -> str:
     return f'Ваше время отхода ко сну: {dt.now().strftime(USER_DATE_FORMAT)}'
 
