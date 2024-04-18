@@ -1,26 +1,20 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+from app.core.constants import (
+    ACTIVITY_KEYBOARD_SIZE, BACK, BUTTONS_FOR_TRAINING,
+    COMPLETE, DEFAULT_KEYBOARD_SIZE, MAIN_MENU, NEXT, WORKOUTS
+)
 from app.keyboards.mode_kb import MenuCallBack
-
-BUTTONS = {
-    'category': {
-        'Грудь\\Бицепс': 'pectoral',
-        'Спина\\Плечи\\Трицепс': 'back',
-        'Ноги': 'legs',
-        'Кардио🏃‍♂️': 'cardio',
-    },
-    'pagination': {'backward': '◀️', 'forward': '▶️'},
-}
 
 
 def get_workout_select_btns(
     *,
     level: int,
-    sizes: tuple[int] = (2,),
+    sizes: tuple[int] = DEFAULT_KEYBOARD_SIZE,
 ) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
-    for text, menu_name in BUTTONS['category'].items():
+    for text, menu_name in BUTTONS_FOR_TRAINING['category'].items():
         keyboard.add(
             InlineKeyboardButton(
                 text=text,
@@ -32,10 +26,10 @@ def get_workout_select_btns(
         )
     keyboard.add(
         InlineKeyboardButton(
-            text='Назад👈',
+            text=BACK,
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name='main',
+                menu_name=MAIN_MENU,
             ).pack(),
         ),
     )
@@ -46,13 +40,13 @@ def get_workout_bts(
     *,
     level: int,
     menu_name: str,
-    sizes: tuple[int] = (1,),
+    sizes: tuple[int] = ACTIVITY_KEYBOARD_SIZE,
 ) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
 
     keyboard.add(
         InlineKeyboardButton(
-            text='След. ➡️',
+            text=NEXT,
             callback_data=MenuCallBack(
                 level=level,
                 menu_name=menu_name,
@@ -61,10 +55,10 @@ def get_workout_bts(
     )
     keyboard.add(
         InlineKeyboardButton(
-            text='Завершить⛔️',
+            text=COMPLETE,
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name='workouts',
+                menu_name=WORKOUTS,
             ).pack(),
         ),
     )

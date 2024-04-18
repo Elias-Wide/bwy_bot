@@ -8,8 +8,13 @@ from app.core.config import UPLOAD_DIR
 from app.core.constants import (
     ACTIVITY_PURPOSE,
     AM_NOON_PM,
+    COURSE,
+    EXERCISE,
+    EXERCISE_WORKOUT,
     GENDER,
+    WORKOUT_COURSE,
     WORKOUT_TYPE,
+    WORKOUT
 )
 from app.core.db import Base
 
@@ -17,13 +22,13 @@ storage = FileSystemStorage(path=UPLOAD_DIR)
 
 
 class Exercise(Base):
-    __tablename__ = 'exercise'
+    __tablename__ = EXERCISE
     name = Column(String(255), unique=True, nullable=False)
     description = Column(Text)
     video = Column(FileType(storage=storage))
     exercise_workout = relationship(
         'ExerciseWorkout',
-        back_populates='exercise',
+        back_populates=EXERCISE,
     )
 
     def __str__(self) -> str:
@@ -31,16 +36,16 @@ class Exercise(Base):
 
 
 class Workout(Base):
-    __tablename__ = 'workout'
+    __tablename__ = WORKOUT
     name = Column(String(255), unique=True, nullable=False)
     description = Column(Text)
     workout_type = Column(ChoiceType(WORKOUT_TYPE))
 
     exercise_workout = relationship(
         'ExerciseWorkout',
-        back_populates='workout',
+        back_populates=WORKOUT,
     )
-    workout_course = relationship('WorkoutCourse', back_populates='workout')
+    workout_course = relationship('WorkoutCourse', back_populates=WORKOUT)
 
     def __str__(self) -> str:
         return f'{self.name}'
@@ -52,8 +57,8 @@ class ExerciseWorkout(Base):
     workout_id = Column(Integer(), ForeignKey('workout.id'))
     sequence_number = Column(String(100))
     description = Column(Text)
-    workout = relationship('Workout', back_populates='exercise_workout')
-    exercise = relationship('Exercise', back_populates='exercise_workout')
+    workout = relationship('Workout', back_populates=EXERCISE_WORKOUT)
+    exercise = relationship('Exercise', back_populates=EXERCISE_WORKOUT)
 
     def __str__(self) -> str:
         return f'''{self.sequence_number} -
@@ -66,7 +71,7 @@ class Course(Base):
     description = Column(Text)
     gender = Column(ChoiceType(GENDER))
     purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
-    workout_course = relationship('WorkoutCourse', back_populates='course')
+    workout_course = relationship('WorkoutCourse', back_populates=COURSE)
 
     def __str__(self) -> str:
         return f'{self.gender} + {self.purpose}'
@@ -79,8 +84,8 @@ class WorkoutCourse(Base):
     course_day = Column(Integer())
     am_noon_pm = Column(ChoiceType(AM_NOON_PM))
     description = Column(Text)
-    workout = relationship('Workout', back_populates='workout_course')
-    course = relationship('Course', back_populates='workout_course')
+    workout = relationship('Workout', back_populates=WORKOUT_COURSE)
+    course = relationship('Course', back_populates=WORKOUT_COURSE)
 
     def __str__(self) -> str:
         return f'''{self.course_day} -

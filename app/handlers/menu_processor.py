@@ -6,6 +6,7 @@ from aiogram.types import (
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.constants import DIET
 from app.core.logging import get_logger
 from app.keyboards import (
     get_calories_btns,
@@ -96,7 +97,7 @@ async def get_menu_content(
     """Диспетчер меню."""
     match level:
         case 0:
-            if menu_name == 'diet':
+            if menu_name == DIET:
                 return await calorie_counter(level, user, session)
             return await main_menu(level, menu_name)
         case 1:

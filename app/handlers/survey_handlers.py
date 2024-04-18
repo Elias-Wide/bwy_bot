@@ -6,14 +6,21 @@ from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import (
+    ACTIVITY_KEYBOARD_SIZE,
     ACTIVITY_PURPOSE,
     ALLOWED_AGE_RANGE,
     ALLOWED_HEIGHT_RANGE,
     ALLOWED_WEIGHT_RANGE,
     CONFIRM,
     GENDER,
+    HASH_PASSWORD,
     INTRO_SURVEY_TEXT,
+    INVALID_NUM_MESSAGE,
+    INVALID_EMAIL_MESSAGE,
     PHYSICAL_ACTIVITY,
+    SURVEY_CONFIRMED,
+    SURVEY_CANCELED,
+    SURVEY_RESULT,
     SurveyQuestions,
 )
 from app.core.logging import get_logger
@@ -27,21 +34,6 @@ from app.handlers.callbacks.user_handlers import process_start_command
 from app.handlers.states import SurveyOrder
 from app.keyboards import create_survey_kb
 from app.models import Schedule, User
-
-ACTIVITY_KEYBOARD_SIZE = (1,)
-INVALID_NUM_MESSAGE = (
-    'Введите целое число в диапазоне от {} до {} включительно'
-)
-INVALID_EMAIL_MESSAGE = 'Ошибка при вводе email. Попробуйте снова.'
-START_URL = 't.me/{bot_username}?start=survey-canceled'
-SURVEY_CONFIRMED, SURVEY_CANCELED = dict(CONFIRM).keys()
-SURVEY_RESULT = (
-    '<b>Ваша анкета готова.</b>🎉\n\n'
-    'Имя: {name}\nПол: {gender}\nВозраст: {age}\nРост:{height}\n'
-    'Вес:{weight}\nE-mail: {email}\n'
-    'Текущая физическая активность: {activity}\n'
-    'Преследуемая цель: {purpose}\n'
-)
 
 router = Router()
 logger = get_logger(__name__)
@@ -192,7 +184,7 @@ async def finish_survey(
 ) -> None:
     await state.update_data(
         email=message.text,
-        hashed_password='nkajipfncu89288)*&^guyb',
+        hashed_password=HASH_PASSWORD,
     )
     survey_result = await state.get_data()
     logger.info(
