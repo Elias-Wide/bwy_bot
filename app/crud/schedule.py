@@ -1,8 +1,8 @@
 from fastapi_sqlalchemy import db
 from sqlalchemy import select
 
+from app.core.constants import DIET, SLEEP, WORKOUTS
 from app.crud.base import CRUDBase
-from app.core.constants import WORKOUTS, DIET, SLEEP
 from app.models import Schedule, User
 
 
@@ -19,12 +19,10 @@ class CRUDSchdeule(CRUDBase):
 
         with db():
             users_id = db.session.scalars(
-                select(
-                    User.telegram_id
-                ).where(
+                select(User.telegram_id).where(
                     User.id == Schedule.user_id,
-                    schedule_reminder
-                )
+                    schedule_reminder,
+                ),
             )
             return users_id.all()
 

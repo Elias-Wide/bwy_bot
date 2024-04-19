@@ -2,8 +2,12 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from app.core.constants import (
-    ACTIVITY_KEYBOARD_SIZE, BACK, BUTTONS_FOR_TRAINING,
-    COMPLETE, DEFAULT_KEYBOARD_SIZE, MAIN_MENU, WORKOUTS
+    ACTIVITY_KEYBOARD_SIZE,
+    BACK,
+    COMPLETE,
+    DEFAULT_KEYBOARD_SIZE,
+    MAIN_MENU,
+    WORKOUTS,
 )
 from app.keyboards.mode_kb import MenuCallBack
 from app.models import Workout
@@ -16,16 +20,6 @@ def get_workout_select_btns(
     sizes: tuple[int] = DEFAULT_KEYBOARD_SIZE,
 ) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
-    for text, menu_name in BUTTONS_FOR_TRAINING['category'].items():
-        keyboard.add(
-            InlineKeyboardButton(
-                text=text,
-                callback_data=MenuCallBack(
-                    level=level + 1,
-                    menu_name=menu_name,
-                ).pack(),
-            ),
-        )
     keyboard.add(
         InlineKeyboardButton(
             text=BACK,

@@ -66,6 +66,7 @@ async def workouts(
     )
     keyboard = get_exercise_btns(
         level=level,
+        menu_name=menu_name,
         workout_group=workout_group,
         page=page,
         pagination_btns=get_pages(pagination),
