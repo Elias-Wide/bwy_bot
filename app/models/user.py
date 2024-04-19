@@ -11,7 +11,6 @@ from app.core.constants import (
     GENDER,
     PHYSICAL_ACTIVITY,
 )
-
 from app.core.db import Base
 
 
@@ -23,13 +22,11 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     )
 
     telegram_id = Column(Integer, unique=True, nullable=False)
-    name = Column(String(100), unique=True, nullable=False)
+    name = Column(String(100), unique=False, nullable=False)
     gender = Column(ChoiceType(GENDER))
     age = Column(Integer, nullable=False)
     weight = Column(Integer, nullable=False)
     height = Column(Integer, nullable=False)
-    activity = Column(ChoiceType(PHYSICAL_ACTIVITY))
-    purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
     activity = Column(ChoiceType(PHYSICAL_ACTIVITY))
     purpose = Column(ChoiceType(ACTIVITY_PURPOSE))
 
@@ -41,5 +38,3 @@ class User(SQLAlchemyBaseUserTable[int], Base):
             f'{type(self).__name__}: id={self.id},'
             f' name={self.name}, email={self.email}'
         )
-
-

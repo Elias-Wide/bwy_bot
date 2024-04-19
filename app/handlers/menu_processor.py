@@ -3,9 +3,9 @@ from aiogram.types import (
     InputMediaPhoto,
     InputMediaVideo,
 )
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.constants import DIET
 from app.core.logging import get_logger
 from app.keyboards import (
     get_calories_btns,
@@ -16,11 +16,11 @@ from app.keyboards import (
 )
 from app.models import User
 from app.utils.utils import (
-    calculation_of_calories,
     _get_banner,
-    get_calorie_plot,
     _get_videos,
     get_reminder_state,
+    calculation_of_calories,
+    get_calorie_plot,
 )
 
 
@@ -119,7 +119,7 @@ async def get_menu_content(
         case 0:
             if menu_name == 'settings':
                 return await settings_menu(level, menu_name, user, session)
-            if menu_name == 'diet':
+            if menu_name == DIET:
                 return await calorie_counter(level, user, session)
             return await main_menu(level, menu_name)
         case 1:

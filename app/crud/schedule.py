@@ -33,7 +33,6 @@ class CRUDSchdeule(CRUDBase):
                 )
             )
             return users_id.all()
-
     async def get_schedule_by_telegram_id(
         self,
         telegram_id,

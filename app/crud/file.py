@@ -4,7 +4,7 @@ from sqlalchemy import Column
 
 from app.core.db import Base
 
-storage = FileSystemStorage(path="./upload")
+storage = FileSystemStorage(path='./upload')
 
 
 class File(Base):

@@ -7,7 +7,7 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-DEFAULT_KEYBOARD_SIZE = (2,)
+from app.core.constants import DEFAULT_KEYBOARD_SIZE
 
 
 async def create_survey_kb(

@@ -5,11 +5,15 @@
 #    pip-compile --output-file=requirements.txt pyproject.toml
 #
 aiofiles==23.2.1
-    # via aiogram
+    # via
+    #   aiogram
+    #   fastapi-amis-admin
 aiogram==3.4.1
     # via begin-with-yourself-bot (pyproject.toml)
 aiohttp==3.9.3
     # via aiogram
+aioschedule==0.5.2
+    # via begin-with-yourself-bot (pyproject.toml)
 aiosignal==1.3.1
     # via aiohttp
 aiosqlite==0.20.0
@@ -22,6 +26,10 @@ anyio==3.7.1
     # via
     #   starlette
     #   watchgod
+apscheduler==3.10.4
+    # via
+    #   begin-with-yourself-bot (pyproject.toml)
+    #   fastapi-scheduler
 argon2-cffi==23.1.0
     # via pwdlib
 argon2-cffi-bindings==21.2.0
@@ -48,6 +56,10 @@ cffi==1.16.0
     #   cryptography
 click==8.1.7
     # via uvicorn
+colorama==0.4.6
+    # via
+    #   click
+    #   uvicorn
 cryptography==42.0.5
     # via pyjwt
 dnspython==2.6.1
@@ -59,7 +71,14 @@ exceptiongroup==1.2.0
 fastapi==0.110.0
     # via
     #   begin-with-yourself-bot (pyproject.toml)
+    #   fastapi-amis-admin
     #   fastapi-users
+fastapi-amis-admin==0.7.2
+    # via fastapi-scheduler
+fastapi-scheduler==0.0.15
+    # via begin-with-yourself-bot (pyproject.toml)
+fastapi-sqlalchemy==0.2.1
+    # via begin-with-yourself-bot (pyproject.toml)
 fastapi-storages==0.3.0
     # via begin-with-yourself-bot (pyproject.toml)
 fastapi-users==13.0.0
@@ -115,6 +134,7 @@ pydantic==2.5.3
     #   aiogram
     #   fastapi
     #   pydantic-settings
+    #   sqlmodel
 pydantic-core==2.14.6
     # via pydantic
 pydantic-settings==2.2.1
@@ -129,14 +149,19 @@ python-dotenv==1.0.0
     #   uvicorn
 python-multipart==0.0.9
     # via
+    #   fastapi-amis-admin
     #   fastapi-users
     #   sqladmin
+pytz==2024.1
+    # via apscheduler
 pyyaml==6.0.1
     # via uvicorn
 s3transfer==0.10.1
     # via boto3
 six==1.16.0
-    # via python-dateutil
+    # via
+    #   apscheduler
+    #   python-dateutil
 sniffio==1.3.1
     # via anyio
 sqladmin==0.16.1
@@ -144,14 +169,22 @@ sqladmin==0.16.1
 sqlalchemy[asyncio]==2.0.29
     # via
     #   alembic
+    #   fastapi-sqlalchemy
     #   fastapi-users-db-sqlalchemy
     #   sqladmin
+    #   sqlalchemy-database
     #   sqlalchemy-utils
+    #   sqlmodel
+sqlalchemy-database==0.1.2
+    # via fastapi-amis-admin
 sqlalchemy-utils==0.41.2
     # via begin-with-yourself-bot (pyproject.toml)
+sqlmodel==0.0.16
+    # via fastapi-amis-admin
 starlette==0.36.3
     # via
     #   fastapi
+    #   fastapi-sqlalchemy
     #   sqladmin
 typing-extensions==4.10.0
     # via
@@ -163,12 +196,14 @@ typing-extensions==4.10.0
     #   pydantic
     #   pydantic-core
     #   sqlalchemy
+tzdata==2024.1
+    # via tzlocal
+tzlocal==5.2
+    # via apscheduler
 urllib3==1.26.18
     # via botocore
 uvicorn[standard]==0.17.6
     # via begin-with-yourself-bot (pyproject.toml)
-uvloop==0.19.0
-    # via uvicorn
 watchgod==0.8.2
     # via uvicorn
 websockets==12.0

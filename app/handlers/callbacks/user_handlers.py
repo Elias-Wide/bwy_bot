@@ -11,26 +11,29 @@ from app.handlers.menu_processor import get_menu_content
 from app.handlers.states import SurveyOrder
 from app.keyboards import MenuCallBack
 
-
 router = Router()
 
 logger = get_logger(__name__)
 
 
 @router.message(CommandStart(), SurveyOrder.finished)
-async def process_start_command(message: Message,
-                                state: FSMContext,
-                                session: AsyncSession) -> None:
+async def process_start_command(
+    message: Message,
+    state: FSMContext,
+    session: AsyncSession,
+) -> None:
     """Хэндлер команды '/start'."""
-
-    user = await user_crud.get_by_attribute('telegram_id',
-                                            message.chat.id,
-                                            session)
+    user = await user_crud.get_by_attribute(
+        'telegram_id',
+        message.chat.id,
+        session,
+    )
     media, reply_markup = await get_menu_content(
         level=0,
         menu_name='main',
         user=user,
-        session=session)
+        session=session,
+    )
     await message.answer_photo(
         photo=media.media,
         caption=media.caption,
@@ -45,9 +48,11 @@ async def user_menu(
     callback_data: MenuCallBack,
     session: AsyncSession,
 ) -> None:
-    user = await user_crud.get_by_attribute('telegram_id',
-                                            callback.from_user.id,
-                                            session)
+    user = await user_crud.get_by_attribute(
+        'telegram_id',
+        callback.from_user.id,
+        session,
+    )
     media, reply_markup = await get_menu_content(
         level=callback_data.level,
         menu_name=callback_data.menu_name,

@@ -52,7 +52,7 @@ WEBHOOK_HOST = 'https://f8b9-109-173-73-0.ngrok-free.app'
 Если БД локально не существует команда для создания
 
 ```shell
-alembic upgrade 9f9a4c508dbe  # это цифры первой ревизии 
+alembic upgrade 80fd02331d15  # это цифры последней ревизии 
 ```
 
 ```shell
