@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.core.constants import SLEEP, SleepMode
+from app.core.constants import SleepMode
 from app.core.logging import get_logger
 from app.keyboards.mode_kb import MenuCallBack
 
