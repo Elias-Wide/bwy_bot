@@ -29,7 +29,22 @@ async def handle_survey_cancel(
     callback_query: CallbackQuery,
     session: AsyncSession,
 ) -> None:
+    user = await user_crud.get(
+            User(
+                schedule=[Schedule()],
+            ),
+            session,
+    )
     logger.info('TRAINNNNNN')
+    logger.info(
+        await user_crud.get(
+            User(
+                schedule=[Schedule()],
+            ),
+            session,
+        ),
+    )
+
 
 
 @router.callback_query(F.data == 'stop_sleep')

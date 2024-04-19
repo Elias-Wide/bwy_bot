@@ -1,5 +1,6 @@
 from aiogram.types import FSInputFile
 from sqlalchemy import select
+from sqlalchemy.orm import query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import BASE_DIR, UPLOAD_DIR
@@ -18,8 +19,11 @@ from app.core.constants import (ACTIVITY_PURPOSE,
                                 COEF_TO_SLIM, 
                                 GENDER, 
                                 )
-from app.models import User, Calorie
+from app.models import User, Calorie, Schedule
+from app.core.logging import get_logger
+from app.crud import user_crud
 
+logger = get_logger(__name__)
 
 async def _get_videos() -> list[FSInputFile]:
     return [FSInputFile(path) for path in list(UPLOAD_DIR.glob('*.mp4'))]
@@ -56,3 +60,15 @@ async def calculation_of_calories(user: User) -> float:
     else:
         return round(
             res * PHYS_ACTIV_KOEF[user.activity] * COEF_ADD_MASS, COEF_ROUND)
+
+
+async def get_reminder_state(user: User, session: AsyncSession) -> str:
+    statement = select(
+        Schedule.stop_reminder_train,
+        Schedule.stop_reminder_sleep,
+        Schedule.stop_reminder_calories,
+        ).where(Schedule.user_id == user.id)
+    results = await session.execute(statement)
+    for res in results:
+        logger.info(res)  # TODO False -> ВКЛ, True -> Выкл.
+    return f'СОСТОЯНИЕ:{res}'

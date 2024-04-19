@@ -14,12 +14,13 @@ from app.keyboards import (
     get_workout_select_btns,
     get_settings_btns,
 )
-from app.models.user import User
+from app.models import User
 from app.utils.utils import (
     calculation_of_calories,
     _get_banner,
     get_calorie_plot,
     _get_videos,
+    get_reminder_state,
 )
 
 
@@ -96,11 +97,12 @@ async def settings_menu(
     user: User,
     session: AsyncSession,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Генератор меню выбора группы тренировки."""
+    """Получить состояние переключателей и вывести."""
+    res = await get_reminder_state(user, session)
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
-            caption='Здесь вы можете отключить напоминания',
+            caption=f'Здесь вы можете отключить напоминания.\n {res}',
         ),
         get_settings_btns(level=level)
     )
