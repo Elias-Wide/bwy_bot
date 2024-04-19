@@ -33,6 +33,7 @@ AM_NOON_PM = (
 )
 
 BACK = 'Назад👈'
+BACKWARD = 'backward'
 BUTTONS = {'Сон💤': 'sleep', 'Питание🥦': 'diet', 'Тренировки🏋‍♂️': 'workouts'}
 CAL_COEF_MAN = 88.36
 CAL_KOEF_WOMAN = 447.6
@@ -64,6 +65,7 @@ EXERCISE = 'exercise'
 EXERCISE_WORKOUT = 'exercise_workout'
 
 FMT_JPG = '.jpg'
+FORWARD = 'forward'
 
 GENDER = (
     ('MALE', 'Мужчина'),

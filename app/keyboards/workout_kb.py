@@ -4,8 +4,10 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from app.core.constants import (
     ACTIVITY_KEYBOARD_SIZE,
     BACK,
+    BACKWARD,
     COMPLETE,
     DEFAULT_KEYBOARD_SIZE,
+    FORWARD,
     MAIN_MENU,
     WORKOUTS,
 )
@@ -66,7 +68,7 @@ def get_exercise_btns(
 
     row = []
     for text, menu_name in pagination_btns.items():
-        if menu_name == 'forward':
+        if menu_name == FORWARD:
             row.append(
                 InlineKeyboardButton(
                     text=text,
@@ -78,7 +80,7 @@ def get_exercise_btns(
                     ).pack(),
                 ),
             )
-        elif menu_name == 'backward':
+        elif menu_name == BACKWARD:
             row.append(
                 InlineKeyboardButton(
                     text=text,

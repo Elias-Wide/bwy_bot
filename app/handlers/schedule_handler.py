@@ -26,16 +26,14 @@ async def training_callback(
     callback_query: types.CallbackQuery,
     session: AsyncSession,
 ) -> None:
-    user = await user_crud.get_by_attribute(
-        'telegram_id',
-        callback_query.from_user.id,
-        session,
-    )
-
     media, reply_markup = await get_menu_content(
         level=1,
         menu_name=WORKOUTS,
-        user=user,
+        user=await user_crud.get_by_attribute(
+            'telegram_id',
+            callback_query.from_user.id,
+            session,
+        ),
         session=session,
     )
 
@@ -63,15 +61,14 @@ async def calories_callback(
     callback_query: types.CallbackQuery,
     session: AsyncSession,
 ) -> None:
-    user = await user_crud.get_by_attribute(
-        'telegram_id',
-        callback_query.from_user.id,
-        session,
-    )
     media, reply_markup = await get_menu_content(
         level=0,
         menu_name=DIET,
-        user=user,
+        user=await user_crud.get_by_attribute(
+            'telegram_id',
+            callback_query.from_user.id,
+            session,
+        ),
         session=session,
     )
     await callback_query.message.answer_photo(

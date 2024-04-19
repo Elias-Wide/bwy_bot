@@ -13,11 +13,12 @@ async def calorie_counter(
     user: User,
     session: AsyncSession,
 ) -> tuple[InputMediaPhoto]:
-    res = await calculation_of_calories(user)
     return (
         InputMediaPhoto(
             media=await get_calorie_plot(user, session),
-            caption=CAPTIONS[menu_name].format(res),
+            caption=CAPTIONS[menu_name].format(
+                await calculation_of_calories(user),
+            ),
         ),
         get_calories_btns(level=level),
     )

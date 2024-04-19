@@ -11,10 +11,10 @@ def validate_number_value(
 ) -> int | None:
     try:
         number_value = int(value)
-    except ValueError as e:
+    except ValueError as error:
         raise DisallowedHumanParameterError(
             INVALID_LITERAL_ERROR.format(value),
-        ) from e
+        ) from error
     if number_value not in range(*valid_range):
         raise DisallowedHumanParameterError(
             OUT_OF_ALLOWED_RANGE_ERROR.format(number_value, *valid_range),
