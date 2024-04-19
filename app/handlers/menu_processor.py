@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import DIET
 from app.handlers.sleep_handlers import sleep_main_menu
+
 from app.core.logging import get_logger
 from app.keyboards import (
     get_sleep_back_btns,
@@ -14,11 +15,12 @@ from app.keyboards import get_main_menu_btns
 from app.models.user import User
 from app.utils.utils import (
     get_banner,
-    _get_sleep_banner,
-    _go_to_bed_time,
     _sleep_duration,
-    _wake_up_time,
     _sleep_statistic,
+    get_sleep_duration,
+    get_sleep_statistic,
+    go_to_bed_time,
+    wake_up_time,
 )
 
 logger = get_logger(__name__)
@@ -59,66 +61,60 @@ async def sleep_mode_menu(
     )
 
 
-async def go_to_bed(
+async def go_to_bed_menu(
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Ответ времени отхода ко сну."""
-    res = await _go_to_bed_time()
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
-            caption=res,
+            caption=await go_to_bed_time(),
         ),
         get_sleep_back_btns(level=level),
     )
 
 
-async def wake_up(
+async def wake_up_menu(
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Ответ времени пробуждения."""
-    res = await _wake_up_time()
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
-            caption=res,
+            caption=await wake_up_time(),
         ),
         get_sleep_back_btns(level=level),
     )
 
 
-async def sleep_duration(
+async def sleep_duration_menu(
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Ввод продолжительности сна."""
-    res = await _sleep_duration()
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
-            caption=res,
+            caption=await get_sleep_duration(),
         ),
         get_sleep_back_btns_duration(level=level),
     )
 
 
-async def sleep_statistic(
+async def sleep_statistic_menu(
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Ввод продолжительности сна."""
-    res = await _sleep_statistic()
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
-            caption=res,
+            caption=await get_sleep_statistic(),
         ),
         get_sleep_back_btns(level=level),
     )
-
-
 
 
 async def get_menu_content(
@@ -145,11 +141,11 @@ async def get_menu_content(
             )
         case 2:
             if menu_name == 'go_to_bed':
-                return await go_to_bed(level, menu_name)
+                return await go_to_bed_menu(level, menu_name)
             if menu_name == 'wake_up':
-                return await wake_up(level, menu_name)
+                return await wake_up_menu(level, menu_name)
             if menu_name == 'sleep_duration':
-                return await sleep_duration(level, menu_name)
+                return await sleep_duration_menu(level, menu_name)
             if menu_name == 'sleep_statistic':
                 return await sleep_statistic(level, menu_name)
             return await workouts(

@@ -1,4 +1,4 @@
-from datetime import datetime as dt
+from datetime import datetime
 
 from aiogram.types import FSInputFile, InputMediaPhoto
 from sqlalchemy import select
@@ -79,15 +79,18 @@ async def calculation_of_calories(user: User) -> float:
         )
 
 
-async def _go_to_bed_time() -> str:
-    return f'Ваше время отхода ко сну: {dt.now().strftime(USER_DATE_FORMAT)}'
+async def go_to_bed_time() -> str:
+    return (
+        'Ваше время отхода ко сну:'
+        f' {datetime.now().strftime(USER_DATE_FORMAT)}'
+    )
 
 
-async def _wake_up_time() -> str:
-    return f'Вы проснулись в: {dt.now().strftime(USER_DATE_FORMAT)}'
+async def wake_up_time() -> str:
+    return f'Вы проснулись в: {datetime.now().strftime(USER_DATE_FORMAT)}'
 
 
-async def _sleep_duration() -> str:
+async def get_sleep_duration() -> str:
     sleep_duration = 8.5  # TODO вычислять
     if not sleep_duration:
         sleep_duration = 8
@@ -109,7 +112,7 @@ async def _sleep_duration() -> str:
     )
 
 
-async def _sleep_statistic() -> str:
+async def get_sleep_statistic() -> str:
     sleep_week_duration = (  # TODO вычислять
         'Коротко о Вашем сне:\n\n'
         'вчера не менее 8 часов, \n'

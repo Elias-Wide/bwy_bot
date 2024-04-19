@@ -154,14 +154,6 @@ ALLOWED_HEIGHT_RANGE = (100, 250)
 ALLOWED_WEIGHT_RANGE = (20, 500)
 
 USER_DATE_FORMAT = "%H:%M"
-DB_DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
-
-SLEEP_MAIN_MENU = (
-    ('go_to_bed', 'Ложусь спать'),
-    ('wake_up', 'Проснулся'),
-    ('sleep_duration', 'Продолжительность сна'),
-    ('sleep_statistic', 'Статистика'),
-)
 
 INTRO_SLEEP_TEXT = (
     'Если Вы ложитесь спать или только что проснулись, нажмите '
