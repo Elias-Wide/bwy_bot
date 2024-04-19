@@ -4,9 +4,9 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from app.keyboards.mode_kb import MenuCallBack
 
 BUTTONS = {
-    'Стоп тренировки': 'stop_train',
-    'Стоп напоминания про сон': 'stop_sleep',
-    'Стоп напоминания о карориях': 'stop_calorie',
+    'Тренировки': 'stop_train',
+    'Сон': 'stop_sleep',
+    'Калории': 'stop_calorie',
 }
 
 
