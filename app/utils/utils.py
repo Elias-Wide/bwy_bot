@@ -2,7 +2,7 @@ from aiogram.types import FSInputFile, InputMediaPhoto
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import STATIC_DIR
+from app.core.config import BASE_DIR, STATIC_DIR, UPLOAD_DIR
 from app.core.constants import (
     ACTIVITY_PURPOSE,
     AGE_COEF_MAN,
@@ -72,8 +72,8 @@ async def get_reminder_state(user: User, session: AsyncSession) -> str:
         Schedule.stop_reminder_train,
         Schedule.stop_reminder_sleep,
         Schedule.stop_reminder_calories,
-        ).where(Schedule.user_id == user.id)
+    ).where(Schedule.user_id == user.id)
     results = await session.execute(statement)
     for res in results:
-        logger.info(res)  # TODO False -> ВКЛ, True -> Выкл.
-    return f'СОСТОЯНИЕ:{res}'
+        logger.info(res)
+    return f'НАПОМИНАЛКИ:\n(тренинг, сон, калории)\n СОСТОЯНИЕ:\n{res}'

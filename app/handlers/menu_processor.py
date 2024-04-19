@@ -35,14 +35,22 @@ async def settings_menu(
         user: User,
         session: AsyncSession,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Генератор меню выбора группы тренировки."""
     res = await get_reminder_state(user, session)
     return (
         InputMediaPhoto(
             media=await get_banner(menu_name),
-            caption=f'Здесь вы можете отключить напоминания.\n {res}',
+            caption=(
+                'Здесь вы можете управлять напоминаними. '
+                'Нажатие на соответствующую кнопку включит '
+                'или отключит напоминание. Отключение напоминания о '
+                'тренировках отключает очередность упражнений расчитанных '
+                'программой для Вас. '
+                'Вы сможете сами выбирать их в ручную в соответствии с Вашими '
+                'предпочтениями.'
+                f'\n {res}'
+            ),
         ),
-        get_settings_btns(level=level)
+        get_settings_btns(level=level),
     )
 
 

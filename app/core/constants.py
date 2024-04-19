@@ -49,7 +49,22 @@ AM_NOON_PM = (
 
 BACK = 'Назад👈'
 BACKWARD = 'backward'
-BUTTONS = {'Сон💤': 'sleep', 'Питание🥦': 'diet', 'Тренировки🏋‍♂️': 'workouts'}
+BUTTONS = {
+    'Сон💤': 'sleep',
+    'Питание🥦': 'diet',
+    'Тренировки🏋‍♂️': 'workouts',
+    'Настройки🛠': 'settings',
+}
+BUTTONS_FOR_TRAINING = {
+    'category': {
+        'Грудь\\Бицепс': 'pectoral',
+        'Спина\\Плечи\\Трицепс': 'back',
+        'Ноги': 'legs',
+        'Кардио🏃‍♂️': 'cardio',
+    },
+    'pagination': {'backward': '◀️', 'forward': '▶️'},
+}
+
 CAL_COEF_MAN = 88.36
 CAL_KOEF_WOMAN = 447.6
 COEF_TO_SLIM = 0.85
@@ -186,3 +201,9 @@ SLEEP_MAIN_MENU = (
     ('sleep_duration', 'Продолжительность сна'),
     ('sleep_statistic', 'Статистика'),
 )
+
+SETTINGS_BUTTONS = {
+    'Тренировки': 'stop_train',
+    'Сон': 'stop_sleep',
+    'Калории': 'stop_calorie',
+}
