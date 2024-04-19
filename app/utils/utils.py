@@ -74,6 +74,14 @@ async def get_reminder_state(user: User, session: AsyncSession) -> str:
         Schedule.stop_reminder_calories,
     ).where(Schedule.user_id == user.id)
     results = await session.execute(statement)
+    human_res = list()
     for res in results:
-        logger.info(res)
-    return f'НАПОМИНАЛКИ:\n(тренинг, сон, калории)\n СОСТОЯНИЕ:\n{res}'
+        for state in list(res):
+            if state:
+                state = 'Выкл'
+            else:
+                state = 'Вкл'
+            human_res.append(state)
+            logger.info(human_res)
+
+    return f'НАПОМИНАЛКИ:\n(тренинг, сон, калории)\n СОСТОЯНИЕ:\n{human_res}'
