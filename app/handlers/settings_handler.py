@@ -2,6 +2,7 @@ from aiogram import F, Router
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
 from app.core.constants import (
     CONFIRM,
@@ -10,7 +11,7 @@ from app.core.constants import (
     SurveyQuestions,
 )
 from app.core.logging import get_logger
-from app.crud import user_crud
+from app.crud import user_crud, schedule_crud
 from app.filters.survey_filters import (
     ExistingUserFilter,
     HumanParameterFilter,
@@ -29,22 +30,11 @@ async def handle_survey_cancel(
     callback_query: CallbackQuery,
     session: AsyncSession,
 ) -> None:
-    user = await user_crud.get(
-            User(
-                schedule=[Schedule()],
-            ),
-            session,
+    schedule = await schedule_crud.get_schedule_by_telegram_id(
+        callback_query.message.chat.id,
+        session,
     )
-    logger.info('TRAINNNNNN')
-    logger.info(
-        await user_crud.get(
-            User(
-                schedule=[Schedule()],
-            ),
-            session,
-        ),
-    )
-
+    logger.info(f'TRAINNNNNNN {schedule.stop_reminder_train}')
 
 
 @router.callback_query(F.data == 'stop_sleep')

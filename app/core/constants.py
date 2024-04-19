@@ -147,7 +147,6 @@ PHYS_ACTIV_KOEF = {
     'PROFESSIONAL': 1.9,
 }
 
-START_URL = 't.me/{bot_username}?start=survey-canceled'
 SURVEY_CONFIRMED, SURVEY_CANCELED = dict(CONFIRM).keys()
 SURVEY_RESULT = (
     '<b>Ваша анкета готова.</b>🎉\n\n'
@@ -178,8 +177,8 @@ WORKOUT_TYPE = (
     ('Front', 'Грудь, бицепс'),
 )
 
-USER_DATE_FORMAT = "%H:%M"
-DB_DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
+USER_DATE_FORMAT = '%H:%M'
+DB_DATE_FORMAT = '%d/%m/%Y %H:%M:%S'
 
 SLEEP_MAIN_MENU = (
     ('go_to_bed', 'Ложусь спать'),
