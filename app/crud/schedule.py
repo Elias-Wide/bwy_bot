@@ -44,17 +44,26 @@ class CRUDSchdeule(CRUDBase):
             telegram_id,
             session,
         )
-        db_obj = await session.execute(
-            select(Schedule).where(Schedule.user_id == user.id))
-        for field, value in db_obj:
-            logger.info(f'{field} --{value}')
-            if field == 'stop_reminder_train':
-                setattr(db_obj, 'stop_reminder_train', True)
-#        session.add(db_obj)
-        # await session.commit()
-        # await session.refresh(db_obj)
-        logger.info(f'{telegram_id}--{user.id} -{db_obj.scalars().first()}')
-        return db_obj.scalars().first()
+        schedule = await schedule_crud.get_by_attribute(
+            'user_id',
+            user.id,
+            session,
+        )
+        setattr(schedule, 'stop_reminder_train', True)
+        
+        # db_obj = await session.execute(
+        #     select(Schedule).where(Schedule.user_id == user.id))
+        
+        # for field, value in db_obj:
+        #     logger.info(f'{field} --{value}')
+        #     if field == 'stop_reminder_train':
+#                setattr(db_obj, 'stop_reminder_train', True)
+        session.add(schedule)
+        await session.commit()
+        await session.refresh(schedule)
+        logger.info(f'{telegram_id}--{user.id} -{schedule}')
+        return schedule
+#        return db_obj.scalars().first()
 
     async def switch_reminder(self, telegram_id, stop_reminder_checkbox: str) -> bool:
         logger.info(f'{telegram_id}--{stop_reminder_checkbox}')
