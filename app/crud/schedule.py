@@ -7,8 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import DIET, SLEEP, WORKOUTS
 from app.core.logging import get_logger
-from app.crud import user_crud
 from app.crud.base import CRUDBase
+from app.crud.user import user_crud
 from app.models import Schedule, User
 
 ModelType = TypeVar('ModelType', bound=CRUDBase)
