@@ -2,8 +2,8 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
-from sqladmin import Admin
 from fastapi_sqlalchemy import DBSessionMiddleware
+from sqladmin import Admin
 
 from app.admin.auth import AdminAuth
 from app.admin.view import (
@@ -19,17 +19,17 @@ from app.admin.view import (
 )
 from app.core.config import settings
 from app.core.constants import (
-    TIME_TRAINING_FOR_SCHEDULER,
+    MOSCOW,
     TIME_CALORIES_FOR_SCHEDULER,
     TIME_SLEEP_FOR_SCHEDULER,
-    MOSCOW
+    TIME_TRAINING_FOR_SCHEDULER,
 )
 from app.core.db import AsyncSessionLocal, engine, get_async_session
 from app.core.logging import get_logger
 from app.handlers.callbacks.schedule_handler import (
+    time_to_calorie,
     time_to_sleep,
     time_to_training,
-    time_to_calorie
 )
 from app.handlers.routers import main_router
 from app.keyboards.main_menu import set_main_menu
@@ -106,13 +106,19 @@ else:
         scheduler = AsyncIOScheduler(timezone=MOSCOW)
         scheduler.start()
         scheduler.add_job(
-            time_to_training, trigger='cron', hour=TIME_TRAINING_FOR_SCHEDULER
+            time_to_training,
+            trigger='cron',
+            hour=TIME_TRAINING_FOR_SCHEDULER,
         )
         scheduler.add_job(
-            time_to_calorie, trigger='cron', hour=TIME_CALORIES_FOR_SCHEDULER
+            time_to_calorie,
+            trigger='cron',
+            hour=TIME_CALORIES_FOR_SCHEDULER,
         )
         scheduler.add_job(
-            time_to_sleep, trigger='cron', hour=TIME_SLEEP_FOR_SCHEDULER
+            time_to_sleep,
+            trigger='cron',
+            hour=TIME_SLEEP_FOR_SCHEDULER,
         )
         await set_main_menu(bot)
         await bot.delete_webhook(drop_pending_updates=True)

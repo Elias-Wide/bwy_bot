@@ -1,15 +1,21 @@
-from aiogram import types, Router, F
+from aiogram import F, Router, types
 
-from app.crud.schedule import schedule_crud
-from app.core.constants import (
-    WORKOUTS, DIET, SLEEP, TEXT_FOR_DIET,
-    TEXT_FOR_SLEEPING, TEXT_FOR_TRAINING
-)
-from app.handlers.menu_processor import get_menu_content, calorie_counter
-from app.keyboards.schedule_kb import (
-    ready_for_training, sleep_control, calorie_control
-)
 from app import main
+from app.core.constants import (
+    DIET,
+    SLEEP,
+    TEXT_FOR_DIET,
+    TEXT_FOR_SLEEPING,
+    TEXT_FOR_TRAINING,
+    WORKOUTS,
+)
+from app.crud.schedule import schedule_crud
+from app.handlers.menu_processor import calorie_counter, get_menu_content
+from app.keyboards.schedule_kb import (
+    calorie_control,
+    ready_for_training,
+    sleep_control,
+)
 
 router = Router(name=__name__)
 
@@ -59,7 +65,7 @@ async def time_to_sleep() -> None:
         await main.bot.send_message(
             chat_id=tg_id,
             text=TEXT_FOR_SLEEPING,
-            reply_markup=sleep_control
+            reply_markup=sleep_control,
         )
 
 
@@ -72,7 +78,7 @@ async def time_to_training() -> None:
         await main.bot.send_message(
             chat_id=tg_id,
             text=TEXT_FOR_TRAINING,
-            reply_markup=ready_for_training
+            reply_markup=ready_for_training,
         )
 
 
@@ -85,5 +91,5 @@ async def time_to_calorie() -> None:
         await main.bot.send_message(
             chat_id=tg_id,
             text=TEXT_FOR_DIET,
-            reply_markup=calorie_control
+            reply_markup=calorie_control,
         )

@@ -1,5 +1,6 @@
 from app.core.constants import (
-    INVALID_LITERAL_ERROR, OUT_OF_ALLOWED_RANGE_ERROR
+    INVALID_LITERAL_ERROR,
+    OUT_OF_ALLOWED_RANGE_ERROR,
 )
 from app.exceptions.survey_exceptions import DisallowedHumanParameterError
 

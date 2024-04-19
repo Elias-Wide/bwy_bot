@@ -8,8 +8,7 @@ from app.core.db import Base
 
 class Schedule(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
-    start_course = Column(DateTime, default=DateTime())
-#    start_course = Column(DateTime, default=datetime.now())
+    start_course = Column(DateTime, default=datetime.now)
     stop_reminder_train = Column(Boolean, default=False)
     stop_reminder_sleep = Column(Boolean, default=False)
     stop_reminder_calories = Column(Boolean, default=False)

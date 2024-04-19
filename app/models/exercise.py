@@ -12,9 +12,9 @@ from app.core.constants import (
     EXERCISE,
     EXERCISE_WORKOUT,
     GENDER,
+    WORKOUT,
     WORKOUT_COURSE,
     WORKOUT_TYPE,
-    WORKOUT
 )
 from app.core.db import Base
 

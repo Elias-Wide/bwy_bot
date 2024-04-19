@@ -10,19 +10,18 @@ from app.core.logging import get_logger
 from app.keyboards import (
     get_calories_btns,
     get_main_menu_btns,
+    get_settings_btns,
     get_workout_bts,
     get_workout_select_btns,
-    get_settings_btns,
 )
 from app.models import User
 from app.utils.utils import (
     _get_banner,
     _get_videos,
-    get_reminder_state,
     calculation_of_calories,
     get_calorie_plot,
+    get_reminder_state,
 )
-
 
 logger = get_logger(__name__)
 
@@ -52,7 +51,6 @@ async def workout_category_menu(
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Генератор меню выбора группы тренировки."""
-    logger.info(f'{level} = { menu_name}')
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
@@ -102,9 +100,18 @@ async def settings_menu(
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
-            caption=f'Здесь вы можете отключить напоминания.\n {res}',
+            caption=(
+                'Здесь вы можете управлять напоминаними. '
+                'Нажатие на соответствующую кнопку включит '
+                'или отключит напоминание. Отключение напоминания о '
+                'тренировках отключает очередность упражнений расчитанных '
+                'программой для Вас. '
+                'Вы сможете сами выбирать их в ручную в соответствии с Вашими '
+                'предпочтениями.'
+                f'\n {res}'
+            ),
         ),
-        get_settings_btns(level=level)
+        get_settings_btns(level=level),
     )
 
 

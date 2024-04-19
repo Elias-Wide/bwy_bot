@@ -33,7 +33,12 @@ AM_NOON_PM = (
 )
 
 BACK = 'Назад👈'
-BUTTONS = {'Сон💤': 'sleep', 'Питание🥦': 'diet', 'Тренировки🏋‍♂️': 'workouts'}
+BUTTONS = {
+    'Сон💤': 'sleep',
+    'Питание🥦': 'diet',
+    'Тренировки🏋‍♂️': 'workouts',
+    'Настройки🛠': 'settings',
+}
 BUTTONS_FOR_TRAINING = {
     'category': {
         'Грудь\\Бицепс': 'pectoral',
@@ -138,3 +143,9 @@ WORKOUT_TYPE = (
     ('Back', 'Спина, плечи, трицепс'),
     ('Front', 'Грудь, бицепс'),
 )
+
+SETTINGS_BUTTONS = {
+    'Тренировки': 'stop_train',
+    'Сон': 'stop_sleep',
+    'Калории': 'stop_calorie',
+}

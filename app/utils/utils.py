@@ -1,29 +1,29 @@
 from aiogram.types import FSInputFile
 from sqlalchemy import select
-from sqlalchemy.orm import query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import BASE_DIR, UPLOAD_DIR
-from app.core.constants import (ACTIVITY_PURPOSE,
-                                PHYS_ACTIV_KOEF,
-                                AGE_COEF_MAN,
-                                AGE_COEF_WOMAN,
-                                HEIGHT_COEF_MAN,
-                                HEIGHT_COEF_WOMAN,
-                                WEIGHT_COEF_MAN,
-                                WEIGHT_COEF_WOMAN,
-                                CAL_COEF_MAN,
-                                CAL_KOEF_WOMAN,
-                                COEF_ADD_MASS,
-                                COEF_ROUND,
-                                COEF_TO_SLIM, 
-                                GENDER, 
-                                )
-from app.models import User, Calorie, Schedule
+from app.core.constants import (
+    ACTIVITY_PURPOSE,
+    AGE_COEF_MAN,
+    AGE_COEF_WOMAN,
+    CAL_COEF_MAN,
+    CAL_KOEF_WOMAN,
+    COEF_ADD_MASS,
+    COEF_ROUND,
+    COEF_TO_SLIM,
+    GENDER,
+    HEIGHT_COEF_MAN,
+    HEIGHT_COEF_WOMAN,
+    PHYS_ACTIV_KOEF,
+    WEIGHT_COEF_MAN,
+    WEIGHT_COEF_WOMAN,
+)
 from app.core.logging import get_logger
-from app.crud import user_crud
+from app.models import Calorie, Schedule, User
 
 logger = get_logger(__name__)
+
 
 async def _get_videos() -> list[FSInputFile]:
     return [FSInputFile(path) for path in list(UPLOAD_DIR.glob('*.mp4'))]
@@ -69,7 +69,9 @@ async def calculation_of_calories(user: User) -> float:
         return round(res * PHYS_ACTIV_KOEF[user.activity], COEF_ROUND)
     else:
         return round(
-            res * PHYS_ACTIV_KOEF[user.activity] * COEF_ADD_MASS, COEF_ROUND)
+            res * PHYS_ACTIV_KOEF[user.activity] * COEF_ADD_MASS,
+            COEF_ROUND,
+        )
 
 
 async def get_reminder_state(user: User, session: AsyncSession) -> str:
@@ -77,8 +79,8 @@ async def get_reminder_state(user: User, session: AsyncSession) -> str:
         Schedule.stop_reminder_train,
         Schedule.stop_reminder_sleep,
         Schedule.stop_reminder_calories,
-        ).where(Schedule.user_id == user.id)
+    ).where(Schedule.user_id == user.id)
     results = await session.execute(statement)
     for res in results:
-        logger.info(res)  # TODO False -> ВКЛ, True -> Выкл.
-    return f'СОСТОЯНИЕ:{res}'
+        logger.info(res)
+    return f'НАПОМИНАЛКИ:\n(тренинг, сон, калории)\n СОСТОЯНИЕ:\n{res}'

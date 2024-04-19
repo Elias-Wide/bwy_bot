@@ -8,7 +8,8 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.core.constants import WORKOUTS, BUTTONS, DEFAULT_KEYBOARD_SIZE
+from app.core.constants import BUTTONS, DEFAULT_KEYBOARD_SIZE, WORKOUTS
+
 KeyboardMarkup: TypeAlias = InlineKeyboardMarkup | ReplyKeyboardMarkup
 
 

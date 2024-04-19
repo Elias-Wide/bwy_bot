@@ -2,8 +2,14 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from app.core.constants import (
-    ACTIVITY_KEYBOARD_SIZE, BACK, BUTTONS_FOR_TRAINING,
-    COMPLETE, DEFAULT_KEYBOARD_SIZE, MAIN_MENU, NEXT, WORKOUTS
+    ACTIVITY_KEYBOARD_SIZE,
+    BACK,
+    BUTTONS_FOR_TRAINING,
+    COMPLETE,
+    DEFAULT_KEYBOARD_SIZE,
+    MAIN_MENU,
+    NEXT,
+    WORKOUTS,
 )
 from app.keyboards.mode_kb import MenuCallBack
 

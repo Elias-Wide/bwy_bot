@@ -1,16 +1,21 @@
-from typing import Generic, Sequence, Type, TypeVar
+from datetime import datetime
+from typing import TypeVar
+
 from fastapi_sqlalchemy import db
-from sqlalchemy import select, update
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.crud.base import CRUDBase
-from app.crud import user_crud
-from app.core.constants import WORKOUTS, DIET, SLEEP
-from app.models import Schedule, User
+
+from app.core.constants import DIET, SLEEP, WORKOUTS
 from app.core.logging import get_logger
-from fastapi.encoders import jsonable_encoder
+from app.crud import user_crud
+from app.crud.base import CRUDBase
+from app.models import Schedule, User
+
+ModelType = TypeVar('ModelType', bound=CRUDBase)
 
 
 logger = get_logger(__name__)
+
 
 class CRUDSchdeule(CRUDBase):
 
@@ -26,18 +31,20 @@ class CRUDSchdeule(CRUDBase):
         with db():
             users_id = db.session.scalars(
                 select(
-                    User.telegram_id
+                    User.telegram_id,
                 ).where(
                     User.id == Schedule.user_id,
-                    schedule_reminder
-                )
+                    schedule_reminder,
+                ),
             )
             return users_id.all()
-    async def get_schedule_by_telegram_id(
+
+    async def switch_reminder(
         self,
-        telegram_id,
+        telegram_id: int,
+        stop_reminder_field: bool,
         session: AsyncSession,
-    ):
+    ) -> ModelType | None:
         user = await user_crud.get_by_attribute(
             'telegram_id',
             telegram_id,
@@ -48,25 +55,16 @@ class CRUDSchdeule(CRUDBase):
             user.id,
             session,
         )
-        setattr(schedule, 'stop_reminder_train', True)
-        
-        # db_obj = await session.execute(
-        #     select(Schedule).where(Schedule.user_id == user.id))
-        
-        # for field, value in db_obj:
-        #     logger.info(f'{field} --{value}')
-        #     if field == 'stop_reminder_train':
-#                setattr(db_obj, 'stop_reminder_train', True)
+        if getattr(schedule, stop_reminder_field):
+            setattr(schedule, stop_reminder_field, False)
+            if stop_reminder_field == 'stop_reminder_train':
+                setattr(schedule, 'start_course', datetime.now())
+        else:
+            setattr(schedule, stop_reminder_field, True)
         session.add(schedule)
         await session.commit()
         await session.refresh(schedule)
-        logger.info(f'{telegram_id}--{user.id} -{schedule}')
         return schedule
-#        return db_obj.scalars().first()
-
-    async def switch_reminder(self, telegram_id, stop_reminder_checkbox: str) -> bool:
-        logger.info(f'{telegram_id}--{stop_reminder_checkbox}')
-        return False
 
 
 schedule_crud = CRUDSchdeule(Schedule)
