@@ -1,8 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.constants import DIET, SleepMode
-
+from app.core.constants import DIET, INTRO_SLEEP_TEXT, SleepMode
 from app.core.logging import get_logger
 from app.keyboards import (
     get_sleep_back_btns,
@@ -48,13 +47,7 @@ async def sleep_mode_menu(
     return (
         InputMediaPhoto(
             media=await _get_banner(menu_name),
-            caption=(
-                'Если Вы ложитесь спать или только что проснулись, нажмите '
-                'соответствующие кнопки? Мы запишем текущее время как '
-                'время начала сна или пробуждения. '
-                'Или можете ввести сразу количество часов сегодняшнего '
-                'ночного сна.'
-            ),
+            caption=INTRO_SLEEP_TEXT,
         ),
         get_sleep_select_btns(level=level),
     )

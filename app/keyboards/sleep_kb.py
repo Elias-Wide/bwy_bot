@@ -8,10 +8,10 @@ from app.keyboards.mode_kb import MenuCallBack
 logger = get_logger(__name__)
 
 SLEEP_BUTTONS = {
-        'Ложусь спать': SleepMode.GO_TO_BED,
-        'Проснулся': SleepMode.WAKE_UP,
-        'Продолжительность сна': SleepMode.DURATION,
-        'Статистика': SleepMode.STATISTIC,
+    'Ложусь спать': SleepMode.GO_TO_BED,
+    'Проснулся': SleepMode.WAKE_UP,
+    'Продолжительность сна': SleepMode.DURATION,
+    'Статистика': SleepMode.STATISTIC,
 }
 
 
