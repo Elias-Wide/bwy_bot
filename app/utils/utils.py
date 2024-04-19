@@ -1,4 +1,6 @@
 from aiogram.types import FSInputFile, InputMediaPhoto
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import STATIC_DIR
 from app.core.constants import (
@@ -19,7 +21,10 @@ from app.core.constants import (
     WEIGHT_COEF_MAN,
     WEIGHT_COEF_WOMAN,
 )
-from app.models import User
+from app.models import Schedule, User
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 # TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
@@ -60,3 +65,15 @@ async def calculation_of_calories(user: User) -> float:
             res * PHYS_ACTIV_KOEF[user.activity] * COEF_ADD_MASS,
             COEF_ROUND,
         )
+
+
+async def get_reminder_state(user: User, session: AsyncSession) -> str:
+    statement = select(
+        Schedule.stop_reminder_train,
+        Schedule.stop_reminder_sleep,
+        Schedule.stop_reminder_calories,
+        ).where(Schedule.user_id == user.id)
+    results = await session.execute(statement)
+    for res in results:
+        logger.info(res)  # TODO False -> ВКЛ, True -> Выкл.
+    return f'СОСТОЯНИЕ:{res}'

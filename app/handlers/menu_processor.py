@@ -14,7 +14,7 @@ from app.handlers.callbacks.sleep import (
 )
 from app.keyboards import get_main_menu_btns
 from app.models.user import User
-from app.utils.utils import get_banner
+from app.utils.utils import get_banner, get_reminder_state
 
 logger = get_logger(__name__)
 
@@ -36,10 +36,11 @@ async def settings_menu(
         session: AsyncSession,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Генератор меню выбора группы тренировки."""
+    res = await get_reminder_state(user, session)
     return (
         InputMediaPhoto(
             media=await get_banner(menu_name),
-            caption='Здесь вы можете отключить напоминания',
+            caption=f'Здесь вы можете отключить напоминания.\n {res}',
         ),
         get_settings_btns(level=level)
     )
