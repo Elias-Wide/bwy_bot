@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.constants import DIET, INTRO_SLEEP_TEXT, SleepMode
+from app.core.constants import DIET, SleepMode
 from app.core.logging import get_logger
 from app.keyboards import (
     get_sleep_back_btns,
@@ -11,6 +11,7 @@ from app.keyboards import (
 from app.handlers.callbacks import calorie_counter, select_workout, workouts
 from app.keyboards import get_main_menu_btns
 from app.models.user import User
+from app.utils.const import INTRO_SLEEP_TEXT
 from app.utils.utils import (
     get_banner,
     _sleep_duration,

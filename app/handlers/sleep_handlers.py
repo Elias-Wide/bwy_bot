@@ -1,8 +1,8 @@
 from aiogram import Router
 from aiogram.types import Message
 
-from app.core.constants import INTRO_SLEEP_TEXT
 from app.keyboards import MenuCallBack
+from app.utils.const import INTRO_SLEEP_TEXT
 
 router = Router()
 
