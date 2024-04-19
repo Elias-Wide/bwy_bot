@@ -15,20 +15,21 @@ from app.keyboards import (
     get_oops_kb,
     get_workout_select_btns,
 )
-from app.utils.pagination import Paginator, _get_pages
+from app.models import User
+from app.utils.pagination import Paginator, get_pages
 from app.utils.utils import get_banner
 
 logger = get_logger(__name__)
 
-async def workout_category_menu(
+
+async def select_workout(
     session: AsyncSession,
-    user_id: int,
+    user: User,
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Генератор меню выбора группы тренировки."""
     try:
-        groups = await workout_crud.get_groups(session, user_id)
+        groups = await workout_crud.get_groups(session, user)
     except NoWorkoutsException:
         return (
             await get_banner(OOPS, level),
@@ -57,7 +58,7 @@ async def workouts(
     pagination = Paginator(exercises, page)
     exercise = pagination.get_page()[0]
     video = InputMediaVideo(
-        media=FSInputFile(str(exercise.exercise.video)),
+        media=FSInputFile(exercise.exercise.video),
         caption=(
             f'<b>{exercise.exercise.name}:</b>\n'
             f'{exercise.exercise.description}'
@@ -67,6 +68,6 @@ async def workouts(
         level=level,
         workout_group=workout_group,
         page=page,
-        pagination_btns=_get_pages(pagination),
+        pagination_btns=get_pages(pagination),
     )
     return video, keyboard

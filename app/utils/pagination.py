@@ -48,7 +48,7 @@ class Paginator:
         )
 
 
-def _get_pages(paginator: Paginator) -> dict:
+def get_pages(paginator: Paginator) -> dict:
     buttons = {}
 
     if paginator.has_backward():

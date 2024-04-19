@@ -30,8 +30,8 @@ from app.filters.survey_filters import (
     HumanParameterFilter,
     filter_invalid_email,
 )
-from app.handlers.callbacks.user_handlers import process_start_command
 from app.handlers.states import SurveyOrder
+from app.handlers.user_handlers import process_start_command
 from app.keyboards import create_survey_kb
 from app.models import Schedule, User
 

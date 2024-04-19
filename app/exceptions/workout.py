@@ -8,5 +8,6 @@ class NoWorkoutsException(BaseException):
      параметры(цель, пол).
     """
 
+
 class NoExerciseVideo(BaseException):
     """Поднимается когда видеофайл по указанному в БД пути отсутствует."""

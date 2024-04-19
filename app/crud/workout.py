@@ -13,12 +13,7 @@ logger = get_logger(__name__)
 class ExerciseCRUD(CRUDBase):
 
     @staticmethod
-    async def get_groups(session: AsyncSession, user_id: int) -> list[Workout]:
-        print(user_id)
-        user = await session.scalars(
-            select(User).where(User.telegram_id == str(user_id)),
-        )
-        user = user.first()
+    async def get_groups(session: AsyncSession, user: User) -> list[Workout]:
         groups = await session.scalars(
             select(Workout).where(
                 and_(
@@ -30,7 +25,9 @@ class ExerciseCRUD(CRUDBase):
         groups = groups.all()
         if not groups:
             logger.error(
-                'В базе для %s и %s нет тренировок.', user.gender, user.purpose
+                'В базе для %s и %s нет тренировок.',
+                user.gender,
+                user.purpose,
             )
             raise NoWorkoutsException()
 
