@@ -1,16 +1,17 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+from app.core.constants import SLEEP, SleepMode
 from app.core.logging import get_logger
 from app.keyboards.mode_kb import MenuCallBack
 
 logger = get_logger(__name__)
 
 SLEEP_BUTTONS = {
-        'Ложусь спать': 'go_to_bed',
-        'Проснулся': 'wake_up',
-        'Продолжительность сна': 'sleep_duration',
-        'Статистика': 'sleep_statistic',
+        'Ложусь спать': SleepMode.GO_TO_BED,
+        'Проснулся': SleepMode.WAKE_UP,
+        'Продолжительность сна': SleepMode.DURATION,
+        'Статистика': SleepMode.STATISTIC,
 }
 
 
@@ -53,7 +54,7 @@ def get_sleep_back_btns(
             text='ОК👍',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name='sleep',
+                menu_name=SLEEP,
             ).pack(),
         ),
     )
@@ -62,7 +63,7 @@ def get_sleep_back_btns(
             text='Назад👈',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name='sleep',
+                menu_name=SLEEP,
             ).pack(),
         ),
     )
@@ -80,7 +81,7 @@ def get_sleep_back_btns_duration(
             text='Да',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name='sleep',
+                menu_name=SleepMode.SLEEP,
             ).pack(),
         ),
     )
@@ -90,7 +91,7 @@ def get_sleep_back_btns_duration(
             text='Нет👎',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name='sleep',
+                menu_name=SLEEP,
             ).pack(),
         ),
     )
@@ -99,7 +100,7 @@ def get_sleep_back_btns_duration(
             text='Назад👈',
             callback_data=MenuCallBack(
                 level=level - 1,
-                menu_name='sleep',
+                menu_name=SLEEP,
             ).pack(),
         ),
     )

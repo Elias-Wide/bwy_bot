@@ -1,6 +1,14 @@
 from enum import Enum
 
 
+class SleepMode(str, Enum):
+    DURATION = 'sleep_duration'
+    GO_TO_BED = 'go_to_bed'
+    SLEEP = 'sleep'
+    STATISTIC = 'sleep_statistic'
+    WAKE_UP = 'wake_up'
+
+
 class SurveyQuestions(str, Enum):
     AGE = 'Введите возраст'
     CONSENT = 'Вы готовы ответить на несколько вопросов?'
@@ -146,12 +154,6 @@ WORKOUT_TYPE = (
     ('Back', 'Спина, плечи, трицепс'),
     ('Front', 'Грудь, бицепс'),
 )
-
-INTRO_SURVEY_TEXT = '<b>Здесь будет мотивирующие введение.</b>\n😜\n'
-
-ALLOWED_AGE_RANGE = (14, 55)
-ALLOWED_HEIGHT_RANGE = (100, 250)
-ALLOWED_WEIGHT_RANGE = (20, 500)
 
 USER_DATE_FORMAT = "%H:%M"
 
