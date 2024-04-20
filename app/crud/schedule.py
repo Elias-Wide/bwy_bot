@@ -57,10 +57,10 @@ class CRUDSchdeule(CRUDBase):
         )
         if getattr(schedule, stop_reminder_field):
             setattr(schedule, stop_reminder_field, False)
-            if stop_reminder_field == 'stop_reminder_train':
-                setattr(schedule, 'start_course', datetime.now())
         else:
             setattr(schedule, stop_reminder_field, True)
+        if stop_reminder_field == 'stop_reminder_train':
+            setattr(schedule, 'start_course', datetime.now())
         session.add(schedule)
         await session.commit()
         await session.refresh(schedule)
