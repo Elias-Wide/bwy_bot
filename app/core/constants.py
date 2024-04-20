@@ -149,3 +149,10 @@ SETTINGS_BUTTONS = {
     'Сон': 'stop_sleep',
     'Калории': 'stop_calorie',
 }
+
+STATE_TRAIN = 'Напоминание про тренировку - '
+STATE_SLEEP = 'Напоминание про сон - '
+STATE_CALORIES ='Напоминание про калории - '
+REMINDER_STATE_TRUE = 'ВЫКЛ'
+REMINDER_STATE_FALSE = 'ВКЛ'
+DEFAULT_SLEEP_DURATION = 8

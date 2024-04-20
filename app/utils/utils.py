@@ -18,9 +18,15 @@ from app.core.constants import (
     PHYS_ACTIV_KOEF,
     WEIGHT_COEF_MAN,
     WEIGHT_COEF_WOMAN,
+    STATE_TRAIN,
+    STATE_SLEEP,
+    STATE_CALORIES,
+    REMINDER_STATE_TRUE,
+    REMINDER_STATE_FALSE,
 )
 from app.core.logging import get_logger
 from app.models import Calorie, Schedule, User
+from app.crud import schedule_crud
 
 logger = get_logger(__name__)
 
@@ -75,20 +81,22 @@ async def calculation_of_calories(user: User) -> float:
 
 
 async def get_reminder_state(user: User, session: AsyncSession) -> str:
-    statement = select(
-        Schedule.stop_reminder_train,
-        Schedule.stop_reminder_sleep,
-        Schedule.stop_reminder_calories,
-    ).where(Schedule.user_id == user.id)
-    results = await session.execute(statement)
-    human_res = list()
-    for res in results:
-        for state in list(res):
-            if state:
-                state = 'Выкл'
-            else:
-                state = 'Вкл'
-            human_res.append(state)
-            logger.info(human_res)
+    schedule_state = await schedule_crud.get(user.id, session)
+    if schedule_state.__getattribute__('stop_reminder_train'):
+        state_train = f'{STATE_TRAIN} - {REMINDER_STATE_TRUE}'
+    else:
+        state_train = f'{STATE_TRAIN} - {REMINDER_STATE_FALSE}'
+    if schedule_state.__getattribute__('stop_reminder_sleep'):
+        state_sleep =  f'{STATE_SLEEP} - {REMINDER_STATE_TRUE}'
+    else:
+        state_sleep =  f'{STATE_SLEEP} - {REMINDER_STATE_FALSE}'
+    if schedule_state.__getattribute__('stop_reminder_calories'):
+        state_calories = f'{STATE_CALORIES} - {REMINDER_STATE_TRUE}'
+    else:
+        state_calories =  f'{STATE_CALORIES} - {REMINDER_STATE_FALSE}'
 
-    return f'НАПОМИНАЛКИ:\n(тренинг, сон, калории)\n СОСТОЯНИЕ:\n{human_res}'
+    return (
+        f'{state_train}\n'
+        f'{state_sleep}\n'
+        f'{state_calories}\n'
+    )

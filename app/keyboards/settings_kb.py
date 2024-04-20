@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.core.constants import SETTINGS_BUTTONS
+from app.core.constants import SETTINGS_BUTTONS, BACK
 from app.keyboards.mode_kb import MenuCallBack
 
 
@@ -20,7 +20,7 @@ def get_settings_btns(
         )
     keyboard.add(
         InlineKeyboardButton(
-            text='Назад👈',
+            text=BACK,
             callback_data=MenuCallBack(
                 level=level,
                 menu_name='main',
