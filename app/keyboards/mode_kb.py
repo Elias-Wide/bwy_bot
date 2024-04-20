@@ -8,7 +8,8 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.core.constants import WORKOUTS, BUTTONS, DEFAULT_KEYBOARD_SIZE
+from app.core.constants import BUTTONS, DEFAULT_KEYBOARD_SIZE, WORKOUTS
+
 KeyboardMarkup: TypeAlias = InlineKeyboardMarkup | ReplyKeyboardMarkup
 
 
@@ -24,6 +25,8 @@ class MenuCallBack(CallbackData, prefix='menu'):
 
     level: int
     menu_name: str
+    workout_group: int | None = None
+    page: int = 1
 
 
 def get_main_menu_btns(
@@ -31,7 +34,6 @@ def get_main_menu_btns(
     level: int,
     sizes: tuple[int] = DEFAULT_KEYBOARD_SIZE,
 ) -> KeyboardMarkup:
-    """Генератор клавиатуры главного меню."""
     keyboard = InlineKeyboardBuilder()
     for text, menu_name in BUTTONS.items():
         if menu_name == WORKOUTS:

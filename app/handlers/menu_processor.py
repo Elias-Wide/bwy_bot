@@ -1,25 +1,12 @@
-from aiogram.types import (
-    InlineKeyboardMarkup,
-    InputMediaPhoto,
-    InputMediaVideo,
-)
+from aiogram.types import InlineKeyboardMarkup, InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import DIET
 from app.core.logging import get_logger
-from app.keyboards import (
-    get_calories_btns,
-    get_main_menu_btns,
-    get_workout_bts,
-    get_workout_select_btns,
-)
+from app.handlers.callbacks import calorie_counter, select_workout, workouts
+from app.keyboards import get_main_menu_btns
 from app.models.user import User
-from app.utils.utils import (
-    _get_banner,
-    _get_videos,
-    calculation_of_calories,
-    get_calorie_plot,
-)
+from app.utils.utils import get_banner
 
 logger = get_logger(__name__)
 
@@ -28,62 +15,9 @@ async def main_menu(
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """
-    Генератор главного меню.
-
-    Оборачивает FSInputfile в InputMediaPhoto, получает клавиатуру и
-    возвращает в хэндлер.
-    """
     return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption='Добро пожаловать в Ваш личный помощник'
-            ' самосовершенствования.',
-        ),
+        await get_banner(menu_name),
         get_main_menu_btns(level=level),
-    )
-
-
-async def workout_category_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Генератор меню выбора группы тренировки."""
-    return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption='Какой вид тренировки предпочитаете?',
-        ),
-        get_workout_select_btns(level=level),
-    )
-
-
-async def workout_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaVideo, InlineKeyboardMarkup]:
-    content = await _get_videos()
-    video = InputMediaVideo(
-        media=content[0],
-        caption='Какое-то упражнение: описание упражнения!',
-    )
-    keyboard = get_workout_bts(level=level, menu_name=menu_name)
-    return video, keyboard
-
-
-async def calorie_counter(
-    level: int,
-    user: User,
-    session: AsyncSession,
-) -> tuple[InputMediaPhoto]:
-    """Ответ по каллоражу на день."""
-    res = await calculation_of_calories(user)
-    return (
-        InputMediaPhoto(
-            media=await get_calorie_plot(user, session),
-            caption=f'Ваша норма калорий на день {res} Ккал',
-        ),
-        get_calories_btns(level=level),
     )
 
 
@@ -91,15 +25,27 @@ async def get_menu_content(
     level: int,
     menu_name: str,
     user: User,
-    session: AsyncSession,
+    session: AsyncSession | None = None,
+    workout_group: int | None = None,
+    page: int | None = None,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Диспетчер меню."""
     match level:
         case 0:
             if menu_name == DIET:
-                return await calorie_counter(level, user, session)
+                return await calorie_counter(level, menu_name, user, session)
             return await main_menu(level, menu_name)
         case 1:
-            return await workout_category_menu(level, menu_name)
+            return await select_workout(
+                session,
+                user,
+                level,
+                menu_name,
+            )
         case 2:
-            return await workout_menu(level, menu_name)
+            return await workouts(
+                session,
+                level,
+                menu_name,
+                workout_group,
+                page,
+            )

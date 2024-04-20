@@ -1,22 +1,22 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.core.constants import BACK, DEFAULT_KEYBOARD_SIZE, MAIN_MENU
 from app.keyboards.mode_kb import MenuCallBack
 
 
-def get_calories_btns(
+def get_oops_kb(
     *,
     level: int,
-    sizes: tuple[int] = DEFAULT_KEYBOARD_SIZE,
+    menu_name: str,
+    sizes: tuple[int] = (1,),
 ) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardBuilder()
     keyboard.add(
         InlineKeyboardButton(
-            text=BACK,
+            text='Назад👈',
             callback_data=MenuCallBack(
-                level=level,
-                menu_name=MAIN_MENU,
+                level=level - 1,
+                menu_name='main' if menu_name == 'workouts' else 'workouts',
             ).pack(),
         ),
     )

@@ -22,7 +22,6 @@ async def process_start_command(
     state: FSMContext,
     session: AsyncSession,
 ) -> None:
-    """Хэндлер команды '/start'."""
     user = await user_crud.get_by_attribute(
         'telegram_id',
         message.chat.id,
@@ -54,11 +53,14 @@ async def user_menu(
         session,
     )
     media, reply_markup = await get_menu_content(
+        session=session,
         level=callback_data.level,
         menu_name=callback_data.menu_name,
         user=user,
-        session=session,
+        workout_group=callback_data.workout_group,
+        page=callback_data.page,
     )
+
     if isinstance(media, InputMediaVideo):
         async with ChatActionSender.upload_video(
             chat_id=callback.message.chat.id,
