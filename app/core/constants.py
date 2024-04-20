@@ -53,7 +53,7 @@ BUTTONS = {
     'Сон💤': 'sleep',
     'Питание🥦': 'diet',
     'Тренировки🏋‍♂️': 'workouts',
-    'Настройки🛠': 'settings',
+    'Напоминания🛠': 'settings',
 }
 BUTTONS_FOR_TRAINING = {
     'category': {
