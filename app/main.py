@@ -116,11 +116,6 @@ else:
             trigger='cron',
             hour=TIME_SLEEP_FOR_SCHEDULER,
         )
-        # scheduler.add_job(
-        #     time_to_training,
-        #     trigger='interval',
-        #     seconds=10
-        # )
         await set_main_menu(bot)
         await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot)
