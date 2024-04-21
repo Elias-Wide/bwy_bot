@@ -71,6 +71,23 @@ if WEBHOOK_MODE:
 
         @app.on_event('startup')
         async def on_startup() -> None:
+            scheduler = AsyncIOScheduler(timezone=MOSCOW)
+            scheduler.start()
+            scheduler.add_job(
+                time_to_training,
+                trigger='cron',
+                hour=TIME_TRAINING_FOR_SCHEDULER,
+            )
+            scheduler.add_job(
+                time_to_calorie,
+                trigger='cron',
+                hour=TIME_CALORIES_FOR_SCHEDULER,
+            )
+            scheduler.add_job(
+                time_to_sleep,
+                trigger='cron',
+                hour=TIME_SLEEP_FOR_SCHEDULER,
+            )
             webhook_info = await bot.get_webhook_info()
             logger.info('MODE = %s', WEBHOOK_MODE)
             logger.info('URL = %s', WEBHOOK_URL)

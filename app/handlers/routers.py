@@ -1,12 +1,12 @@
 from aiogram import Router
 
 from app.handlers import (
-    feature/schedul_refact
+    echo_router,
+    settings_router,
     shedule_router,
     sleep_router,
     survey_router,
     user_router,
-    echo_router,
 )
 
 main_router = Router()

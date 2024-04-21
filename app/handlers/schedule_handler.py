@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from aiogram import F, Router, types
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -79,7 +80,7 @@ async def calories_callback(
     )
 
 
-def time_eating():
+def time_eating() -> str:
     """В зависимости от времени выводит то или иное сообщение."""
     time_now = datetime.now().hour
     return TEXT_FOR_DIET[time_now]
