@@ -10,9 +10,8 @@ from app.handlers.callbacks.sleep import (
     sleep_mode_menu,
     sleep_statistic_menu,
     wake_up_menu,
-    get_settings_btns,
 )
-from app.keyboards import get_main_menu_btns
+from app.keyboards import get_main_menu_btns, get_settings_btns
 from app.models.user import User
 from app.utils.utils import get_banner, get_reminder_state
 
