@@ -3,29 +3,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import DIET, SleepMode
 from app.core.logging import get_logger
+from app.handlers.callbacks import calorie_counter, select_workout, workouts
 from app.keyboards import (
+    get_main_menu_btns,
     get_sleep_back_btns,
     get_sleep_back_btns_duration,
     get_sleep_select_btns,
-    get_calories_btns,
-    get_main_menu_btns,
-    get_workout_bts,
-    get_workout_select_btns,
 )
-from app.handlers.callbacks import calorie_counter, select_workout, workouts
-from app.keyboards import get_main_menu_btns
 from app.models.user import User
-from app.utils.const import INTRO_SLEEP_TEXT
-from app.utils.utils import (
-    get_banner,
-    _sleep_duration,
-    _sleep_statistic,
-    get_sleep_duration,
-    get_sleep_statistic,
-    go_to_bed_time,
-    wake_up_time,
-    _sleep_mode_menu,
-)
+from app.utils.utils import get_banner
 
 logger = get_logger(__name__)
 
@@ -35,7 +21,7 @@ async def main_menu(
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     return (
-        await get_banner(menu_name),
+        await get_banner(menu_name, level),
         get_main_menu_btns(level=level),
     )
 
@@ -44,17 +30,8 @@ async def sleep_mode_menu(
     level: int,
     menu_name: str,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    res = await _sleep_mode_menu()
-    """
-    Генератор меню выбора ввода данных сна.
-
-    Вывод даных о сне за последние 7 дней.
-    """
     return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=INTRO_SLEEP_TEXT,
-        ),
+        await get_banner(menu_name, level),
         get_sleep_select_btns(level=level),
     )
 
@@ -65,10 +42,7 @@ async def go_to_bed_menu(
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Ответ времени отхода ко сну."""
     return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=await go_to_bed_time(),
-        ),
+        await get_banner(menu_name, level),
         get_sleep_back_btns(level=level),
     )
 
@@ -79,10 +53,7 @@ async def wake_up_menu(
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Ответ времени пробуждения."""
     return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=await wake_up_time(),
-        ),
+        await get_banner(menu_name, level),
         get_sleep_back_btns(level=level),
     )
 
@@ -93,10 +64,7 @@ async def sleep_duration_menu(
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Ввод продолжительности сна."""
     return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=await get_sleep_duration(),
-        ),
+        await get_banner(menu_name, level),
         get_sleep_back_btns_duration(level=level),
     )
 
@@ -107,85 +75,7 @@ async def sleep_statistic_menu(
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     """Ввод продолжительности сна."""
     return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=await get_sleep_statistic(),
-        ),
-        get_sleep_back_btns(level=level),
-    )
-
-
-async def sleep_mode_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Генератор меню выбора ввода данных сна."""
-    res = await _sleep_mode_menu()
-    return (
-        InputMediaPhoto(
-            media=await _get_sleep_banner(menu_name),
-            caption=f'{res} Выберите режим ввода данных сна?',
-        ),
-        get_sleep_select_btns(level=level),
-    )
-
-
-async def go_to_bed(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Ответ времени отхода ко сну."""
-    res = await _go_to_bed_time()
-    return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=res,
-        ),
-        get_sleep_back_btns(level=level),
-    )
-
-
-async def wake_up(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Ответ времени пробуждения."""
-    res = await _wake_up_time()
-    return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=res,
-        ),
-        get_sleep_back_btns(level=level),
-    )
-
-
-async def sleep_duration(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Ввод продолжительности сна."""
-    res = await _sleep_duration()
-    return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=res,
-        ),
-        get_sleep_back_btns_duration(level=level),
-    )
-
-
-async def sleep_statistic(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Ввод продолжительности сна."""
-    res = await _sleep_statistic()
-    return (
-        InputMediaPhoto(
-            media=await _get_banner(menu_name),
-            caption=res,
-        ),
+        await get_banner(menu_name, level),
         get_sleep_back_btns(level=level),
     )
 
