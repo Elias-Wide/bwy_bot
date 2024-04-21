@@ -1,5 +1,12 @@
 from enum import Enum
 
+from app.utils.sleep import (
+    get_sleep_duration,
+    get_sleep_statistic,
+    go_to_bed_time,
+    wake_up_time,
+)
+
 
 class SleepMode(str, Enum):
     DURATION = 'sleep_duration'
@@ -60,6 +67,10 @@ INTRO_SLEEP_TEXT = (
 CAPTIONS = {
     'main': 'Добро пожаловать в Ваш личный помощник самосовершенствования.',
     'sleep': INTRO_SLEEP_TEXT,
+    'go_to_bed': go_to_bed_time(),
+    'wake_up': wake_up_time(),
+    'sleep_duration': get_sleep_duration(),
+    'sleep_statistic': get_sleep_statistic(),
     'workouts': '<b>Какой вид тренировки предпочитаете?</b>',
     'diet': 'Ваша норма калорий на день {} Ккал',
     'oops': {

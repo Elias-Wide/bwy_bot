@@ -4,12 +4,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.constants import DIET, SleepMode
 from app.core.logging import get_logger
 from app.handlers.callbacks import calorie_counter, select_workout, workouts
-from app.keyboards import (
-    get_main_menu_btns,
-    get_sleep_back_btns,
-    get_sleep_back_btns_duration,
-    get_sleep_select_btns,
+from app.handlers.callbacks.sleep import (
+    go_to_bed_menu,
+    sleep_duration_menu,
+    sleep_mode_menu,
+    sleep_statistic_menu,
+    wake_up_menu,
 )
+from app.keyboards import get_main_menu_btns
 from app.models.user import User
 from app.utils.utils import get_banner
 
@@ -23,60 +25,6 @@ async def main_menu(
     return (
         await get_banner(menu_name, level),
         get_main_menu_btns(level=level),
-    )
-
-
-async def sleep_mode_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    return (
-        await get_banner(menu_name, level),
-        get_sleep_select_btns(level=level),
-    )
-
-
-async def go_to_bed_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Ответ времени отхода ко сну."""
-    return (
-        await get_banner(menu_name, level),
-        get_sleep_back_btns(level=level),
-    )
-
-
-async def wake_up_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Ответ времени пробуждения."""
-    return (
-        await get_banner(menu_name, level),
-        get_sleep_back_btns(level=level),
-    )
-
-
-async def sleep_duration_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Ввод продолжительности сна."""
-    return (
-        await get_banner(menu_name, level),
-        get_sleep_back_btns_duration(level=level),
-    )
-
-
-async def sleep_statistic_menu(
-    level: int,
-    menu_name: str,
-) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
-    """Ввод продолжительности сна."""
-    return (
-        await get_banner(menu_name, level),
-        get_sleep_back_btns(level=level),
     )
 
 

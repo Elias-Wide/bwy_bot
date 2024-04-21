@@ -13,15 +13,15 @@ from app.utils.const import (
 )
 
 
-async def go_to_bed_time() -> str:
+def go_to_bed_time() -> str:
     return f'{GO_TO_BED_TEXT}{datetime.now().strftime(USER_DATE_FORMAT)}'
 
 
-async def wake_up_time() -> str:
+def wake_up_time() -> str:
     return f'{WAKE_UP_TEXT}{datetime.now().strftime(USER_DATE_FORMAT)}'
 
 
-async def get_sleep_duration() -> str:
+def get_sleep_duration() -> str:
     sleep_duration = 8.5  # TODO вычислять
     if not sleep_duration:
         return (
@@ -39,7 +39,7 @@ async def get_sleep_duration() -> str:
     )
 
 
-async def get_sleep_statistic() -> str:
+def get_sleep_statistic() -> str:
     sleep_week_duration = (  # TODO вычислять
         'вчера не менее 8 часов, \n'
         'позавчера не менее 8 часов, \n'

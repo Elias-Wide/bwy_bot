@@ -22,21 +22,6 @@ from app.core.constants import (
     WEIGHT_COEF_WOMAN,
 )
 from app.models import Calorie, User
-from app.utils.sleep import (
-    get_sleep_duration,
-    get_sleep_statistic,
-    go_to_bed_time,
-    wake_up_time,
-)
-
-CAPTIONS.update(
-    {
-        'go_to_bed': go_to_bed_time(),
-        'wake_up_time': wake_up_time(),
-        'sleep_duration': get_sleep_duration(),
-        'sleep_statistic': get_sleep_statistic(),
-    }
-)
 
 
 # TODO: exception.TelegramBadRequest: PHOTO_INVALID_DIMENSIONS
