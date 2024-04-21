@@ -77,6 +77,7 @@ CAPTIONS = {
         1: 'В данный момент для Вас нет тренировки...',
         2: 'В данный момент для Вас нет упражнений к этой тренировке...',
     },
+    'oops_diet': 'В данный момент для вас нет графика КБЖУ...',
 }
 COEF_TO_SLIM = 0.85
 COEF_ADD_MASS = 1.2
@@ -129,6 +130,7 @@ KB_TEXT_FOR_TRAINING = 'К тренировкам!'
 KB_TEXT_FOR_SLEEPING = 'Контроль сна!'
 
 OOPS = 'oops'
+OOPS_DIET = 'oops_diet'
 
 PHYSICAL_ACTIVITY = (
     ('ABSENT', 'Отсутствует'),
