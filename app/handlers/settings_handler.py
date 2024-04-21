@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.logging import get_logger
 from app.crud import schedule_crud
-
 from app.handlers.user_handlers import process_start_command
 
 router = Router()

@@ -86,7 +86,7 @@ CAPTIONS = {
     'settings': 'settings',
     'stop_train': 'Тренировки',
     'stop_sleep': 'Сон',
-    'stop_calorie': 'Калории' ,
+    'stop_calorie': 'Калории',
     'go_to_bed': go_to_bed_time(),
     'wake_up': wake_up_time(),
     'sleep_duration': get_sleep_duration(),

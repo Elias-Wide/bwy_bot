@@ -1,9 +1,10 @@
-from aiogram.types import InlineKeyboardMarkup, InputMediaPhoto, FSInputFile
+from aiogram.types import FSInputFile, InlineKeyboardMarkup, InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.exceptions.workout import NoExerciseException
-from app.core.constants import DIET, SleepMode, FMT_JPG, OOPS_DIET
+
 from app.core.config import STATIC_DIR
+from app.core.constants import DIET, FMT_JPG, OOPS_DIET, SleepMode
 from app.core.logging import get_logger
+from app.exceptions.workout import NoExerciseException
 from app.handlers.callbacks import calorie_counter, select_workout, workouts
 from app.handlers.callbacks.sleep import (
     go_to_bed_menu,
@@ -12,9 +13,9 @@ from app.handlers.callbacks.sleep import (
     sleep_statistic_menu,
     wake_up_menu,
 )
-from app.keyboards import get_main_menu_btns, get_settings_btns, get_oops_kb
+from app.keyboards import get_main_menu_btns, get_oops_kb, get_settings_btns
 from app.models.user import User
-from app.utils.utils import get_banner, get_reminder_state, _get_banner
+from app.utils.utils import get_banner, get_reminder_state
 
 logger = get_logger(__name__)
 
@@ -48,7 +49,7 @@ async def settings_menu(
     logger.info(f'{menu_name}-{level}')
     return (
         InputMediaPhoto(
-            media = image,
+            media=image,
             caption=(
                 'Здесь вы можете управлять напоминаними. '
                 'Нажатие на соответствующую кнопку включит '
@@ -62,7 +63,6 @@ async def settings_menu(
         ),
         get_settings_btns(level=level),
     )
-
 
 
 async def get_menu_content(

@@ -24,15 +24,10 @@ from app.core.constants import (
     STATE_TRAIN,
     WEIGHT_COEF_MAN,
     WEIGHT_COEF_WOMAN,
-    STATE_TRAIN,
-    STATE_SLEEP,
-    STATE_CALORIES,
-    REMINDER_STATE_TRUE,
-    REMINDER_STATE_FALSE,
 )
 from app.core.logging import get_logger
-from app.models import Calorie, Schedule, User
 from app.crud import schedule_crud
+from app.models import User
 
 logger = get_logger(__name__)
 
@@ -86,21 +81,12 @@ async def get_reminder_state(user: User, session: AsyncSession) -> str:
     else:
         state_train = f'{STATE_TRAIN} - {REMINDER_STATE_FALSE}'
     if schedule_state.__getattribute__('stop_reminder_sleep'):
-        state_sleep =  f'{STATE_SLEEP} - {REMINDER_STATE_TRUE}'
+        state_sleep = f'{STATE_SLEEP} - {REMINDER_STATE_TRUE}'
     else:
-        state_sleep =  f'{STATE_SLEEP} - {REMINDER_STATE_FALSE}'
+        state_sleep = f'{STATE_SLEEP} - {REMINDER_STATE_FALSE}'
     if schedule_state.__getattribute__('stop_reminder_calories'):
         state_calories = f'{STATE_CALORIES} - {REMINDER_STATE_TRUE}'
     else:
-        state_calories =  f'{STATE_CALORIES} - {REMINDER_STATE_FALSE}'
+        state_calories = f'{STATE_CALORIES} - {REMINDER_STATE_FALSE}'
 
-    return (
-        f'{state_train}\n'
-        f'{state_sleep}\n'
-        f'{state_calories}\n'
-    )
-
-async def _get_banner(
-    menu_name: str,
-) -> str:
-    return FSInputFile(STATIC_DIR.joinpath(menu_name + FMT_JPG))
+    return f'{state_train}\n' f'{state_sleep}\n' f'{state_calories}\n'

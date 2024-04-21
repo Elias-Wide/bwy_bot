@@ -4,9 +4,6 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from app.core.constants import (
     ACTIVITY_KEYBOARD_SIZE,
     BACK,
-    COMPLETE,
-    DEFAULT_KEYBOARD_SIZE,
-    MAIN_MENU,
     BACKWARD,
     COMPLETE,
     DEFAULT_KEYBOARD_SIZE,
