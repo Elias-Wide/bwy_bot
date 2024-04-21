@@ -56,7 +56,7 @@ ADMIN_AUTH_SECRET = 'Some_Secret_Sting!'
 Если БД локально не существует команда для создания
 
 ```shell
-alembic upgrade 80fd02331d15  # это цифры последней ревизии 
+alembic upgrade 76aa57ba6258  # это цифры последней ревизии 
 ```
 
 ```shell

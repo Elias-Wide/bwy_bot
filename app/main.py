@@ -57,12 +57,12 @@ admin = Admin(
     authentication_backend=authentication_backend,
 )
 admin.add_view(UserAdmin)
+admin.add_view(CalorieAdmin)
+admin.add_view(WorkoutAdmin)
 admin.add_view(ExerciseAdmin)
 admin.add_view(WorkoutExerciseAdmin)
-admin.add_view(WorkoutAdmin)
 admin.add_view(ScheduleAdmin)
 admin.add_view(SleepAdmin)
-admin.add_view(CalorieAdmin)
 
 
 if WEBHOOK_MODE:
