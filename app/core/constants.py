@@ -133,7 +133,7 @@ TEXT_FOR_DIET = {
 }
 TEXT_FOR_TRAINING = 'Время для тренировки 🏋‍♂️, жми кнопку "К тренировкам"!'
 TEXT_FOR_SLEEPING = 'Время для сна 💤, жми кнопку "Контроль сна"!'
-TIME_TRAINING_FOR_SCHEDULER = '19'
+TIME_TRAINING_FOR_SCHEDULER = '11, 14, 19'
 TIME_SLEEP_FOR_SCHEDULER = '8, 23'
 TIME_CALORIES_FOR_SCHEDULER = '8, 12, 18'
 

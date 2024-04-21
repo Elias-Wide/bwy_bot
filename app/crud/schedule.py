@@ -5,6 +5,16 @@ from app.crud.base import CRUDBase
 from app.models import Schedule, User
 
 
+# Напоминание сделать по времени
+
+# Завтрак обед и ужин напоминает в зависимости от времени
+
+# Тренировка два вида - утреняя и вечерняя, в зависимости от выбора пользователя/админа
+# Уведомлять пользователя о тренировки
+
+# Сон непонятно, спросить у Олега
+
+
 class CRUDSchdeule(CRUDBase):
 
     async def get_telegram_id(self, stop_reminder: str) -> list:
