@@ -9,8 +9,8 @@ from app.core.db import Base
 
 class Sleep(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
-    go_to_bed_time = Column(DateTime, default=datetime.now())
-    wake_up_time = Column(DateTime, default=datetime.now())
+    go_to_bed_time = Column(DateTime, default=datetime.now)
+    wake_up_time = Column(DateTime, default=datetime.now)
     sleep_duration = Column(Float, default=8)
 
     user = relationship('User', back_populates=SLEEP)

@@ -1,5 +1,20 @@
 from enum import Enum
 
+from app.utils.sleep import (
+    get_sleep_duration,
+    get_sleep_statistic,
+    go_to_bed_time,
+    wake_up_time,
+)
+
+
+class SleepMode(str, Enum):
+    DURATION = 'sleep_duration'
+    GO_TO_BED = 'go_to_bed'
+    SLEEP = 'sleep'
+    STATISTIC = 'sleep_statistic'
+    WAKE_UP = 'wake_up'
+
 
 class SurveyQuestions(str, Enum):
     AGE = 'Введите возраст'
@@ -34,20 +49,55 @@ AM_NOON_PM = (
 
 BACK = 'Назад👈'
 BACKWARD = 'backward'
-BUTTONS = {'Сон💤': 'sleep', 'Питание🥦': 'diet', 'Тренировки🏋‍♂️': 'workouts'}
+BUTTONS = {
+    'Сон💤': 'sleep',
+    'Питание🥦': 'diet',
+    'Тренировки🏋‍♂️': 'workouts',
+    'Напоминания🛠': 'settings',
+}
+BUTTONS_FOR_TRAINING = {
+    'category': {
+        'Грудь\\Бицепс': 'pectoral',
+        'Спина\\Плечи\\Трицепс': 'back',
+        'Ноги': 'legs',
+        'Кардио🏃‍♂️': 'cardio',
+    },
+    'pagination': {'backward': '◀️', 'forward': '▶️'},
+}
+
 CAL_COEF_MAN = 88.36
 CAL_KOEF_WOMAN = 447.6
 COEF_TO_SLIM = 0.85
 COEF_ADD_MASS = 1.2
 COEF_ROUND = 2
+
+INTRO_SLEEP_TEXT = (
+    'Если Вы ложитесь спать или только что проснулись, нажмите '
+    'соответствующие кнопки? Мы запишем текущее время как '
+    'время начала сна или пробуждения. '
+    'Или можете ввести сразу количество часов сегодняшнего '
+    'ночного сна.'
+)
+
+
 CAPTIONS = {
     'main': 'Добро пожаловать в Ваш личный помощник самосовершенствования.',
+    'sleep': INTRO_SLEEP_TEXT,
+    'settings': 'settings',
+    'stop_train': 'Тренировки',
+    'stop_sleep': 'Сон',
+    'stop_calorie': 'Калории',
+    'go_to_bed': go_to_bed_time(),
+    'wake_up': wake_up_time(),
+    'sleep_duration': get_sleep_duration(),
+    'sleep_statistic': get_sleep_statistic(),
     'workouts': '<b>Какой вид тренировки предпочитаете?</b>',
     'diet': 'Ваша норма калорий на день {} Ккал',
     'oops': {
         1: 'В данный момент для Вас нет тренировки...',
         2: 'В данный момент для Вас нет упражнений к этой тренировке...',
     },
+    'oops_diet': 'В данный момент для вас нет графика КБЖУ...',
 }
 COEF_TO_SLIM = 0.85
 COEF_ADD_MASS = 1.2
@@ -100,6 +150,7 @@ KB_TEXT_FOR_TRAINING = 'К тренировкам!'
 KB_TEXT_FOR_SLEEPING = 'Контроль сна!'
 
 OOPS = 'oops'
+OOPS_DIET = 'oops_diet'
 
 PHYSICAL_ACTIVITY = (
     ('ABSENT', 'Отсутствует'),
@@ -116,7 +167,6 @@ PHYS_ACTIV_KOEF = {
     'PROFESSIONAL': 1.9,
 }
 
-START_URL = 't.me/{bot_username}?start=survey-canceled'
 SURVEY_CONFIRMED, SURVEY_CANCELED = dict(CONFIRM).keys()
 SURVEY_RESULT = (
     '<b>Ваша анкета готова.</b>🎉\n\n'
@@ -150,3 +200,27 @@ WORKOUT_TYPE = (
     ('Back', 'Спина, плечи, трицепс'),
     ('Front', 'Грудь, бицепс'),
 )
+
+USER_DATE_FORMAT = '%H:%M'
+DB_DATE_FORMAT = '%d/%m/%Y %H:%M:%S'
+
+SLEEP_MAIN_MENU = (
+    ('go_to_bed', 'Ложусь спать'),
+    ('wake_up', 'Проснулся'),
+    ('sleep_duration', 'Продолжительность сна'),
+    ('sleep_statistic', 'Статистика'),
+)
+
+SETTINGS_BUTTONS = {
+    'Тренировки': 'stop_train',
+    'Сон': 'stop_sleep',
+    'Калории': 'stop_calorie',
+}
+
+STATE_TRAIN = 'Напоминание про тренировку - '
+STATE_SLEEP = 'Напоминание про сон - '
+
+STATE_CALORIES = 'Напоминание про калории - '
+REMINDER_STATE_TRUE = 'ВЫКЛ'
+REMINDER_STATE_FALSE = 'ВКЛ'
+DEFAULT_SLEEP_DURATION = 8
