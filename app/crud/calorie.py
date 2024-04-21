@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.logging import get_logger
 from app.crud.base import CRUDBase
 from app.exceptions.calorie import NoCaloriePlot
-from app.models import User, Calorie
+from app.models import Calorie, User
 
 logger = get_logger(__name__)
 
@@ -13,11 +13,12 @@ class CalorieCRUD(CRUDBase):
 
     @staticmethod
     async def get_plot(session: AsyncSession, user: User) -> str:
-        plot = await session.scalar(select(Calorie.picture).where(
-            Calorie.gender == user.gender,
-            Calorie.purpose == user.purpose,
-            Calorie.activity == user.activity,
-        ),
+        plot = await session.scalar(
+            select(Calorie.picture).where(
+                Calorie.gender == user.gender,
+                Calorie.purpose == user.purpose,
+                Calorie.activity == user.activity,
+            ),
         )
         if not plot:
             logger.error(

@@ -1,8 +1,7 @@
 from aiogram.types import FSInputFile, InputMediaPhoto
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import BASE_DIR, STATIC_DIR, UPLOAD_DIR
+from app.core.config import STATIC_DIR
 from app.core.constants import (
     ACTIVITY_PURPOSE,
     AGE_COEF_MAN,
@@ -18,17 +17,17 @@ from app.core.constants import (
     HEIGHT_COEF_MAN,
     HEIGHT_COEF_WOMAN,
     PHYS_ACTIV_KOEF,
+    REMINDER_STATE_FALSE,
+    REMINDER_STATE_TRUE,
+    STATE_CALORIES,
+    STATE_SLEEP,
+    STATE_TRAIN,
     WEIGHT_COEF_MAN,
     WEIGHT_COEF_WOMAN,
-    STATE_TRAIN,
-    STATE_SLEEP,
-    STATE_CALORIES,
-    REMINDER_STATE_TRUE,
-    REMINDER_STATE_FALSE,
 )
 from app.core.logging import get_logger
 from app.crud import schedule_crud
-from app.models import Calorie, Schedule, User
+from app.models import User
 
 logger = get_logger(__name__)
 
@@ -80,16 +79,12 @@ async def get_reminder_state(user: User, session: AsyncSession) -> str:
     else:
         state_train = f'{STATE_TRAIN} - {REMINDER_STATE_FALSE}'
     if schedule_state.__getattribute__('stop_reminder_sleep'):
-        state_sleep =  f'{STATE_SLEEP} - {REMINDER_STATE_TRUE}'
+        state_sleep = f'{STATE_SLEEP} - {REMINDER_STATE_TRUE}'
     else:
-        state_sleep =  f'{STATE_SLEEP} - {REMINDER_STATE_FALSE}'
+        state_sleep = f'{STATE_SLEEP} - {REMINDER_STATE_FALSE}'
     if schedule_state.__getattribute__('stop_reminder_calories'):
         state_calories = f'{STATE_CALORIES} - {REMINDER_STATE_TRUE}'
     else:
-        state_calories =  f'{STATE_CALORIES} - {REMINDER_STATE_FALSE}'
+        state_calories = f'{STATE_CALORIES} - {REMINDER_STATE_FALSE}'
 
-    return (
-        f'{state_train}\n'
-        f'{state_sleep}\n'
-        f'{state_calories}\n'
-    )
+    return f'{state_train}\n' f'{state_sleep}\n' f'{state_calories}\n'

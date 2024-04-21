@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generic, Sequence, Type, TypeVar
+from typing import TypeVar
 
 from fastapi_sqlalchemy import db
 from sqlalchemy import select

@@ -9,4 +9,3 @@ from .sleep_kb import (
 )
 from .survey_kb import create_survey_kb
 from .workout_kb import get_exercise_btns, get_workout_select_btns
-from .settings_kb import get_settings_btns

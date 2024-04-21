@@ -1,4 +1,4 @@
-from aiogram.types import InputMediaPhoto, InlineKeyboardMarkup, FSInputFile
+from aiogram.types import FSInputFile, InlineKeyboardMarkup, InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import CAPTIONS, OOPS_DIET
@@ -6,8 +6,7 @@ from app.crud import calorie_crud
 from app.exceptions.calorie import NoCaloriePlot
 from app.keyboards import get_calories_btns
 from app.models import User
-from app.utils.utils import (calculation_of_calories,
-                             get_banner)
+from app.utils.utils import calculation_of_calories, get_banner
 
 
 async def calorie_counter(

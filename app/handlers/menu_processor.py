@@ -29,10 +29,10 @@ async def main_menu(
 
 
 async def settings_menu(
-        level: int,
-        menu_name: str,
-        user: User,
-        session: AsyncSession,
+    level: int,
+    menu_name: str,
+    user: User,
+    session: AsyncSession,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
     res = await get_reminder_state(user, session)
     return (
