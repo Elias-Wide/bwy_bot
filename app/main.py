@@ -8,14 +8,12 @@ from sqladmin import Admin
 from app.admin.auth import AdminAuth
 from app.admin.view import (
     CalorieAdmin,
-    CourseAdmin,
     ExerciseAdmin,
-    ExerciseWorkoutAdmin,
     ScheduleAdmin,
     SleepAdmin,
     UserAdmin,
     WorkoutAdmin,
-    WorkoutCourseAdmin,
+    WorkoutExerciseAdmin,
 )
 from app.core.config import settings
 from app.core.constants import (
@@ -26,12 +24,12 @@ from app.core.constants import (
 )
 from app.core.db import AsyncSessionLocal, engine, get_async_session
 from app.core.logging import get_logger
-from app.handlers.callbacks.schedule_handler import (
+from app.handlers.routers import main_router
+from app.handlers.schedule_handler import (
     time_to_calorie,
     time_to_sleep,
     time_to_training,
 )
-from app.handlers.routers import main_router
 from app.keyboards.main_menu import set_main_menu
 from app.middlewares import DbSessionMiddleware
 
@@ -60,10 +58,8 @@ admin = Admin(
 )
 admin.add_view(UserAdmin)
 admin.add_view(ExerciseAdmin)
-admin.add_view(ExerciseWorkoutAdmin)
+admin.add_view(WorkoutExerciseAdmin)
 admin.add_view(WorkoutAdmin)
-admin.add_view(WorkoutCourseAdmin)
-admin.add_view(CourseAdmin)
 admin.add_view(ScheduleAdmin)
 admin.add_view(SleepAdmin)
 admin.add_view(CalorieAdmin)
@@ -76,11 +72,11 @@ if WEBHOOK_MODE:
         @app.on_event('startup')
         async def on_startup() -> None:
             webhook_info = await bot.get_webhook_info()
-            logger.info(f'MODE = {WEBHOOK_MODE}')
-            logger.info(f'URL = {WEBHOOK_URL}')
+            logger.info('MODE = %s', WEBHOOK_MODE)
+            logger.info('URL = %s', WEBHOOK_URL)
             if webhook_info.url != WEBHOOK_URL:
                 await bot.delete_webhook()
-                logger.info(f'URL = {WEBHOOK_URL}')
+                logger.info('URL = %s', WEBHOOK_URL)
                 await bot.set_webhook(
                     url=WEBHOOK_URL,
                 )
@@ -101,8 +97,8 @@ else:
 
     @app.on_event('startup')
     async def on_startup() -> None:
-        logger.info(f'MODE = {WEBHOOK_MODE}')
-        logger.info(f'TOKEN = {settings.telegram_bot_token}')
+        logger.info('MODE = %s', WEBHOOK_MODE)
+        logger.info('TOKEN = %s', settings.telegram_bot_token)
         scheduler = AsyncIOScheduler(timezone=MOSCOW)
         scheduler.start()
         scheduler.add_job(

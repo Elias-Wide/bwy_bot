@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from fastapi_storages import FileSystemStorage
 from fastapi_storages.integrations.sqlalchemy import FileType
 from sqlalchemy import Column, ForeignKey, Integer, String, Text
@@ -91,3 +92,5 @@ class WorkoutCourse(Base):
         return f'''{self.course_day} -
                 course:{self.course_id} -
                 workout:{self.workout_id}'''
+=======
+>>>>>>> 3ed53391d39f5a408da3e5f23ee1fef8cf1156fe

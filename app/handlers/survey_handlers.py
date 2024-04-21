@@ -30,8 +30,8 @@ from app.filters.survey_filters import (
     HumanParameterFilter,
     filter_invalid_email,
 )
-from app.handlers.callbacks.user_handlers import process_start_command
 from app.handlers.states import SurveyOrder
+from app.handlers.user_handlers import process_start_command
 from app.keyboards import create_survey_kb
 from app.models import Schedule, User
 
@@ -59,7 +59,7 @@ async def begin_survey(
         name=message.from_user.first_name,
     )
     await message.answer(
-        text=f'{INTRO_SURVEY_TEXT}{SurveyQuestions.consent}',
+        text=f'{INTRO_SURVEY_TEXT}{SurveyQuestions.CONSENT}',
         reply_markup=await create_survey_kb(
             dict(CONFIRM).values(),
             dict(CONFIRM).keys(),
@@ -84,7 +84,7 @@ async def ask_gender(
     state: FSMContext,
 ) -> None:
     await callback_query.message.edit_text(
-        text=SurveyQuestions.gender,
+        text=SurveyQuestions.GENDER,
         reply_markup=await create_survey_kb(
             dict(GENDER).values(),
             dict(GENDER).keys(),
@@ -103,7 +103,7 @@ async def ask_activity(
 ) -> None:
     await state.update_data(gender=callback_query.data)
     await callback_query.message.edit_text(
-        text=SurveyQuestions.physical_activity,
+        text=SurveyQuestions.PHYSICAL_ACTIVITY,
         reply_markup=await create_survey_kb(
             dict(PHYSICAL_ACTIVITY).values(),
             dict(PHYSICAL_ACTIVITY).keys(),
@@ -123,7 +123,7 @@ async def ask_purpose(
 ) -> None:
     await state.update_data(activity=callback_query.data)
     await callback_query.message.edit_text(
-        text=SurveyQuestions.purpose,
+        text=SurveyQuestions.PURPOSE,
         reply_markup=await create_survey_kb(
             dict(ACTIVITY_PURPOSE).values(),
             dict(ACTIVITY_PURPOSE).keys(),
@@ -142,7 +142,7 @@ async def ask_height(
 ) -> None:
     await state.update_data(purpose=callback_query.data)
     await callback_query.message.edit_text(
-        text=SurveyQuestions.height,
+        text=SurveyQuestions.HEIGHT,
         reply_markup=None,
     )
     await state.set_state(SurveyOrder.height_question)
@@ -154,7 +154,7 @@ async def ask_height(
 )
 async def ask_weight(message: Message, state: FSMContext, value: int) -> None:
     await state.update_data(height=value)
-    await message.answer(text=SurveyQuestions.weight)
+    await message.answer(text=SurveyQuestions.WEIGHT)
     await state.set_state(SurveyOrder.weight_question)
 
 
@@ -164,7 +164,7 @@ async def ask_weight(message: Message, state: FSMContext, value: int) -> None:
 )
 async def ask_age(message: Message, state: FSMContext, value: int) -> None:
     await state.update_data(weight=value)
-    await message.answer(text=SurveyQuestions.age)
+    await message.answer(text=SurveyQuestions.AGE)
     await state.set_state(SurveyOrder.age_question)
 
 
@@ -174,7 +174,7 @@ async def ask_age(message: Message, state: FSMContext, value: int) -> None:
 )
 async def ask_email(message: Message, state: FSMContext, value: int) -> None:
     await state.update_data(age=value)
-    await message.answer(text=SurveyQuestions.email)
+    await message.answer(text=SurveyQuestions.EMAIL)
     await state.set_state(SurveyOrder.email_question)
 
 

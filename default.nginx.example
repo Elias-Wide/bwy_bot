@@ -1,0 +1,41 @@
+#virtual servers
+#fdgrm.site
+server {
+    listen 80;
+    client_max_body_size 4G;
+
+    server_name fdgrm.site;
+
+    location / {
+      proxy_set_header Host $http_host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_pass http://localhost:8888;
+    }
+
+#    location /static {
+#      # path for static files
+#      root /path/to/app/static;
+#    }
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/fdgrm.site/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/fdgrm.site/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = fdgrm.site) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80;
+        server_name fdgrm.site;
+    return 404; # managed by Certbot
+}

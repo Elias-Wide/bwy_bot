@@ -1,0 +1,16 @@
+[Unit]
+Description=BWY
+After=network.target
+
+[Service]
+User=bwy_user
+Group=bwy_user
+WorkingDirectory=/home/bwy_user/begin_with_yourself_bot_2
+Environment="PATH=/home/bwy_user/begin_with_yourself_bot_2/venv"
+LimitNOFILE=4096
+ExecStart=/home/bwy_user/begin_with_yourself_bot_2/venv/bin/gunicorn -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8888 --error-logfile /home/bwy_user/error_log.txt
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

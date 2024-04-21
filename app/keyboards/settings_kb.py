@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.core.constants import SETTINGS_BUTTONS, BACK
+from app.core.constants import BACK, SETTINGS_BUTTONS
 from app.keyboards.mode_kb import MenuCallBack
 
 
