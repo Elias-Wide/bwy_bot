@@ -1,5 +1,20 @@
 from enum import Enum
 
+from app.utils.sleep import (
+    get_sleep_duration,
+    get_sleep_statistic,
+    go_to_bed_time,
+    wake_up_time,
+)
+
+
+class SleepMode(str, Enum):
+    DURATION = 'sleep_duration'
+    GO_TO_BED = 'go_to_bed'
+    SLEEP = 'sleep'
+    STATISTIC = 'sleep_statistic'
+    WAKE_UP = 'wake_up'
+
 
 class SurveyQuestions(str, Enum):
     AGE = 'Введите возраст'
@@ -40,8 +55,22 @@ CAL_KOEF_WOMAN = 447.6
 COEF_TO_SLIM = 0.85
 COEF_ADD_MASS = 1.2
 COEF_ROUND = 2
+
+INTRO_SLEEP_TEXT = (
+    'Если Вы ложитесь спать или только что проснулись, нажмите '
+    'соответствующие кнопки? Мы запишем текущее время как '
+    'время начала сна или пробуждения. '
+    'Или можете ввести сразу количество часов сегодняшнего '
+    'ночного сна.'
+)
+
 CAPTIONS = {
     'main': 'Добро пожаловать в Ваш личный помощник самосовершенствования.',
+    'sleep': INTRO_SLEEP_TEXT,
+    'go_to_bed': go_to_bed_time(),
+    'wake_up': wake_up_time(),
+    'sleep_duration': get_sleep_duration(),
+    'sleep_statistic': get_sleep_statistic(),
     'workouts': '<b>Какой вид тренировки предпочитаете?</b>',
     'diet': 'Ваша норма калорий на день {} Ккал',
     'oops': {
@@ -145,4 +174,14 @@ WORKOUT_TYPE = (
     ('Legs', 'Ноги'),
     ('Back', 'Спина, плечи, трицепс'),
     ('Front', 'Грудь, бицепс'),
+)
+
+USER_DATE_FORMAT = "%H:%M"
+DB_DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
+
+SLEEP_MAIN_MENU = (
+    ('go_to_bed', 'Ложусь спать'),
+    ('wake_up', 'Проснулся'),
+    ('sleep_duration', 'Продолжительность сна'),
+    ('sleep_statistic', 'Статистика'),
 )
