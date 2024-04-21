@@ -1,3 +1,4 @@
+from datetime import datetime
 from aiogram import F, Router, types
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -78,6 +79,11 @@ async def calories_callback(
     )
 
 
+def time_eating():
+    time_now = datetime.now().hour
+    return TEXT_FOR_DIET[time_now]
+
+
 async def time_to_sleep() -> None:
     """Функция для уведомления пользователя о режиме сна."""
     users_tg_id = await schedule_crud.get_telegram_id(stop_reminder=SLEEP)
@@ -112,6 +118,6 @@ async def time_to_calorie() -> None:
 
         await main.bot.send_message(
             chat_id=tg_id,
-            text=TEXT_FOR_DIET,
+            text=time_eating(),
             reply_markup=calorie_control,
         )
