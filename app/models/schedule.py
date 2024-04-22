@@ -3,7 +3,6 @@ from datetime import datetime
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
-from app.core.constants import DEFAULT_SLEEP_DURATION
 from app.core.db import Base
 
 
@@ -12,7 +11,7 @@ class Schedule(Base):
     start_course = Column(DateTime, default=datetime.now)
     stop_reminder_train = Column(Boolean, default=False)
     stop_reminder_sleep = Column(Boolean, default=False)
-    stop_reminder_calories = Column(Boolean, default=DEFAULT_SLEEP_DURATION)
+    stop_reminder_calories = Column(Boolean, default=False)
 
     user = relationship('User', back_populates='schedule', uselist=False)
 
