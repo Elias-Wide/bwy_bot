@@ -13,7 +13,7 @@ from app.core.constants import (
     WORKOUTS,
 )
 from app.crud import schedule_crud, user_crud
-from app.handlers.menu_processor import get_menu_content
+from app.handlers.menu_processor import get_menu_content, sleep_mode_menu
 from app.keyboards.schedule_kb import (
     calorie_control,
     ready_for_training,
@@ -48,14 +48,14 @@ async def training_callback(
 
 @router.callback_query(F.data == SLEEP)
 async def sleep_callback(callback_query: types.CallbackQuery) -> None:
-    pass
-    # media, reply_markup = await sleep_mode_menu(level=1, menu_name=SLEEP)
 
-    # await callback_query.message.answer_photo(
-    #     photo=media.media,
-    #     caption=media.caption,
-    #     reply_markup=reply_markup,
-    # )
+    media, reply_markup = await sleep_mode_menu(level=1, menu_name=SLEEP)
+
+    await callback_query.message.answer_photo(
+        photo=media.media,
+        caption=media.caption,
+        reply_markup=reply_markup,
+    )
 
 
 @router.callback_query(F.data == DIET)
