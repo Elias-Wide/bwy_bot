@@ -81,7 +81,6 @@ async def get_menu_content(
                 return await settings_menu(level, menu_name, user, session)
             return await main_menu(level, menu_name)
         case 1:
-            print(menu_name, level)
             if menu_name == SleepMode.SLEEP:
                 return await sleep_mode_menu(level, menu_name)
             return await select_workout(
@@ -91,7 +90,6 @@ async def get_menu_content(
                 menu_name,
             )
         case 2:
-            print(menu_name, level)
             if menu_name == SleepMode.GO_TO_BED:
                 return await go_to_bed_menu(level, menu_name)
             if menu_name == SleepMode.WAKE_UP:
