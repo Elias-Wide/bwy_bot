@@ -1,3 +1,5 @@
+"""Модуль клавиатуры основного меню."""
+
 from typing import TypeAlias
 
 from aiogram.filters.callback_data import CallbackData
@@ -8,7 +10,7 @@ from aiogram.types import (
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from app.core.constants import BUTTONS, DEFAULT_KEYBOARD_SIZE, WORKOUTS
+from app.core.constants import BUTTONS, DEFAULT_KEYBOARD_SIZE, SLEEP, WORKOUTS
 
 KeyboardMarkup: TypeAlias = InlineKeyboardMarkup | ReplyKeyboardMarkup
 
@@ -25,8 +27,11 @@ class MenuCallBack(CallbackData, prefix='menu'):
 
     level: int
     menu_name: str
-    workout_group: int | None = None
+    workout_group: str | None = None
     page: int = 1
+    ok: str | None = None
+    yes_no: str | None = None
+    workout_id: int | None = None
 
 
 def get_main_menu_btns(
@@ -34,9 +39,10 @@ def get_main_menu_btns(
     level: int,
     sizes: tuple[int] = DEFAULT_KEYBOARD_SIZE,
 ) -> KeyboardMarkup:
+    """Получить кнопки для главного меню."""
     keyboard = InlineKeyboardBuilder()
     for text, menu_name in BUTTONS.items():
-        if menu_name == WORKOUTS or menu_name == 'sleep':
+        if menu_name == WORKOUTS or menu_name == SLEEP:
             keyboard.add(
                 InlineKeyboardButton(
                     text=text,
@@ -56,5 +62,4 @@ def get_main_menu_btns(
                     ).pack(),
                 ),
             )
-
     return keyboard.adjust(*sizes).as_markup()

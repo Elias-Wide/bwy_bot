@@ -1,3 +1,6 @@
+"""Exeptions участка тренировок."""
+
+
 class NoExerciseException(BaseException):
     """Поднимается в случае отсутствия упражнений для тренировки."""
 

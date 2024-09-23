@@ -1,3 +1,5 @@
+"""CRUD операции относящийся к пользователям."""
+
 from app.crud.base import CRUDBase
 from app.models import User
 

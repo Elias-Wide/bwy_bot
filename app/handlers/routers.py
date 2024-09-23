@@ -1,3 +1,5 @@
+"""Модуль содержит маршруты."""
+
 from aiogram import Router
 
 from app.handlers import (
@@ -12,10 +14,10 @@ from app.handlers import (
 main_router = Router()
 
 main_router.include_routers(
+    sleep_router,
     shedule_router,
     survey_router,
     user_router,
-    sleep_router,
     settings_router,
     echo_router,
 )

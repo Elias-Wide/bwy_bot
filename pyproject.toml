@@ -12,6 +12,7 @@ authors = [
     {name = "MaksimKurmazov", email = "makes86@mail.ru"},
     {name = "mign0n", email = "mign0n.git@gmail.com"},
     {name = "RolAlek", email = "rolaleksandr75@gmail.com"},
+    {name = "Elias-Wide", email = "ilshi2904@gmail.com"},
 ]
 description = ""
 readme = "README.md"
@@ -25,15 +26,18 @@ dependencies = [
     "APScheduler==3.10.4",
     "fastapi==0.110.0",
     "FastAPI-SQLAlchemy==0.2.1",
+    "gunicorn==22.0.0",
     "uvicorn[standard]==0.17.6",
     "pydantic-settings==2.2.1",
-    "lexicon==2.0.1",
     "sqladmin==0.16.1",
     "fastapi-storages==0.3.0",
     "fastapi_scheduler==0.0.15",
     "fastapi-users-db-sqlalchemy==6.0.1",
     "SQLAlchemy-Utils==0.41.2",
     "itsdangerous==2.1.2",
+    "timezonefinder==6.5.1",
+    "pytz==2024.1",
+    "types-pytz==2024.1.0.20240417",
 ]
 
 [project.optional-dependencies]
@@ -64,23 +68,27 @@ extend-exclude = [
     "env/"
 ]
 ignore = [
-    "ANN101",  # missing type annotation for self in method
-    "ANN102",  # missing type annotation for cls in classmethod
-    "D100",  # missing docstring in public module
-    "D101",  # missing docstring in public class
-    "D102",  # missing docstring in public method
-    "D103",  # missing docstring in public function
-    "D104",  # missing docstring in public package
-    "D105",  # missing docstring in magic method
-    "D106",  # missing docstring in public nested class
-    "D107",  # missing docstring in __init__
-    "W503",  # line break before binary operator
+    "ANN101",
+    "ANN102",
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "W503",
+]
+extend-ignore = [
+    "E401",
+    "ANN401",
 ]
 max-complexity = 10
 max-line-length = 79
 per-file-ignores = [
-    "__init__.py:F401",  # %r imported but unused
-    "db.py:N805",  # first argument of a method should be named 'self'
+    "__init__.py:F401",
+    "db.py:N805", 
 ]
 
 [tool.isort]

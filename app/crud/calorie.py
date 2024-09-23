@@ -1,6 +1,9 @@
+"""CRUD операции относящиеся к участку питание."""
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.constants import DIET_CRUD_ERROR
 from app.core.logging import get_logger
 from app.crud.base import CRUDBase
 from app.exceptions.calorie import NoCaloriePlot
@@ -10,9 +13,11 @@ logger = get_logger(__name__)
 
 
 class CalorieCRUD(CRUDBase):
+    """Класс CRUD операций относящиеся к участку питание."""
 
     @staticmethod
     async def get_plot(session: AsyncSession, user: User) -> str:
+        """Возвращает путь к файлу нужной картинки."""
         plot = await session.scalar(
             select(Calorie.picture).where(
                 Calorie.gender == user.gender,
@@ -22,7 +27,7 @@ class CalorieCRUD(CRUDBase):
         )
         if not plot:
             logger.error(
-                'В базе для %s, %s и %s нет графика.',
+                DIET_CRUD_ERROR,
                 user.gender,
                 user.purpose,
                 user.activity,

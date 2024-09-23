@@ -1,3 +1,5 @@
+"""Клавиатура вступительной анкеты."""
+
 from typing import Iterable
 
 from aiogram.types import (
@@ -15,6 +17,7 @@ async def create_survey_kb(
     callback_datas: Iterable[str | None] = (None,),
     size: tuple[int] = DEFAULT_KEYBOARD_SIZE,
 ) -> InlineKeyboardMarkup | ReplyKeyboardMarkup:
+    """Создать клавиутуру вступительной анкеты."""
     builder = InlineKeyboardBuilder()
     for item, callback_data in zip(items, callback_datas):
         builder.add(

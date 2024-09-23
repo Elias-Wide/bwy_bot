@@ -1,3 +1,5 @@
+"""Модуль участка питания содержащий функции."""
+
 from aiogram.types import FSInputFile, InlineKeyboardMarkup, InputMediaPhoto
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,6 +17,7 @@ async def calorie_counter(
     user: User,
     session: AsyncSession,
 ) -> tuple[InputMediaPhoto, InlineKeyboardMarkup]:
+    """Функция возвращает картинку с КБЖУ и текст с количеством калорий."""
     try:
         plot = await calorie_crud.get_plot(session, user)
     except NoCaloriePlot:

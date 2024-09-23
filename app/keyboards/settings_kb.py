@@ -1,4 +1,10 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+"""Модуль клавиатуры для меню настроек."""
+
+from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    ReplyKeyboardMarkup,
+)
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from app.core.constants import BACK, SETTINGS_BUTTONS
@@ -9,7 +15,8 @@ def get_settings_btns(
     *,
     level: int,
     sizes: tuple[int] = (2,),
-) -> InlineKeyboardMarkup:
+) -> InlineKeyboardMarkup | ReplyKeyboardMarkup:
+    """Получить баннер и кнопки в меню настроек."""
     keyboard = InlineKeyboardBuilder()
     for text, menu_name in SETTINGS_BUTTONS.items():
         keyboard.add(

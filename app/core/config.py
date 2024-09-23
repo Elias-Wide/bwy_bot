@@ -1,3 +1,5 @@
+"""Здесь настройки приложения."""
+
 from pathlib import Path
 
 from pydantic_settings import BaseSettings
@@ -8,9 +10,10 @@ STATIC_DIR = BASE_DIR / 'static'
 
 
 class Settings(BaseSettings):
+    """Содержит основные настройки приложения."""
 
-    telegram_bot_token: str = '**********:***********************************'
-    webhook_host: str = None
+    telegram_bot_token: str = '0000000000:El55gRI4rikAAHUdelfhmd......'
+    webhook_host: str | None = None
     webhook_mode: bool = False
     database_url: str = 'sqlite+aiosqlite:///./some.db'
     username: str = 'mail@mail.ru'
@@ -18,6 +21,8 @@ class Settings(BaseSettings):
     admin_auth_secret: str = 'Какая-то_Секret_Sting!'
 
     class Config:
+        """Имя файла содержащего сами настройки."""
+
         env_file = '.env'
 
 

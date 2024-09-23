@@ -1,6 +1,8 @@
+"""Модуль содержащий классы моделей тренировок."""
+
 from fastapi_storages import FileSystemStorage
 from fastapi_storages.integrations.sqlalchemy import FileType
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy_utils import ChoiceType
 
@@ -12,6 +14,7 @@ storage = FileSystemStorage(path=UPLOAD_DIR)
 
 
 class Exercise(Base):
+    """Класс, описывающий модель упражнений В БД."""
 
     name: Mapped[str] = mapped_column(String(128), unique=True, nullable=False)
     description: Mapped[str]
@@ -21,12 +24,23 @@ class Exercise(Base):
     )
 
     def __str__(self) -> str:
+        """Строковое представление экземпляра класса."""
         return f'{self.name}'
 
 
 class Workout(Base):
+    """Класс, описывающий модель тренировок В БД.
 
-    name: Mapped[str] = mapped_column(String(128), unique=True, nullable=False)
+    Объект тренировки содержит в себе объекты упражнений,
+    зависимость через вспомогательную модель WorkoutExercise.
+    """
+
+    name: Mapped[str] = mapped_column(
+        String(128),
+        unique=True,
+        nullable=False,
+        default='Name will be autofilled',
+    )
     group: Mapped[ChoiceType] = mapped_column(ChoiceType(WORKOUT_TYPE))
     gender: Mapped[ChoiceType] = mapped_column(ChoiceType(GENDER))
     purpose: Mapped[ChoiceType] = mapped_column(ChoiceType(ACTIVITY_PURPOSE))
@@ -35,10 +49,17 @@ class Workout(Base):
     )
 
     def __str__(self) -> str:
+        """Строковое представление экземпляра класса."""
         return f'{self.name}'
 
 
 class WorkoutExercise(Base):
+    """
+    Вспомогательная модель для связи таблиц.
+
+    Устанавливает зависимость между таблицами Workout и Exercise.
+    """
+
     exercise_id: Mapped[int] = mapped_column(
         ForeignKey('exercise.id', ondelete='CASCADE'),
         nullable=False,
@@ -47,8 +68,14 @@ class WorkoutExercise(Base):
         ForeignKey('workout.id', ondelete='CASCADE'),
         nullable=False,
     )
+    sequence_number: Mapped[int] = mapped_column(
+        Integer,
+        nullable=True,
+        default=1,
+    )
     workout: Mapped['Workout'] = relationship(back_populates='exercises')
     exercise: Mapped['Exercise'] = relationship(back_populates='workouts')
 
     def __str__(self) -> str:
+        """Строковое представление экземпляра класса."""
         return f'workout:{self.workout_id} - exercise:{self.exercise_id}'

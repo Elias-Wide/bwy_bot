@@ -1,7 +1,10 @@
+"""Общий модуль для подключение логера."""
+
 import logging
 
 
 def get_logger(name: str) -> logging.Logger:
+    """Возвращает логер."""
     logging.basicConfig(
         level=logging.INFO,
         format='%(filename)s:%(lineno)d #%(levelname)-8s '

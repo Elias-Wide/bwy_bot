@@ -1,3 +1,5 @@
+"""Модуль финиш анкеты и обработка кнопок меню самого бота."""
+
 from aiogram import Router
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
@@ -22,6 +24,7 @@ async def process_start_command(
     state: FSMContext,
     session: AsyncSession,
 ) -> None:
+    """После завершения анкетирования. Начало самого бота."""
     user = await user_crud.get_by_attribute(
         'telegram_id',
         message.chat.id,
@@ -47,9 +50,10 @@ async def user_menu(
     callback_data: MenuCallBack,
     session: AsyncSession,
 ) -> None:
+    """Обработка нажатия кнопок меню."""
     user = await user_crud.get_by_attribute(
         'telegram_id',
-        callback.from_user.id,
+        str(callback.from_user.id),
         session,
     )
     media, reply_markup = await get_menu_content(
@@ -58,9 +62,9 @@ async def user_menu(
         menu_name=callback_data.menu_name,
         user=user,
         workout_group=callback_data.workout_group,
+        workout_id=callback_data.workout_id,
         page=callback_data.page,
     )
-
     if isinstance(media, InputMediaVideo):
         async with ChatActionSender.upload_video(
             chat_id=callback.message.chat.id,

@@ -1,3 +1,5 @@
+"""This is the handler package."""
+
 from .other_handler import router as echo_router
 from .schedule_handler import router as shedule_router
 from .settings_handler import router as settings_router

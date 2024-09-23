@@ -54,6 +54,7 @@ cffi==1.16.0
     # via
     #   argon2-cffi-bindings
     #   cryptography
+    #   timezonefinder
 click==8.1.7
     # via uvicorn
 cryptography==42.0.5
@@ -87,8 +88,12 @@ frozenlist==1.4.1
     #   aiosignal
 greenlet==3.0.3
     # via sqlalchemy
+gunicorn==22.0.0
+    # via begin-with-yourself-bot (pyproject.toml)
 h11==0.14.0
     # via uvicorn
+h3==3.7.7
+    # via timezonefinder
 httptools==0.6.1
     # via uvicorn
 idna==3.6
@@ -104,8 +109,6 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-lexicon==2.0.1
-    # via begin-with-yourself-bot (pyproject.toml)
 magic-filter==1.0.12
     # via aiogram
 makefun==1.15.2
@@ -121,6 +124,10 @@ multidict==6.0.5
     # via
     #   aiohttp
     #   yarl
+numpy==1.26.4
+    # via timezonefinder
+packaging==24.1
+    # via gunicorn
 pwdlib[argon2,bcrypt]==0.2.0
     # via fastapi-users
 pycparser==2.22
@@ -149,7 +156,9 @@ python-multipart==0.0.9
     #   fastapi-users
     #   sqladmin
 pytz==2024.1
-    # via apscheduler
+    # via
+    #   apscheduler
+    #   begin-with-yourself-bot (pyproject.toml)
 pyyaml==6.0.1
     # via uvicorn
 s3transfer==0.10.1
@@ -182,6 +191,10 @@ starlette==0.36.3
     #   fastapi
     #   fastapi-sqlalchemy
     #   sqladmin
+timezonefinder==6.5.1
+    # via begin-with-yourself-bot (pyproject.toml)
+types-pytz==2024.1.0.20240417
+    # via begin-with-yourself-bot (pyproject.toml)
 typing-extensions==4.10.0
     # via
     #   aiogram
@@ -208,3 +221,6 @@ wtforms==3.1.2
     # via sqladmin
 yarl==1.9.4
     # via aiohttp
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
