@@ -143,3 +143,5 @@ $ sudo systemctl start myapp.service
 * [**Олег Сапожников**](https://github.com/mign0n)
 * [**Александр Роль**](https://github.com/RolAlek)
 * [**Илья Широков**](https://github.com/Elias-Wide)
+
+### Копия проекта, оригинальный репозиторий: [**begin_with_yourself_bot_2**](https://github.com/Studio-Yandex-Practicum/begin_with_yourself_bot_2)
